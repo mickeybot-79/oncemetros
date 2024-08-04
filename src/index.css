@@ -95,7 +95,7 @@ code {
   height: auto;
   display: grid;
   place-content: center;
-  background: linear-gradient(90deg, rgba(51, 99, 204, 0.747), rgb(52, 97, 180));
+  background: linear-gradient(90deg, rgba(119, 175, 207, 0.815), rgba(62, 132, 153, 0.788));
 }
 
 #header-logo {
@@ -137,7 +137,6 @@ ul {
 #competiciones-internacionales-options,
 #historia-de-los-mundiales-options {
   position: absolute;
-  /* border: 1px solid black; */
   border-radius: 10px;
   background-color: rgb(175, 45, 45);
   width: 220px;
@@ -156,7 +155,7 @@ ul {
 }
 
 #presentation-content {
-  background: linear-gradient(90deg, rgba(51, 99, 204, 0.747), rgb(52, 97, 180));
+  background: linear-gradient(90deg, rgba(119, 175, 207, 0.815), rgba(62, 132, 153, 0.788));
   width: 100%;
   position: absolute;
   top: 0;

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { useGetPostsQuery } from "../features/posts/postsApiSlice"
+import PageHeader from "./PageHeader"
 
 const MainPage = () => {
 
@@ -10,7 +11,7 @@ const MainPage = () => {
 
     const [presentationHeight, setPresentationHeight] = useState('')
 
-    const [hidePresentation, setHidePresentation] = useState('none')
+    const [hidePresentation, setHidePresentation] = useState('')
 
     const [presentationDisplay, setPresentationDisplay] = useState('grid')
 
@@ -46,8 +47,8 @@ const MainPage = () => {
                 const allPosts = []
                 posts.map((story) => {
                     allPosts.push(
-                        <div key={story.id} className="main-story">
-                            <img src={`../Images/${story.thumbnail}`} alt="story" className="story-thumbnail"/>
+                        <div key={story._id} className="main-story">
+                            <img src={`../Images/${story.thumbnail}`} alt="story" className="story-thumbnail" />
                             <h4 className="story-title">{story.title}</h4>
                             <p className="story-summary">{story.summary}</p>
                         </div>
@@ -60,32 +61,35 @@ const MainPage = () => {
     }, [isSuccess, posts])
 
     return (
-        <div id="main-page-container">
-            {/*Presentation*/}
-            <section id="presentation-content" style={{ height: presentationHeight, animation: hidePresentation, display: presentationDisplay }}>
-                <img src="../Images/logo.jpg" alt="logo" id="logo-presentation" />
-            </section>
-            <main style={{display: presentationDisplay === 'none' ? 'grid' : 'none'}}>
-                {/*Main stories*/}
-                <section id="main-stories">
-                    {mainStories}
+        <>
+            <PageHeader />
+            <div id="main-page-container">
+                {/*Presentation*/}
+                <section id="presentation-content" style={{ height: presentationHeight, animation: hidePresentation, display: presentationDisplay }}>
+                    <img src="../Images/logo.jpg" alt="logo" id="logo-presentation" />
                 </section>
-                {/* <img src="" alt="down-prompt" id="down-prompt"/> */}
-                <div id="down-prompt-container" style={{display: downPromptDisplay.display, animation: downPromptDisplay.animation}}><p id="down-prompt">{'<'}</p></div>
-                {/*Popular stories*/}
-                <section>
+                <main style={{ display: presentationDisplay === 'none' ? 'grid' : 'none' }}>
+                    {/*Main stories*/}
+                    <section id="main-stories">
+                        {mainStories}
+                    </section>
+                    {/* <img src="" alt="down-prompt" id="down-prompt"/> */}
+                    <div id="down-prompt-container" style={{ display: downPromptDisplay.display, animation: downPromptDisplay.animation }}><p id="down-prompt">{'<'}</p></div>
+                    {/*Popular stories*/}
+                    <section>
 
-                </section>
-                {/*Higlights*/}
-                <section>
+                    </section>
+                    {/*Higlights*/}
+                    <section>
 
-                </section>
-                {/*Most viewed stories*/}
-                <section>
+                    </section>
+                    {/*Most viewed stories*/}
+                    <section>
 
-                </section>
-            </main>
-        </div>
+                    </section>
+                </main>
+            </div>
+        </>
     )
 
 }
