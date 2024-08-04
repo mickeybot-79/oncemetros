@@ -7,7 +7,211 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+#background-image {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: -1;
+  filter:blur(5px) grayscale(40%) contrast(70%) brightness(80%);
+  background-size: cover;
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+@keyframes presentation-animation {
+  0% {
+    transform: rotate(-100deg) scale(0);
+  }
+
+  90% {
+    transform: rotate(15deg) scale(1.1);
+  }
+
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+@keyframes hide-presentation {
+  0% {
+    height: 100vh;
+  }
+
+  100% {
+    height: 20vh;
+  }
+}
+
+@keyframes background-animation {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes stories-animation {
+  0% {
+    margin-top: 400px;
+    opacity: 0;
+  }
+
+  100% {
+    margin-top: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes down-prompt-display {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes down-prompt-animation {
+  0% {
+    margin-top: -12px;
+  }
+
+  50% {
+    margin-top: 0px;
+  }
+
+  100% {
+    margin-top: -12px;
+  }
+}
+
+#header-container {
+  width: 100%;
+  height: auto;
+  display: grid;
+  place-content: center;
+  background: linear-gradient(90deg, rgba(51, 99, 204, 0.747), rgb(52, 97, 180));
+}
+
+#header-logo {
+  width: auto;
+  scale: 0.93;
+  margin-bottom: -22px;
+  margin-top: -6px;
+  place-self: center;
+}
+
+ul {
+  list-style-type: none;
+}
+
+#main-menu-options {
+  display: flex;
+  gap: 0px;
+  place-content: center;
+  margin-left: -40px;
+  margin-bottom: 0;
+}
+
+.menu-item {
+  font-size: 22px;
+  font-weight: 400;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  background-color: rgba(201, 39, 39, 0.747);
+  max-width: 350px;
+  padding: 0 15px 3px 15px;
+  text-align: center;
+  border: 1.5px solid rgba(0, 0, 0, 0.575);
+  border-radius: 5px;
+}
+
+#futbol-nacional-options,
+#futbot-internacional-options,
+#competiciones-europeas-options,
+#competiciones-internacionales-options,
+#historia-de-los-mundiales-options {
+  position: absolute;
+  /* border: 1px solid black; */
+  border-radius: 10px;
+  background-color: rgb(175, 45, 45);
+  width: 220px;
+  padding: 5px 20px 10px 20px;
+  font-size: 20px;
+  color: white;
+}
+
+.submenu-option {
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.submenu-option:hover {
+  background-color: rgb(73, 11, 11);
+}
+
+#presentation-content {
+  background: linear-gradient(90deg, rgba(51, 99, 204, 0.747), rgb(52, 97, 180));
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  place-content: center;
+}
+
+#logo-presentation {
+  animation: presentation-animation 0.8s cubic-bezier(0.5, 0.4, 0.35, 1.15) 1;
+  scale: 0.93;
+}
+
+#main-stories {
+  display: flex;
+  width: 100%;
+  place-content: center;
+  gap: 5px;
+  padding-top: 50px;
+}
+
+.main-story {
+  display: block;
+  width: 300px;
+  height: auto;
+  padding: 10px;
+  background-color: rgba(196, 183, 183, 0.726);
+  animation: stories-animation 1.2s linear 1;
+  cursor: pointer;
+}
+
+.story-thumbnail {
+  width: 300px;
+  height: auto;
+}
+
+.story-title {
+  font-size: 20px;
+}
+
+#down-prompt-container {
+  width: 100px;
+  height: 100px;
+  place-self: center;
+  border-radius: 100%;
+  cursor: pointer;
+  margin-top: 70px;
+  background-color: rgba(209, 196, 196, 0.589);
+}
+
+#down-prompt {
+  margin: -10px 10px 20px -2px;
+  transform: rotate(270deg);
+  font-size: 70px;
+  font-family:Georgia, 'Times New Roman', Times, serif;
+  font-weight: 900;
+  animation: down-prompt-animation 1s ease-out infinite;
+  color: rgb(29, 28, 28);
 }
