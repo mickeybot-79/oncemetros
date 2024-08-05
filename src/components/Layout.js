@@ -1,7 +1,10 @@
 import { Outlet } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const Layout = () => {
+
+    const effectRan = useRef(false)
+    const bckgrDisp = window.sessionStorage.getItem('bckgrDisp')
 
     const [backgroundDisplay, setBackGroundDisplay] = useState({
         display: 'none',
@@ -9,9 +12,7 @@ const Layout = () => {
     })
 
     useEffect(() => {
-        // window.sessionStorage.setItem('bckgrDisp', 'y')
-        const bckgrDisp = window.sessionStorage.getItem('bckgrDisp')
-        if (bckgrDisp === 'y' || process.env.NODE_ENV !== 'development') {
+        if (effectRan.current === true || bckgrDisp === 'y' || process.env.NODE_ENV !== 'development') {
             setTimeout(() => {
                 setBackGroundDisplay({
                     display: 'block',
@@ -20,13 +21,18 @@ const Layout = () => {
             }, 1200);
         } else {
             setBackGroundDisplay({
-                display: 'none',
-                animation: ''
+                display: 'block',
+                animation: 'none'
             })
         }
 
         return () => {
-            window.sessionStorage.setItem('bckgrDisp', 'n')
+            effectRan.current = true
+            window.sessionStorage.setItem('bckgrDisp', 'y')
+            setBackGroundDisplay({
+                display: 'none',
+                animation: 'none'
+            })
         }
         // eslint-disable-next-line
     }, [])

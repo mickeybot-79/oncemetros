@@ -79,7 +79,7 @@ const MainPage = () => {
                     <section>
 
                     </section>
-                    {/*Higlights*/}
+                    {/*Highlights*/}
                     <section>
 
                     </section>
