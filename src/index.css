@@ -90,6 +90,7 @@ code {
   }
 }
 
+/*Header*/
 #header-container {
   width: 100%;
   height: auto;
@@ -154,6 +155,7 @@ ul {
   background-color: rgb(73, 11, 11);
 }
 
+/*Main Page*/
 #presentation-content {
   background: linear-gradient(90deg, rgba(119, 175, 207, 0.815), rgba(62, 132, 153, 0.788));
   width: 100%;
@@ -213,4 +215,63 @@ ul {
   font-weight: 900;
   animation: down-prompt-animation 1s ease-out infinite;
   color: rgb(29, 28, 28);
+}
+
+/*New Post*/
+#new-post-container {
+  width: 100%;
+  height: 100vh;
+  display: grid;
+  place-content: center;
+  justify-content: center;
+  align-items: center;
+  place-items: center;
+  align-content: center;
+}
+
+#new-post-h1 {
+  color: white;
+  font-size: 40px;
+  margin-top: 50px;
+}
+
+#new-post-form {
+  display: grid;
+  gap: 10px;
+  width: 50vw;
+  height: auto;
+  border: 1px solid;
+  padding: 20px;
+  background-color: rgba(54, 104, 124, 0.877);
+}
+
+.new-post-label {
+  width: 50%;
+  color: white;
+  font-size: 25px;
+}
+
+.new-post-input {
+  width: 50%;
+  max-width: 100%;
+  height: 1.5rem;
+  font-size: 20px;
+}
+
+#new-post-heading {
+  width: 100%;
+  max-width: 100%;
+  height: 5em;
+  font-size: 20px;
+}
+
+#new-post-content {
+  width: 100%;
+  max-width: 100%;
+  min-height: 10rem;
+  font-size: 20px;
+}
+
+#new-post-image {
+  width: 25%;
 }

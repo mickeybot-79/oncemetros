@@ -1,4 +1,5 @@
 import { useState } from "react"
+import allTags from "../../config/allTags"
 
 const NewPost = () => {
 
@@ -12,13 +13,26 @@ const NewPost = () => {
         tags: ''
     })
 
+    const tagOptions = allTags.map(tag => {
+        return (
+            <option
+                key={tag}
+                value={tag}
+            >{tag}
+            </option>
+        )
+    })
+
     return (
-        <>
-            <form>
-                <label htmlFor="title">Título:</label>
+        <div id="new-post-container">
+            <h1 id="new-post-h1">Nueva Publicación</h1>
+            <form id="new-post-form">
+                <label htmlFor="new-post-title" className="new-post-label">Título:</label>
                 <input
-                    id="title"
+                    id="new-post-title"
+                    name="new-post-title"
                     type="text"
+                    className="new-post-input"
                     value={postData.title}
                     onChange={(e) => setPostData((prevState) => {
                         return {
@@ -27,10 +41,10 @@ const NewPost = () => {
                         }
                     })}
                 />
-                <label htmlFor="heading">Encabezado:</label>
-                <input
-                    id="heading"
-                    type="text"
+                <label htmlFor="new-post-heading" className="new-post-label">Encabezado:</label>
+                <textarea
+                    id="new-post-heading"
+                    name="new-post-heading"
                     value={postData.heading}
                     onChange={(e) => setPostData((prevState) => {
                         return {
@@ -38,11 +52,11 @@ const NewPost = () => {
                             heading: e.target.value
                         }
                     })}
-                />
-                <label htmlFor="content">Contenido:</label>
+                ></textarea>
+                <label htmlFor="new-post-content" className="new-post-label">Contenido principal:</label>
                 <textarea
-                    id="content"
-                    type="text"
+                    id="new-post-content"
+                    name="new-post-content"
                     value={postData.content}
                     onChange={(e) => setPostData((prevState) => {
                         return {
@@ -51,9 +65,10 @@ const NewPost = () => {
                         }
                     })}
                 ></textarea>
-                <label htmlFor="image">Imagen:</label>
+                <label htmlFor="new-post-image" className="new-post-label">Imagen:</label>
                 <input
-                    id="image"
+                    id="new-post-image"
+                    name="new-post-image"
                     type="file"
                     value={postData.image}
                     onChange={(e) => setPostData((prevState) => {
@@ -63,10 +78,12 @@ const NewPost = () => {
                         }
                     })}
                 />
-                <label htmlFor="imageDesc">Descripción de imagen:</label>
+                <label htmlFor="new-post-imageDesc" className="new-post-label">Descripción de la imagen:</label>
                 <input
-                    id="imageDesc"
+                    id="new-post-imageDesc"
+                    name="new-post-imageDesc"
                     type="text"
+                    className="new-post-input"
                     value={postData.imageDesc}
                     onChange={(e) => setPostData((prevState) => {
                         return {
@@ -75,10 +92,12 @@ const NewPost = () => {
                         }
                     })}
                 />
-                <label htmlFor="imageCred">Créditos de imagen:</label>
+                <label htmlFor="new-post-imageCred" className="new-post-label">Créditos de la imagen:</label>
                 <input
-                    id="imageCred"
+                    id="new-post-imageCred"
+                    name="new-post-imageCred"
                     type="text"
+                    className="new-post-input"
                     value={postData.imageCred}
                     onChange={(e) => setPostData((prevState) => {
                         return {
@@ -87,11 +106,16 @@ const NewPost = () => {
                         }
                     })}
                 />
-                <label htmlFor="tags">Etiquetas:</label>
-                <select></select>
+                <label htmlFor="new-post-tags" className="new-post-label">Etiquetas:</label>
+                <select>
+                    <option value="" disabled hidden id='hidden' readOnly selected>Seleccionar etiquetas</option>
+                    {tagOptions}
+                </select>
                 <input
-                    id="tags"
+                    id="new-post-tags"
+                    name="new-post-tags"
                     type="text"
+                    className="new-post-input"
                     value={postData.tags}
                     onChange={(e) => setPostData((prevState) => {
                         return {
@@ -102,7 +126,7 @@ const NewPost = () => {
                 />
             </form>
             <button id="submit" onClick={() => { }}>Guardar</button>
-        </>
+        </div>
     )
 }
 
