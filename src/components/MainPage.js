@@ -47,10 +47,10 @@ const MainPage = () => {
                 const allPosts = posts.map((story) => {
                     return (
                         <div key={story._id} className="main-story">
-                        <img src={`../Images/${story.thumbnail}`} alt="story" className="story-thumbnail" />
-                        <h4 className="story-title">{story.title}</h4>
-                        <p className="story-summary">{story.summary}</p>
-                    </div>
+                            <img src={`../Images/${story.thumbnail}`} alt="story" className="story-thumbnail" />
+                            <h4 className="story-title">{story.title}</h4>
+                            <p className="story-summary">{story.summary}</p>
+                        </div>
                     )
                 })
                 return allPosts
