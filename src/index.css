@@ -226,6 +226,38 @@ ul {
   justify-content: center;
 }
 
+#new-post-back {
+  position: absolute;
+  top: 50px;
+  left: 100px;
+  width: 200px;
+  height: 40px;
+  font-size: 30px;
+  font-family:Arial, Helvetica, sans-serif;
+  border: 0;
+  background:radial-gradient(circle, rgba(255, 255, 255, 0.719), rgba(255, 255, 255, 0.178));
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  color: rgb(255, 255, 255);
+  font-weight: 700;
+  transition: 0.3s;
+  border-radius: 50px;
+  text-shadow: 1px 1px black;
+}
+
+#new-post-back:hover {
+  transform: scale(1.08);
+  transition: 0.3s;
+}
+
+#new-post-back div {
+  transform: rotate(180deg);
+  text-shadow: -1px -1px black;
+}
+
 #new-post-h1 {
   color: white;
   font-size: 50px;
@@ -243,7 +275,7 @@ ul {
   height: auto;
   border-radius: 10px;
   padding: 50px;
-  background: radial-gradient(circle, rgba(100, 177, 154, 0.87), rgba(104, 160, 197, 0.815));
+  background: radial-gradient(circle, rgba(93, 161, 141, 0.89), rgba(137, 173, 199, 0.863));
   margin-bottom: 100px;
 }
 
@@ -270,7 +302,7 @@ ul {
 #new-post-content {
   width: 100%;
   max-width: 100%;
-  min-height: 10rem;
+  min-height: 20rem;
   font-size: 20px;
 }
 
@@ -316,4 +348,63 @@ ul {
 textarea {
   resize: none;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+#add-tag-button {
+  width: 150px;
+  cursor: pointer;
+  font-size: 15px;
+  height: 30px;
+  margin-top: 8px;
+  background-color: rgba(156, 241, 163, 0.212);
+  border: 1px solid rgba(85, 85, 85, 0.808);
+  border-radius: 3px;
+}
+
+#new-tag-input {
+  height: 25px;
+  margin-top: 8px;
+  width: 250px;
+}
+
+#add-tag-confirm {
+  width: 40px;
+  border-radius: 500px;
+  border: 0;
+  font-size: 20px;
+  color: green;
+  font-weight: 900;
+  background-color: rgba(159, 231, 159, 0.836);
+  cursor: pointer;
+}
+
+#new-post-buttons {
+  display: flex;
+  gap: 120px;
+  place-content: center;
+  margin-top: -70px;
+  margin-bottom: 70px;
+}
+
+#new-post-buttons button {
+  width: 400px;
+  height: 70px;
+  font-size: 50px;
+  cursor: pointer;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.651), rgba(110, 110, 110, 0.329));
+  border: 0;
+  color: rgba(245, 245, 245, 0.664);
+  text-shadow: 1px 1px black;
+  font-weight: 900;
+  border-radius: 20px;
+}
+
+#new-post-cancel:hover {
+  background: linear-gradient(180deg, rgba(255, 88, 88, 0.726), rgba(250, 171, 171, 0.74));
+  color: rgba(245, 245, 245, 0.87);
+}
+
+#new-post-submit:hover {
+  background: linear-gradient(180deg, rgb(60, 211, 85), rgba(103, 153, 107, 0.425));
+  color: rgba(245, 245, 245, 0.87);
 }

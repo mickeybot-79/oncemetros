@@ -9,10 +9,20 @@ export const postsApiSlice = apiSlice.injectEndpoints({
                     return response.status === 200 && !result.isError
                 }
             })
-        })
+        }),
+        createPost: builder.mutation({
+            query: ({...post}) => ({
+                url: '/posts/new',
+                method: 'POST',
+                body: {
+                    ...post
+                }
+            })
+        }),
     })
 })
 
 export const {
-    useGetPostsQuery
+    useGetPostsQuery,
+    useCreatePostMutation
 } = postsApiSlice

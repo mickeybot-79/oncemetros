@@ -1,23 +1,38 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import allTags from "../../config/allTags"
+import { useCreatePostMutation } from "./postsApiSlice"
 
 const NewPost = () => {
+
+    const [createPost, {
+        data: post,
+        isLoading,
+        // isSuccess,
+        // isError,
+        // error
+    }] = useCreatePostMutation()
 
     const [postData, setPostData] = useState({
         title: '',
         heading: '',
         content: '',
         image: '../../Images/placeholder.png',
-        imageDesc: '',
-        imageCred: '',
+        imgDesc: '',
+        imgCred: '',
         tags: []
     })
 
     const [imageWidth, setImageWidth] = useState('')
 
+    const [addingTag, setAddingTag] = useState(false)
+
+    const newTagRef = useRef()
+
     useEffect(() => {
         const imageElement = document.getElementById('uploaded-image')
-        setImageWidth(imageElement.width.toString())
+        setTimeout(() => {
+            if (postData.image !== '../../Images/placeholder.png') setImageWidth(imageElement.width.toString())
+        }, 10)
     }, [postData.image])
 
     const handleChange = (e) => {
@@ -28,6 +43,22 @@ const NewPost = () => {
                 [name]: value
             }
         })
+    }
+
+    const handleSubmit = async () => {
+        const author = ''
+        const canSave = [postData.title, postData.heading, postData.content, postData.tags].every(Boolean) && !isLoading
+        if (canSave) {
+            try {
+                const result = await createPost({
+                    ...postData,
+                    author
+                })
+                console.log(result)
+            } catch (err) {
+                console.log(err)
+            }
+        }
     }
 
     const tagOptions = allTags.map(tag => {
@@ -45,8 +76,7 @@ const NewPost = () => {
             style={{
                 width: 'auto',
                 height: '300px',
-                marginTop: '40px',
-                marginLeft: '0px'
+                marginTop: '40px'
             }}>
             <img
                 src={postData.image}
@@ -109,8 +139,7 @@ const NewPost = () => {
 
     return (
         <div id="new-post-container">
-            <button>Volver</button>
-            <button id="submit" onClick={() => { }}>Guardar</button>
+            <button id="new-post-back" onClick={() => { }}><div>➜</div> Atrás</button>
             <h1 id="new-post-h1">Nueva Publicación</h1>
             <form id="new-post-form">
                 <label htmlFor="new-post-title" className="new-post-label">Título:</label>
@@ -119,6 +148,7 @@ const NewPost = () => {
                     name="title"
                     type="text"
                     className="new-post-input"
+                    placeholder="Escribe aquí"
                     value={postData.title}
                     onChange={handleChange}
                 />
@@ -126,6 +156,7 @@ const NewPost = () => {
                 <textarea
                     id="new-post-heading"
                     name="heading"
+                    placeholder="Escribe aquí"
                     value={postData.heading}
                     onChange={handleChange}
                 ></textarea>
@@ -133,11 +164,12 @@ const NewPost = () => {
                 <textarea
                     id="new-post-content"
                     name="content"
+                    placeholder="Escribe aquí"
                     value={postData.content}
                     onChange={handleChange}
                 ></textarea>
                 <label htmlFor="new-post-image" className="new-post-label">Imagen:</label>
-                <div style={{ display: 'flex' }}>
+                <div style={{ display: 'flex', width: '100%' }}>
                     <input
                         id="new-post-image"
                         name="new-post-image"
@@ -168,7 +200,8 @@ const NewPost = () => {
                     name="imageDesc"
                     type="text"
                     className="new-post-input"
-                    value={postData.imageDesc}
+                    placeholder="Escribe aquí"
+                    value={postData.imgDesc}
                     onChange={handleChange}
                 />
                 <label htmlFor="new-post-imageCred" className="new-post-label">Créditos de la imagen:</label>
@@ -177,10 +210,11 @@ const NewPost = () => {
                     name="imageCred"
                     type="text"
                     className="new-post-input"
-                    value={postData.imageCred}
+                    placeholder="Escribe aquí"
+                    value={postData.imgCred}
                     onChange={handleChange}
                 />
-                <div style={{ display: 'flex' }}>
+                <div style={{ display: 'flex', gap: '20px' }}>
                     <label htmlFor="new-post-tags" className="new-post-label">Etiquetas:</label>
                     <select id="tags-select" defaultValue="" onChange={(e) => {
                         setPostData((prevState) => {
@@ -191,15 +225,31 @@ const NewPost = () => {
                                 tags: updatedTags
                             }
                         })
-                    }}>
+                    }}
+                    style={{fontFamily: 'Impact, Haettenschweiler, `Arial Narrow Bold`, sans-serif', fontSize: '15px'}}>
                         <option value="" disabled hidden id='hidden' readOnly>Seleccionar</option>
                         {tagOptions}
                     </select>
+                    <button id="add-tag-button" aria-label="test" onClick={(e) => {
+                        e.preventDefault()
+                        setAddingTag((prevState) => !prevState)
+                        setTimeout(() => {
+                            newTagRef.current.focus()
+                        }, 10)
+                    }}>{addingTag ? 'Cancelar': 'Agregar etiqueta'}</button>
+                    <input id="new-tag-input" type="text" style={{display: addingTag ? 'block': 'none'}} ref={newTagRef} placeholder="Nueva etiqueta"/>
+                    <button id="add-tag-confirm" style={{display: addingTag ? 'block': 'none'}} onClick={(e) => {
+                        e.preventDefault()
+                    }}>✓</button>
                 </div>
                 <div id="tag-elements-container">
                     {selectedTagsElements}
                 </div>
             </form>
+            <div id="new-post-buttons">
+                <button id="new-post-cancel" onClick={() => { }}>Cancelar</button>
+                <button id="new-post-submit" onClick={handleSubmit}>Guardar</button>
+            </div>
         </div>
     )
 }
