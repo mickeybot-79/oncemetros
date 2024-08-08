@@ -16,7 +16,7 @@ const NewPost = () => {
         title: '',
         heading: '',
         content: '',
-        image: '../../Images/placeholder.png',
+        thumbnail: '../../Images/placeholder.png',
         imgDesc: '',
         imgCred: '',
         tags: []
@@ -79,7 +79,7 @@ const NewPost = () => {
                 marginTop: '40px'
             }}>
             <img
-                src={postData.image}
+                src={postData.thumbnail}
                 alt=""
                 id="uploaded-image"
                 style={{
@@ -89,7 +89,7 @@ const NewPost = () => {
             />
             <div
                 style={{
-                    display: postData.image !== '../../Images/placeholder.png' ? 'grid' : 'none',
+                    display: postData.thumbnail !== '../../Images/placeholder.png' ? 'grid' : 'none',
                     width: `${imageWidth}px`,
                     height: '30px',
                     marginTop: '-34px',
@@ -182,7 +182,7 @@ const NewPost = () => {
                                 setPostData((prevState) => {
                                     const newState = {
                                         ...prevState,
-                                        image: reader.result
+                                        thumbnail: reader.result
                                     }
                                     return newState
                                 })
@@ -197,7 +197,7 @@ const NewPost = () => {
                 <label htmlFor="new-post-imageDesc" className="new-post-label">Descripción de la imagen:</label>
                 <input
                     id="new-post-imageDesc"
-                    name="imageDesc"
+                    name="imgDesc"
                     type="text"
                     className="new-post-input"
                     placeholder="Escribe aquí"
@@ -207,7 +207,7 @@ const NewPost = () => {
                 <label htmlFor="new-post-imageCred" className="new-post-label">Créditos de la imagen:</label>
                 <input
                     id="new-post-imageCred"
-                    name="imageCred"
+                    name="imgCred"
                     type="text"
                     className="new-post-input"
                     placeholder="Escribe aquí"
