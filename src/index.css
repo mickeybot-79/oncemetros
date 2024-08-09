@@ -154,6 +154,7 @@ ul {
   padding: 5px 20px 10px 20px;
   font-size: 20px;
   color: white;
+  z-index: 2;
 }
 
 .submenu-option {
@@ -193,20 +194,19 @@ ul {
 #main-stories {
   display: flex;
   place-content: center;
+  padding-top: 50px;
 }
 
 #main-stories-container {
   place-self: center;
-  /* animation: stories-scroll 2s linear infinite; */
   animation: stories-animation 1.2s linear 1;
 }
 
 #stories-scroll-container {
   display: flex;
-  width: 1000px;
+  width: 960px;
   overflow: hidden;
   place-content: start;
-  padding-top: 50px;
   place-self: center;
   overflow: scroll;
 }
@@ -240,6 +240,35 @@ ul {
 .story-heading {
   font-size: 18px;
   margin-top: -5px;
+}
+
+#stories-scroll-left,
+#stories-scroll-right {
+  animation: stories-animation 1.2s linear 1;
+  width: 100px;
+  height: 390px;
+  max-height: 500px;
+  font-size: 100px;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.247), rgba(0, 0, 0, 0.658));
+  place-self: center;
+  color: rgba(255, 255, 255, 0.726);
+  padding: 80px 0px 50px 0px;
+  cursor: pointer;
+  text-align: center;
+  opacity: 0.5;
+}
+
+#stories-scroll-left {
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.13), rgba(31, 31, 31, 0.589));
+}
+
+#stories-scroll-right {
+  background: linear-gradient(90deg, rgba(31, 31, 31, 0.589), rgba(0, 0, 0, 0.13));
+}
+
+#stories-scroll-left:hover,
+#stories-scroll-right:hover {
+  opacity: 1;
 }
 
 #down-prompt-container {

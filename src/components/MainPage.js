@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { useGetPostsQuery } from "../features/posts/postsApiSlice"
 import PageHeader from "./PageHeader"
 
@@ -27,7 +27,15 @@ const MainPage = () => {
         animation: ''
     })
 
-    const [mainStoriesAnimaton, setMainStoriesAnimation] = useState('')
+    const [mainStoriesAnimaton, setMainStoriesAnimation] = useState({
+        transform: '',
+        transition: ''
+    })
+
+    const [leftScroll, setLeftScroll] = useState(0)
+    const [count, setCount] = useState(0)
+
+    const [autoScroll, setAutoScroll] = useState(true)
 
     useEffect(() => {
         setPresentationHeight('100%')
@@ -66,7 +74,8 @@ const MainPage = () => {
     useEffect(() => {
         if (isSuccess) {
             setMainStories(() => {
-                const allPosts = posts.slice(0, 6).map((story) => {
+                const finalPosts = []
+                const allPosts = posts.map((story) => {
                     let headingEnd
                     const subsHeading = story.heading.substring(0, 100)
                     if (subsHeading[subsHeading.length - 1] !== '.') {
@@ -82,34 +91,81 @@ const MainPage = () => {
                         titleEnd = subsTitle
                     }
                     return (
-                        <div key={story._id} className="main-story" style={{animation: mainStoriesAnimaton}}>
+                        <div key={story._id} className="main-story" style={{transform: mainStoriesAnimaton.transform, transition: mainStoriesAnimaton.transition}}>
                             <img src={story.thumbnail} alt="story" className="story-thumbnail" />
                             <h4 className="story-title">{titleEnd}</h4>
                             <p className="story-heading">{headingEnd}</p>
                         </div>
                     )
                 })
-                return allPosts
+                for (let i = 0; i < 100; i++) {
+                    finalPosts.push(allPosts)
+                }
+                return finalPosts
             })
         }
     }, [isSuccess, posts, mainStoriesAnimaton])
 
-    // useEffect(() => {
-    //     setInterval(() => {
-    //         setTimeout(() => {
-    //             setMainStoriesAnimation('stories-scroll 1s linear 1')
-    //         }, 4000)
-    //         setMainStories((prevState) => {
-    //             const currentStories = [...prevState]
-    //             const newArray = []
-    //             for (let i = 1; i < currentStories.length; i++) {
-    //                 newArray.push(currentStories[i])
-    //             }
-    //             newArray.push(currentStories[0])
-    //             return newArray
-    //         })
-    //     }, 5000)
-    // }, [])
+    useEffect(() => {
+        if (autoScroll) {
+            setInterval(() => {
+                setCount(prevCount => {
+                    const newCount = prevCount + 0.5
+                    return newCount
+                })
+            }, 4000)
+        }
+        // eslint-disable-next-line
+    }, [])
+
+    useEffect(() => {
+        const updateAnimation = () => {
+            setMainStoriesAnimation(() => {
+                return {
+                    transition: '1.5s',
+                    transform: `translateX(-${count * 321}px)`
+                }
+            })
+        }
+        if (autoScroll) updateAnimation()
+    }, [count, autoScroll])
+
+    useEffect(() => {
+        if (!autoScroll) {
+            setTimeout(() => {
+                //setCount(leftScroll)
+                setLeftScroll(0)
+                setAutoScroll(true)
+            }, 5000)
+        }
+        // eslint-disable-next-line
+    }, [autoScroll])
+
+    const handleScrollLeft = () => {
+        setAutoScroll(false)
+        const scrollFactor = leftScroll === 0 ? count - 1 : leftScroll - 1
+        setLeftScroll(scrollFactor)
+        setCount(scrollFactor - 1)
+        setMainStoriesAnimation(() => {
+            return {
+                transition: '0.5s',
+                transform: `translateX(-${scrollFactor * 321}px)`
+            }
+        })
+    }
+
+    const handleScrollRight = () => {
+        setAutoScroll(false)
+        const scrollFactor = leftScroll === 0 ? count + 1 : leftScroll + 1
+        setLeftScroll(scrollFactor)
+        setCount(scrollFactor - 1)
+        setMainStoriesAnimation(() => {
+            return {
+                transition: '0.5s',
+                transform: `translateX(-${scrollFactor * 321}px)`
+            }
+        })
+    }
 
     return (
         <>
@@ -123,11 +179,13 @@ const MainPage = () => {
                 <main style={{ display: presentationDisplay === 'none' ? 'grid' : 'none' }}>
                     {/*Main stories*/}
                     <section id="main-stories">
+                        <div id="stories-scroll-left" onClick={handleScrollLeft}><p>{'<'}</p></div>
                         <div id="main-stories-container">
                             <div id="stories-scroll-container">
                                 {mainStories}
                             </div>
                         </div>
+                        <div id="stories-scroll-right" onClick={handleScrollRight}><p>{'>'}</p></div>
                     </section>
                     {/* <img src="" alt="down-prompt" id="down-prompt"/> */}
                     <div id="down-prompt-container" style={{ display: downPromptDisplay.display, animation: downPromptDisplay.animation }}><p id="down-prompt">{'<'}</p></div>
