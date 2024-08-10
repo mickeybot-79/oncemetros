@@ -1,4 +1,11 @@
+import { createEntityAdapter, createSelector } from "@reduxjs/toolkit"
 import { apiSlice } from "../../app/api/apiSlice"
+
+const postsAdapter = createEntityAdapter({
+    sortComparer: (a, b) => a.date - b.date
+})
+
+const initialState = postsAdapter.getInitialState()
 
 export const postsApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
@@ -8,7 +15,22 @@ export const postsApiSlice = apiSlice.injectEndpoints({
                 validateStatus: (response, result) => {
                     return response.status === 200 && !result.isError
                 }
-            })
+            }),
+            transformResponse: responseData => {
+                const loadedPosts = responseData.map(post => {
+                    post.id = post.searchField
+                    return post
+                })
+                return postsAdapter.setAll(initialState, loadedPosts)
+            },
+            providesTags: (result, error, arg) => {
+                if (result?.ids) {
+                    return [
+                        { type: 'Post', id: 'LIST' },
+                        ...result.ids.map(id => ({ type: 'Post', id }))
+                    ]
+                } else return [{ type: 'Post', id: 'LIST' }]
+            }
         }),
         createPost: builder.mutation({
             query: ({...post}) => ({
@@ -26,3 +48,16 @@ export const {
     useGetPostsQuery,
     useCreatePostMutation
 } = postsApiSlice
+
+// export const selectPostsResult = postsApiSlice.endpoints.getPosts.select()
+
+// const selectPostsData = createSelector(
+//     selectPostsResult,
+//     postsResult => postsResult.data
+// )
+
+// export const {
+//     selectAll: selectAllPosts,
+//     selectById: selectPostById,
+//     selectIds: selectPostIds
+// } = postsAdapter.getSelectors(state => selectPostsData(state) ?? initialState)

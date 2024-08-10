@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react"
 import { useGetPostsQuery } from "../features/posts/postsApiSlice"
 import PageHeader from "./PageHeader"
+import { useNavigate } from "react-router-dom"
 
 const MainPage = () => {
+
+    const navigate = useNavigate()
 
     const {
         data: posts,
         isSuccess
-    } = useGetPostsQuery('postsList', {})
+    } = useGetPostsQuery('postsList', {
+        pollingInterval: 60000
+    })
 
     const [presentationHeight, setPresentationHeight] = useState('')
 
@@ -33,7 +38,8 @@ const MainPage = () => {
     })
 
     const [leftScroll, setLeftScroll] = useState(0)
-    const [count, setCount] = useState(0)
+
+    const [count, setCount] = useState(-2)
 
     const [autoScroll, setAutoScroll] = useState(true)
 
@@ -75,24 +81,24 @@ const MainPage = () => {
         if (isSuccess) {
             setMainStories(() => {
                 const finalPosts = []
-                const allPosts = posts.map((story) => {
+                const allPosts = posts?.ids.map((story) => {
                     let headingEnd
-                    const subsHeading = story.heading.substring(0, 100)
+                    const subsHeading = posts?.entities[story].heading.substring(0, 100)
                     if (subsHeading[subsHeading.length - 1] !== '.') {
                         headingEnd = `${subsHeading}...`
                     } else {
                         headingEnd = subsHeading
                     }
                     let titleEnd
-                    const subsTitle = story.title.substring(0, 70)
-                    if (story.title.length > 70) {
+                    const subsTitle = posts?.entities[story].title.substring(0, 70)
+                    if (posts?.entities[story].title.length > 70) {
                         titleEnd = `${subsTitle}...`
                     } else {
                         titleEnd = subsTitle
                     }
                     return (
-                        <div key={story._id} className="main-story" style={{transform: mainStoriesAnimaton.transform, transition: mainStoriesAnimaton.transition}}>
-                            <img src={story.thumbnail} alt="story" className="story-thumbnail" />
+                        <div key={posts?.entities[story].id} className="main-story" style={{transform: mainStoriesAnimaton.transform, transition: mainStoriesAnimaton.transition}} onClick={() => navigate(`/post/${posts?.entities[story].searchField}`)}>
+                            <img src={posts?.entities[story].thumbnail} alt="story" className="story-thumbnail" />
                             <h4 className="story-title">{titleEnd}</h4>
                             <p className="story-heading">{headingEnd}</p>
                         </div>
@@ -104,16 +110,16 @@ const MainPage = () => {
                 return finalPosts
             })
         }
-    }, [isSuccess, posts, mainStoriesAnimaton])
+    }, [isSuccess, posts, mainStoriesAnimaton, navigate])
 
     useEffect(() => {
         if (autoScroll) {
             setInterval(() => {
                 setCount(prevCount => {
-                    const newCount = prevCount + 0.5
+                    const newCount = !document.hidden ? prevCount + 1 : prevCount
                     return newCount
                 })
-            }, 4000)
+            }, 3000)
         }
         // eslint-disable-next-line
     }, [])
@@ -121,9 +127,10 @@ const MainPage = () => {
     useEffect(() => {
         const updateAnimation = () => {
             setMainStoriesAnimation(() => {
+                const scrollFactor = (count / 2)
                 return {
                     transition: '1.5s',
-                    transform: `translateX(-${count * 321}px)`
+                    transform: `translateX(-${scrollFactor * 321}px)`
                 }
             })
         }
@@ -133,19 +140,19 @@ const MainPage = () => {
     useEffect(() => {
         if (!autoScroll) {
             setTimeout(() => {
-                //setCount(leftScroll)
                 setLeftScroll(0)
                 setAutoScroll(true)
-            }, 5000)
+            }, 4000)
         }
-        // eslint-disable-next-line
+        //eslint-disable-next-line
     }, [autoScroll])
 
     const handleScrollLeft = () => {
         setAutoScroll(false)
-        const scrollFactor = leftScroll === 0 ? count - 1 : leftScroll - 1
+        const prevScrollFactor = (count / 2)
+        const scrollFactor = leftScroll === 0 ? prevScrollFactor > 0 ? prevScrollFactor - 1 : 0 : leftScroll - 1
         setLeftScroll(scrollFactor)
-        setCount(scrollFactor - 1)
+        setCount((scrollFactor * 2) - 2)
         setMainStoriesAnimation(() => {
             return {
                 transition: '0.5s',
@@ -156,13 +163,14 @@ const MainPage = () => {
 
     const handleScrollRight = () => {
         setAutoScroll(false)
-        const scrollFactor = leftScroll === 0 ? count + 1 : leftScroll + 1
+        const prevScrollFactor = (count / 2)
+        const scrollFactor = leftScroll === 0 ? prevScrollFactor > 0 ? prevScrollFactor + 1 : prevScrollFactor + 2 : leftScroll + 1
         setLeftScroll(scrollFactor)
-        setCount(scrollFactor - 1)
+        setCount((scrollFactor * 2) - 2)
         setMainStoriesAnimation(() => {
             return {
                 transition: '0.5s',
-                transform: `translateX(-${scrollFactor * 321}px)`
+                transform: `translateX(-${scrollFactor  * 321}px)`
             }
         })
     }
@@ -187,18 +195,17 @@ const MainPage = () => {
                         </div>
                         <div id="stories-scroll-right" onClick={handleScrollRight}><p>{'>'}</p></div>
                     </section>
-                    {/* <img src="" alt="down-prompt" id="down-prompt"/> */}
                     <div id="down-prompt-container" style={{ display: downPromptDisplay.display, animation: downPromptDisplay.animation }}><p id="down-prompt">{'<'}</p></div>
                     {/*Popular stories*/}
-                    <section>
+                    <section id="popular-stories">
 
                     </section>
                     {/*Highlights*/}
-                    <section>
+                    <section id="highlights">
 
                     </section>
                     {/*Most viewed stories*/}
-                    <section>
+                    <section id="most-viewed">
 
                     </section>
                 </main>

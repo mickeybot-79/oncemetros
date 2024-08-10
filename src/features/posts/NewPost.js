@@ -31,9 +31,9 @@ const NewPost = () => {
     useEffect(() => {
         const imageElement = document.getElementById('uploaded-image')
         setTimeout(() => {
-            if (postData.image !== '../../Images/placeholder.png') setImageWidth(imageElement.width.toString())
+            if (postData.thumbnail !== '../../Images/placeholder.png') setImageWidth(imageElement.width.toString())
         }, 10)
-    }, [postData.image])
+    }, [postData.thumbnail])
 
     const handleChange = (e) => {
         const { name, value } = e.target
@@ -103,7 +103,7 @@ const NewPost = () => {
                         setPostData((prevState) => {
                             return {
                                 ...prevState,
-                                image: '../../Images/placeholder.png'
+                                thumbnail: '../../Images/placeholder.png'
                             }
                         })
                     }}

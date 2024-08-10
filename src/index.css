@@ -157,6 +157,15 @@ ul {
   z-index: 2;
 }
 
+#futbol-nacional-options:hover,
+#futbot-internacional-options:hover,
+#competiciones-europeas-options:hover,
+#competiciones-internacionales-options:hover,
+#historia-de-los-mundiales-options:hover,
+.menu-item:hover {
+  background-color: rgb(218, 25, 25);
+}
+
 .submenu-option {
   cursor: pointer;
   border-radius: 5px;
@@ -199,7 +208,7 @@ ul {
 
 #main-stories-container {
   place-self: center;
-  animation: stories-animation 1.2s linear 1;
+  animation: stories-animation 1s linear 1;
 }
 
 #stories-scroll-container {
@@ -225,6 +234,10 @@ ul {
   border-right: 1px solid rgba(0, 0, 0, 0.281);
 }
 
+.main-story:hover {
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.966), rgba(216, 216, 216, 0.459));
+}
+
 .story-thumbnail {
   margin-bottom: -20px;
   width: 300px;
@@ -244,12 +257,11 @@ ul {
 
 #stories-scroll-left,
 #stories-scroll-right {
-  animation: stories-animation 1.2s linear 1;
+  animation: stories-animation 1s linear 1;
   width: 100px;
   height: 390px;
   max-height: 500px;
   font-size: 100px;
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.247), rgba(0, 0, 0, 0.658));
   place-self: center;
   color: rgba(255, 255, 255, 0.726);
   padding: 80px 0px 50px 0px;
@@ -482,4 +494,34 @@ textarea {
 #new-post-submit:hover {
   background: linear-gradient(180deg, rgb(60, 211, 85), rgba(103, 153, 107, 0.425));
   color: rgba(245, 245, 245, 0.87);
+}
+
+/*Post Page*/
+#post-page-container {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-content: center;
+}
+
+#post-container {
+  width: 50%;
+  height: auto;
+  display: grid;
+  place-items: center;
+  place-self: center;
+  /* background-color: rgba(255, 255, 255, 0.582); */
+  background: radial-gradient(circle, rgba(126, 160, 170, 0.795), rgba(161, 201, 182, 0.527));
+  padding: 0px 30px 20px 30px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+#post-title {
+  font-size: 35px;
+  text-align: center;
+}
+
+#post-thumbnail {
+  max-height: 350px;
 }
