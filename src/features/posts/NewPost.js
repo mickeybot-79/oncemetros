@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState } from "react"
 import allTags from "../../config/allTags"
 import { useCreatePostMutation } from "./postsApiSlice"
+import { useNavigate } from "react-router-dom"
 
 const NewPost = () => {
+
+    const navigate = useNavigate()
 
     const [createPost, {
         data: post,
@@ -55,6 +58,7 @@ const NewPost = () => {
                     author
                 })
                 console.log(result)
+                navigate(`/post/${result.data.searchField}`)
             } catch (err) {
                 console.log(err)
             }
@@ -139,7 +143,7 @@ const NewPost = () => {
 
     return (
         <div id="new-post-container">
-            <button id="new-post-back" onClick={() => { }}><div>➜</div> Atrás</button>
+            <button id="new-post-back" onClick={() => navigate(-1)}><div>➜</div> Atrás</button>
             <h1 id="new-post-h1">Nueva Publicación</h1>
             <form id="new-post-form">
                 <label htmlFor="new-post-title" className="new-post-label">Título:</label>

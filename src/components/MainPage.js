@@ -43,38 +43,61 @@ const MainPage = () => {
 
     const [autoScroll, setAutoScroll] = useState(true)
 
+    const [mainStoriesContainerAnimation, setMainStoriesContainerAnimation] = useState('stories-animation 1s linear 1')
+
+    const [logoPresentation, setLogoPresentation] = useState('')
+
     useEffect(() => {
-        setPresentationHeight('100%')
-        setTimeout(() => {
-            setHidePresentation('hide-presentation 2s cubic-bezier(.58,.46,.65,1) 1')
-            setPresentationHeight('20vh')
-            setBackGroundAnimation((prevState) => {
+        const backgroundAnimationMark = window.sessionStorage.getItem('backgroundAnimation')
+        if (!backgroundAnimationMark) {
+            setPresentationHeight('100%')
+            setTimeout(() => {
+                setLogoPresentation('presentation-animation 0.8s cubic-bezier(0.5, 0.4, 0.35, 1.15) 1')
+                setHidePresentation('hide-presentation 2s cubic-bezier(.58,.46,.65,1) 1')
+                setPresentationHeight('20vh')
+                setBackGroundAnimation((prevState) => {
+                    return {
+                        ...prevState,
+                        animation: 'background-animation 2s ease-out 1'
+                    }
+                })
+            }, 1200)
+
+            setTimeout(() => {
+                setBackGroundAnimation((prevState) => {
+                    return {
+                        ...prevState,
+                        display: 'none'
+                    }
+                })
+            }, 3000)
+
+            setTimeout(() => {
+                setPresentationDisplay('none')
+            }, 3200)
+
+            window.sessionStorage.setItem('backgroundAnimation', 'y')
+        } else {
+            setCount(0)
+            setPresentationDisplay('none')
+            setHidePresentation('')
+            setPresentationHeight('0px')
+            setMainStoriesContainerAnimation('')
+            setBackGroundAnimation(() => {
                 return {
-                    ...prevState,
-                    animation: 'background-animation 2s ease-out 1'
-                }
-            })
-        }, 1200)
-        
-        setTimeout(() => {
-            setBackGroundAnimation((prevState) => {
-                return {
-                    ...prevState,
+                    animation: '',
                     display: 'none'
                 }
             })
-        }, 3000)
-
-        setTimeout(() => {
-            setPresentationDisplay('none')
-        }, 3200)
-
+        }
         setTimeout(() => {
             setDownPromptDisplay({
                 display: 'block',
                 animation: 'down-prompt-display 0.3s linear 1'
             })
         }, 5000)
+
+        //return () => window.sessionStorage.removeItem('backgroundAnimation')
     }, [])
 
     useEffect(() => {
@@ -116,7 +139,7 @@ const MainPage = () => {
         if (autoScroll) {
             setInterval(() => {
                 setCount(prevCount => {
-                    const newCount = !document.hidden ? prevCount + 1 : prevCount
+                    const newCount = !document.hidden ? prevCount < 1195 ? prevCount + 1 : 0 : prevCount
                     return newCount
                 })
             }, 3000)
@@ -182,18 +205,18 @@ const MainPage = () => {
             <div id="main-page-container">
                 {/*Presentation*/}
                 <section id="presentation-content" style={{ height: presentationHeight, animation: hidePresentation, display: presentationDisplay }}>
-                    <img src="../Images/logo.jpg" alt="logo" id="logo-presentation" />
+                    <img src="../Images/logo.jpg" alt="logo" id="logo-presentation" style={{animation: logoPresentation}}/>
                 </section>
                 <main style={{ display: presentationDisplay === 'none' ? 'grid' : 'none' }}>
                     {/*Main stories*/}
                     <section id="main-stories">
-                        <div id="stories-scroll-left" onClick={handleScrollLeft}><p>{'<'}</p></div>
-                        <div id="main-stories-container">
-                            <div id="stories-scroll-container">
+                        <div id="stories-scroll-left" onClick={handleScrollLeft} style={{animation: mainStoriesContainerAnimation}}><p>{'<'}</p></div>
+                        <div id="main-stories-container" style={{animation: mainStoriesContainerAnimation}}>
+                            <div id="stories-scroll-container" style={{animation: mainStoriesContainerAnimation}}>
                                 {mainStories}
                             </div>
                         </div>
-                        <div id="stories-scroll-right" onClick={handleScrollRight}><p>{'>'}</p></div>
+                        <div id="stories-scroll-right" onClick={handleScrollRight} style={{animation: mainStoriesContainerAnimation}}><p>{'>'}</p></div>
                     </section>
                     <div id="down-prompt-container" style={{ display: downPromptDisplay.display, animation: downPromptDisplay.animation }}><p id="down-prompt">{'<'}</p></div>
                     {/*Popular stories*/}

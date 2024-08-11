@@ -1,6 +1,9 @@
 import { useEffect, useState, useRef } from "react"
+import { useNavigate } from "react-router-dom"
 
 const PageHeader = () => {
+
+    const navigate = useNavigate()
 
     const [displayHeader, setDisplayHeader] = useState('none')
 
@@ -29,9 +32,17 @@ const PageHeader = () => {
     const [subMenuTop, setSubMenuTop] = useState('')
 
     useEffect(() => {
-        setTimeout(() => {
+        const backgroundAnimationMark = window.sessionStorage.getItem('backgroundAnimation')
+        if (!backgroundAnimationMark) {
+            setTimeout(() => {
+                setDisplayHeader('grid')
+            }, 3195)
+            //window.sessionStorage.setItem('backgroundAnimation', 'y')
+        } else {
             setDisplayHeader('grid')
-        }, 3195);
+        }
+
+        //return () => window.sessionStorage.removeItem('backgroundAnimation')
     }, [])
 
     const displaySubmenu1 = () => {
@@ -194,7 +205,7 @@ const PageHeader = () => {
             <header id="header-container" style={{ display: displayHeader }}>
                 <img src="../Images/logo.jpg" alt="logo" id="header-logo" />
                 <ul id="main-menu-options">
-                    <li className="menu-item">Inicio</li>
+                    <li className="menu-item" onClick={() => navigate('/')}>Inicio</li>
                     <li className="menu-item" ref={subMenu1} onMouseOver={displaySubmenu1} onMouseLeave={handleDisplaySubMenu1}>Fútbol Nacional</li>
                     <li className="menu-item" ref={subMenu2} onMouseOver={displaySubmenu2} onMouseLeave={handleDisplaySubMenu2}>Fútbol Internacional</li>
                     <li className="menu-item" ref={subMenu3} onMouseOver={displaySubmenu3} onMouseLeave={handleDisplaySubMenu3}>Competiciones Europeas</li>

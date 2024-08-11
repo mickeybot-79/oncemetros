@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom"
 import Post from "./Post"
 import { useGetPostsQuery } from "./postsApiSlice"
 import Comments from "./Comments"
+import PageHeader from "../../components/PageHeader"
 
 const PostPage = () => {
 
@@ -16,6 +17,7 @@ const PostPage = () => {
     if (post) {
         return (
             <div id="post-page-container">
+                <PageHeader />
                 <Post post={post}/>
                 <Comments comments={post.comments}/>
             </div>
