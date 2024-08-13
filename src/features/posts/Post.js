@@ -67,16 +67,20 @@ const Post = ({ post }) => {
 
     translatedDate.push(convertedDate.split(' ')[2])
     translatedDate.push(convertedDate.split(' ')[3])
+
+    const imageDescElement = (
+        <div style={{display: 'flex'}}>
+        <p id="post-imgDesc">{post.imgDesc}</p>
+        <p style={{marginLeft: '5px', marginRight: '5px'}}>|</p>
+        <p id="post-imgCred">{post.imgCred}</p>
+    </div>
+    )
     
     return (
         <div id="post-container">
             <h2 id="post-title">{post.title}</h2>
             <img id="post-thumbnail" src={post.thumbnail} alt="post-thumbnail" />
-            <div style={{display: 'flex'}}>
-                <p id="post-imgDesc">{post.imgDesc}</p>
-                <p style={{marginLeft: '5px', marginRight: '5px'}}>|</p>
-                <p id="post-imgCred">{post.imgCred}</p>
-            </div>
+            {post.imgDesc && imageDescElement}
             <p id="post-heading">{post.heading}</p>
             <div id="post-content">{allParagraphElements}</div>
             <div style={{display: 'inline', placeSelf: 'start'}}>

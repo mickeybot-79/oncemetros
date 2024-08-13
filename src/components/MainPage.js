@@ -21,7 +21,7 @@ const MainPage = () => {
     const [presentationDisplay, setPresentationDisplay] = useState('grid')
 
     const [backgroundAnimation, setBackGroundAnimation] = useState({
-        display: '',
+        display: 'none',
         animation: ''
     })
 
@@ -47,17 +47,19 @@ const MainPage = () => {
 
     const [logoPresentation, setLogoPresentation] = useState('')
 
+    const [timeOfLastClick, settimeOfLastClick] = useState(0)
+
     useEffect(() => {
         const backgroundAnimationMark = window.sessionStorage.getItem('backgroundAnimation')
         if (!backgroundAnimationMark) {
             setPresentationHeight('100%')
+            setLogoPresentation('presentation-animation 0.8s cubic-bezier(0.5, 0.4, 0.35, 1.15) 1')
             setTimeout(() => {
-                setLogoPresentation('presentation-animation 0.8s cubic-bezier(0.5, 0.4, 0.35, 1.15) 1')
                 setHidePresentation('hide-presentation 2s cubic-bezier(.58,.46,.65,1) 1')
                 setPresentationHeight('20vh')
-                setBackGroundAnimation((prevState) => {
+                setBackGroundAnimation(() => {
                     return {
-                        ...prevState,
+                        display: 'none',
                         animation: 'background-animation 2s ease-out 1'
                     }
                 })
@@ -76,11 +78,10 @@ const MainPage = () => {
                 setPresentationDisplay('none')
             }, 3200)
 
-            window.sessionStorage.setItem('backgroundAnimation', 'y')
+            //window.sessionStorage.setItem('backgroundAnimation', 'y')
         } else {
             setCount(0)
             setPresentationDisplay('none')
-            setHidePresentation('')
             setPresentationHeight('0px')
             setMainStoriesContainerAnimation('')
             setBackGroundAnimation(() => {
@@ -136,16 +137,34 @@ const MainPage = () => {
     }, [isSuccess, posts, mainStoriesAnimaton, navigate])
 
     useEffect(() => {
-        if (autoScroll) {
-            setInterval(() => {
+        setInterval(() => {
+            if (autoScroll) {
                 setCount(prevCount => {
                     const newCount = !document.hidden ? prevCount < 1195 ? prevCount + 1 : 0 : prevCount
                     return newCount
                 })
-            }, 3000)
-        }
+            }
+        }, 3000)
         // eslint-disable-next-line
     }, [])
+
+    useEffect(() => {
+        setInterval(() => {
+            settimeOfLastClick((prevState) => {
+                if ((Date.now() - prevState) >= 4000) {
+                    if (!autoScroll) {
+                        setLeftScroll(0)
+                        setAutoScroll(true)
+                    } else {
+                        setLeftScroll(prevState => prevState)
+                        setAutoScroll(prevState => prevState)
+                    }
+                }
+                return prevState
+            })
+        }, 1000)
+        //eslint-disable-next-line
+    }, [autoScroll, timeOfLastClick])
 
     useEffect(() => {
         const updateAnimation = () => {
@@ -160,17 +179,8 @@ const MainPage = () => {
         if (autoScroll) updateAnimation()
     }, [count, autoScroll])
 
-    useEffect(() => {
-        if (!autoScroll) {
-            setTimeout(() => {
-                setLeftScroll(0)
-                setAutoScroll(true)
-            }, 4000)
-        }
-        //eslint-disable-next-line
-    }, [autoScroll])
-
     const handleScrollLeft = () => {
+        settimeOfLastClick(Date.now())
         setAutoScroll(false)
         const prevScrollFactor = (count / 2)
         const scrollFactor = leftScroll === 0 ? prevScrollFactor > 0 ? prevScrollFactor - 1 : 0 : leftScroll - 1
@@ -185,9 +195,10 @@ const MainPage = () => {
     }
 
     const handleScrollRight = () => {
+        settimeOfLastClick(Date.now())
         setAutoScroll(false)
         const prevScrollFactor = (count / 2)
-        const scrollFactor = leftScroll === 0 ? prevScrollFactor > 0 ? prevScrollFactor + 1 : prevScrollFactor + 2 : leftScroll + 1
+        const scrollFactor = leftScroll === 0 ? prevScrollFactor + 1 : leftScroll + 1
         setLeftScroll(scrollFactor)
         setCount((scrollFactor * 2) - 2)
         setMainStoriesAnimation(() => {
@@ -205,7 +216,8 @@ const MainPage = () => {
             <div id="main-page-container">
                 {/*Presentation*/}
                 <section id="presentation-content" style={{ height: presentationHeight, animation: hidePresentation, display: presentationDisplay }}>
-                    <img src="../Images/logo.jpg" alt="logo" id="logo-presentation" style={{animation: logoPresentation}}/>
+                    <img src="../Images/logo 3.jpg" alt="logo" id="logo-presentation" style={{animation: logoPresentation}}/>
+                    {/* <img src="../Images/logo 3.jpg" alt="logo" id="logo-presentation"/> */}
                 </section>
                 <main style={{ display: presentationDisplay === 'none' ? 'grid' : 'none' }}>
                     {/*Main stories*/}

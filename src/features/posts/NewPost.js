@@ -8,7 +8,7 @@ const NewPost = () => {
     const navigate = useNavigate()
 
     const [createPost, {
-        data: post,
+        //data: post,
         isLoading,
         // isSuccess,
         // isError,
@@ -28,6 +28,13 @@ const NewPost = () => {
     const [imageWidth, setImageWidth] = useState('')
 
     const [addingTag, setAddingTag] = useState(false)
+
+    const [resultMessage, setResultMessage] = useState({
+        message: '',
+        image: '',
+        display: 'none',
+        confirmButton: 'none'
+    })
 
     const newTagRef = useRef()
 
@@ -58,9 +65,63 @@ const NewPost = () => {
                     author
                 })
                 console.log(result)
-                navigate(`/post/${result.data.searchField}`)
+                setResultMessage((prevState) => {
+                    return {
+                        ...prevState,
+                        message: 'Publicación creada correctamente.',
+                        display: 'grid'
+                    }
+                })
+                setTimeout(() => {
+                    navigate(`/post/${result.data.searchField}`)
+                }, 2000)
             } catch (err) {
                 console.log(err)
+                setResultMessage((prevState) => {
+                    return {
+                        ...prevState,
+                        message: `Error al crear la publicación: ${err}`,
+                        display: 'grid'
+                    }
+                })
+            }
+        } else {
+            if (!postData.title) {
+                setResultMessage((prevState) => {
+                    return {
+                        ...prevState,
+                        message: 'La publicación requiere un título.',
+                        display: 'grid',
+                        confirmButton: 'block'
+                    }
+                })
+            } else if (!postData.heading) {
+                setResultMessage((prevState) => {
+                    return {
+                        ...prevState,
+                        message: 'La publicación requiere un encabezado.',
+                        display: 'grid',
+                        confirmButton: 'block'
+                    }
+                })
+            } else if (!postData.content) {
+                setResultMessage((prevState) => {
+                    return {
+                        ...prevState,
+                        message: 'La publicación requiere contenido principal.',
+                        display: 'grid',
+                        confirmButton: 'block'
+                    }
+                })
+            } else if (!postData.tags) {
+                setResultMessage((prevState) => {
+                    return {
+                        ...prevState,
+                        message: 'Por favor, agrega al menos una etiqueta.',
+                        display: 'grid',
+                        confirmButton: 'block'
+                    }
+                })
             }
         }
     }
@@ -144,6 +205,7 @@ const NewPost = () => {
     return (
         <div id="new-post-container">
             <button id="new-post-back" onClick={() => navigate(-1)}><div>➜</div> Atrás</button>
+            {/* <button id="new-post-back" onClick={() => navigate('/')}><div>➜</div> Inicio</button> */}
             <h1 id="new-post-h1">Nueva Publicación</h1>
             <form id="new-post-form">
                 <label htmlFor="new-post-title" className="new-post-label">Título:</label>
@@ -253,6 +315,21 @@ const NewPost = () => {
             <div id="new-post-buttons">
                 <button id="new-post-cancel" onClick={() => { }}>Cancelar</button>
                 <button id="new-post-submit" onClick={handleSubmit}>Guardar</button>
+            </div>
+            <div id="post-result-container" style={{display: resultMessage.display}}>
+                <div id="result-container">
+                    <p id="post-result-message">{resultMessage.message}</p>
+                    <img src={resultMessage.image} alt="" id="post-result-image"/>
+                    <button id="result-confirm" style={{display: resultMessage.confirmButton}} onClick={() => {
+                        setResultMessage((prevState) => {
+                            return {
+                                ...prevState,
+                                display: 'none',
+                                confirmButton: 'none'
+                            }
+                        })
+                    }}>Cerrar</button>
+                </div>
             </div>
         </div>
     )

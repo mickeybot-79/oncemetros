@@ -16,11 +16,13 @@ const PostPage = () => {
 
     if (post) {
         return (
-            <div id="post-page-container">
+            <>
                 <PageHeader />
-                <Post post={post}/>
-                <Comments comments={post.comments}/>
-            </div>
+                <div id="post-page-container">
+                    <Post post={post} />
+                    <Comments comments={post.comments} />
+                </div>
+            </>
         )
     }
 

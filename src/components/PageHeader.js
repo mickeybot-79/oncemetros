@@ -37,12 +37,9 @@ const PageHeader = () => {
             setTimeout(() => {
                 setDisplayHeader('grid')
             }, 3195)
-            //window.sessionStorage.setItem('backgroundAnimation', 'y')
         } else {
             setDisplayHeader('grid')
         }
-
-        //return () => window.sessionStorage.removeItem('backgroundAnimation')
     }, [])
 
     const displaySubmenu1 = () => {
@@ -203,7 +200,7 @@ const PageHeader = () => {
     return (
         <>
             <header id="header-container" style={{ display: displayHeader }}>
-                <img src="../Images/logo.jpg" alt="logo" id="header-logo" />
+                <img src="../Images/logo 3.jpg" alt="logo" id="header-logo" />
                 <ul id="main-menu-options">
                     <li className="menu-item" onClick={() => navigate('/')}>Inicio</li>
                     <li className="menu-item" ref={subMenu1} onMouseOver={displaySubmenu1} onMouseLeave={handleDisplaySubMenu1}>Fútbol Nacional</li>
