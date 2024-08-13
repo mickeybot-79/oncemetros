@@ -234,6 +234,7 @@ const NewPost = () => {
                     value={postData.content}
                     onChange={handleChange}
                 ></textarea>
+                {/* <div id="new-post-content" contentEditable></div> */}
                 <label htmlFor="new-post-image" className="new-post-label">Imagen:</label>
                 <div style={{ display: 'flex', width: '100%' }}>
                     <input

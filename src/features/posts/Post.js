@@ -1,4 +1,8 @@
+import { useNavigate } from "react-router-dom"
+
 const Post = ({ post }) => {
+
+    const navigate = useNavigate()
 
     const allKeys = []
 
@@ -20,7 +24,7 @@ const Post = ({ post }) => {
     const tagElements = post.tags.map(tag => {
         const endingComma = post.tags.indexOf(tag) < post.tags.length - 1 ? ',' : ''
         return (
-            <p key={post.tags.indexOf(tag)} className="post-tag">{tag}{endingComma}</p>
+            <p key={post.tags.indexOf(tag)} className="post-tag" onClick={() => navigate(`/tags/${tag}`)}>{tag}{endingComma}</p>
         )
     })
 
@@ -30,37 +34,37 @@ const Post = ({ post }) => {
     switch (convertedDate.split(' ')[1]) {
         case 'Jan':
             translatedDate.push('Enero')
-        break;
+            break;
         case 'Feb':
             translatedDate.push('Febrero')
-        break;
+            break;
         case 'Mar':
             translatedDate.push('Marzo')
-        break;
+            break;
         case 'Apr':
             translatedDate.push('Abril')
-        break;
+            break;
         case 'May':
             translatedDate.push('Mayo')
-        break;
+            break;
         case 'Jun':
             translatedDate.push('Junio')
-        break;
+            break;
         case 'Jul':
             translatedDate.push('Julio')
-        break;
+            break;
         case 'Aug':
             translatedDate.push('Agosto')
-        break;
+            break;
         case 'Sep':
             translatedDate.push('Septiembre')
-        break;
+            break;
         case 'Oct':
             translatedDate.push('Octubre')
-        break;
+            break;
         case 'Nov':
             translatedDate.push('Noviembre')
-        break;
+            break;
         default:
             translatedDate.push('Diciembre')
     }
@@ -69,13 +73,13 @@ const Post = ({ post }) => {
     translatedDate.push(convertedDate.split(' ')[3])
 
     const imageDescElement = (
-        <div style={{display: 'flex'}}>
-        <p id="post-imgDesc">{post.imgDesc}</p>
-        <p style={{marginLeft: '5px', marginRight: '5px'}}>|</p>
-        <p id="post-imgCred">{post.imgCred}</p>
-    </div>
+        <div style={{ display: 'flex' }}>
+            <p id="post-imgDesc">{post.imgDesc}</p>
+            <p style={{ marginLeft: '5px', marginRight: '5px' }}>|</p>
+            <p id="post-imgCred">{post.imgCred}</p>
+        </div>
     )
-    
+
     return (
         <div id="post-container">
             <h2 id="post-title">{post.title}</h2>
@@ -83,11 +87,11 @@ const Post = ({ post }) => {
             {post.imgDesc && imageDescElement}
             <p id="post-heading">{post.heading}</p>
             <div id="post-content">{allParagraphElements}</div>
-            <div style={{display: 'inline', placeSelf: 'start'}}>
+            <div style={{ display: 'inline', placeSelf: 'start' }}>
                 <p id="post-author">Por {post.author}</p>
                 <p id="post-date">{`${translatedDate[0]} ${translatedDate[1]}, ${translatedDate[2]}`}</p>
             </div>
-            <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'left', alignItems: 'center', placeSelf: 'start', lineHeight: '5px'}}>Etiquetas: {tagElements}</div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'left', alignItems: 'center', placeSelf: 'start', lineHeight: '5px' }}>Etiquetas: {tagElements}</div>
         </div>
     )
 }

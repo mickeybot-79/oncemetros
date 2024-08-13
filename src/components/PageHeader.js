@@ -7,14 +7,6 @@ const PageHeader = () => {
 
     const [displayHeader, setDisplayHeader] = useState('none')
 
-    const [subMenuPosition, setSubMenuPosition] = useState({
-        submenu1: '',
-        submenu2: '',
-        submenu3: '',
-        submenu4: '',
-        submenu5: ''
-    })
-
     const [displaySubMenu, setDisplaySubMenu] = useState({
         submenu1: 'none',
         submenu2: 'none',
@@ -23,13 +15,15 @@ const PageHeader = () => {
         submenu5: 'none'
     })
 
+    const [subMenuLeft, setSubMenuLeft] = useState('')
+
+    const [subMenuTop, setSubMenuTop] = useState('')
+
     const subMenu1 = useRef()
     const subMenu2 = useRef()
     const subMenu3 = useRef()
     const subMenu4 = useRef()
     const subMenu5 = useRef()
-
-    const [subMenuTop, setSubMenuTop] = useState('')
 
     useEffect(() => {
         const backgroundAnimationMark = window.sessionStorage.getItem('backgroundAnimation')
@@ -42,113 +36,73 @@ const PageHeader = () => {
         }
     }, [])
 
+    useEffect(() => {
+        setTimeout(() => {
+            setSubMenuTop(() => {
+                const headerElement = document.getElementById('header-container')
+                const rect = headerElement.getBoundingClientRect()
+                return `${rect.bottom - 20}px`
+            })
+        })
+    }, [displayHeader])
+
     const displaySubmenu1 = () => {
         const rect = subMenu1.current.getBoundingClientRect()
         const x = rect.left
-        setSubMenuPosition((prevState) => {
-            return {
-                ...prevState,
-                submenu1: `${x}px`
-            }
-        })
+        setSubMenuLeft(`${x}px`)
         setDisplaySubMenu((prevState) => {
             return {
                 ...prevState,
                 submenu1: 'block'
             }
         })
-        setSubMenuTop(() => {
-            const headerElement = document.getElementById('header-container')
-            const rect = headerElement.getBoundingClientRect()
-            return `${rect.bottom - 20}px`
-        })
     }
 
     const displaySubmenu2 = () => {
         const rect = subMenu2.current.getBoundingClientRect()
         const x = rect.left
-        setSubMenuPosition((prevState) => {
-            return {
-                ...prevState,
-                submenu2: `${x}px`
-            }
-        })
+        setSubMenuLeft(`${x}px`)
         setDisplaySubMenu((prevState) => {
             return {
                 ...prevState,
                 submenu2: 'block'
             }
         })
-        setSubMenuTop(() => {
-            const headerElement = document.getElementById('header-container')
-            const rect = headerElement.getBoundingClientRect()
-            return `${rect.bottom - 20}px`
-        })
     }
 
     const displaySubmenu3 = () => {
         const rect = subMenu3.current.getBoundingClientRect()
         const x = rect.left
-        setSubMenuPosition((prevState) => {
-            return {
-                ...prevState,
-                submenu3: `${x}px`
-            }
-        })
+        setSubMenuLeft(`${x}px`)
         setDisplaySubMenu((prevState) => {
             return {
                 ...prevState,
                 submenu3: 'block'
             }
         })
-        setSubMenuTop(() => {
-            const headerElement = document.getElementById('header-container')
-            const rect = headerElement.getBoundingClientRect()
-            return `${rect.bottom - 20}px`
-        })
     }
 
     const displaySubmenu4 = () => {
         const rect = subMenu4.current.getBoundingClientRect()
         const x = rect.left
-        setSubMenuPosition((prevState) => {
-            return {
-                ...prevState,
-                submenu4: `${x}px`
-            }
-        })
+        setSubMenuLeft(`${x}px`)
         setDisplaySubMenu((prevState) => {
             return {
                 ...prevState,
                 submenu4: 'block'
             }
         })
-        setSubMenuTop(() => {
-            const headerElement = document.getElementById('header-container')
-            const rect = headerElement.getBoundingClientRect()
-            return `${rect.bottom - 20}px`
-        })
     }
 
     const displaySubmenu5 = () => {
         const rect = subMenu5.current.getBoundingClientRect()
         const x = rect.left
-        setSubMenuPosition((prevState) => {
-            return {
-                ...prevState,
-                submenu5: `${x}px`
-            }
-        })
+        setSubMenuLeft(`${x}px`)
         setDisplaySubMenu((prevState) => {
             return {
                 ...prevState,
                 submenu5: 'block'
             }
-        })
-        setSubMenuTop(() => {
-            const headerElement = document.getElementById('header-container')
-            const rect = headerElement.getBoundingClientRect()
-            return `${rect.bottom - 20}px`
         })
     }
 
@@ -210,36 +164,36 @@ const PageHeader = () => {
                     <li className="menu-item" ref={subMenu5} onMouseOver={displaySubmenu5} onMouseLeave={handleDisplaySubMenu5}>Historia de los mundiales</li>
                 </ul>
             </header>
-            <ul id="futbol-nacional-options" onMouseOver={displaySubmenu1} onMouseLeave={handleDisplaySubMenu1} style={{display: displaySubMenu.submenu1, left: subMenuPosition.submenu1, top: subMenuTop}}>
-                <li className="submenu-option">LaLiga Ea Sports</li>
-                <li className="submenu-option">LaLiga Hypermotion</li>
-                <li className="submenu-option">Primera RFEF</li>
-                <li className="submenu-option">Segunda RFEF</li>
-                <li className="submenu-option">Tercera RFEF</li>   
-                <li className="submenu-option">Copa del Rey</li>
-                <li className="submenu-option">Supercopa de España</li>
+            <ul id="futbol-nacional-options" onMouseOver={displaySubmenu1} onMouseLeave={handleDisplaySubMenu1} style={{display: displaySubMenu.submenu1, left: subMenuLeft, top: subMenuTop}}>
+                <li className="submenu-option" onClick={() => navigate('/tags/LaLiga EA Sports')}>LaLiga EA Sports</li>
+                <li className="submenu-option" onClick={() => navigate('/tags/LaLiga Hypermotion')}>LaLiga Hypermotion</li>
+                <li className="submenu-option" onClick={() => navigate('/tags/Primera RFEF')}>Primera RFEF</li>
+                <li className="submenu-option" onClick={() => navigate('/tags/Segunda RFEF')}>Segunda RFEF</li>
+                <li className="submenu-option" onClick={() => navigate('/tags/Tercera RFEF')}>Tercera RFEF</li>   
+                <li className="submenu-option" onClick={() => navigate('/tags/Copa del rey')}>Copa del rey</li>
+                <li className="submenu-option" onClick={() => navigate('/tags/Supercopa de España')}>Supercopa de España</li>
             </ul>
-            <ul id="futbot-internacional-options" onMouseOver={displaySubmenu2} onMouseLeave={handleDisplaySubMenu2} style={{display: displaySubMenu.submenu2, left: subMenuPosition.submenu2, top: subMenuTop}}>
-                <li className="submenu-option">Premier League</li>
-                <li className="submenu-option">Bundesliga</li>
-                <li className="submenu-option">Ligue 1</li>
-                <li className="submenu-option">Serie A</li>
-                <li className="submenu-option">Primeira Liga</li>
-                <li className="submenu-option">MLS</li>
+            <ul id="futbot-internacional-options" onMouseOver={displaySubmenu2} onMouseLeave={handleDisplaySubMenu2} style={{display: displaySubMenu.submenu2, left: subMenuLeft, top: subMenuTop}}>
+                <li className="submenu-option" onClick={() => navigate('/tags/Premier League')}>Premier League</li>
+                <li className="submenu-option" onClick={() => navigate('/tags/Bundesliga')}>Bundesliga</li>
+                <li className="submenu-option" onClick={() => navigate('/tags/Ligue 1')}>Ligue 1</li>
+                <li className="submenu-option" onClick={() => navigate('/tags/Serie A')}>Serie A</li>
+                <li className="submenu-option" onClick={() => navigate('/tags/Primeira Liga de Portugal')}>Primeira Liga de Portugal</li>
+                <li className="submenu-option" onClick={() => navigate('/tags/MLS')}>MLS</li>
             </ul>
-            <ul id="competiciones-europeas-options" onMouseOver={displaySubmenu3} onMouseLeave={handleDisplaySubMenu3} style={{display: displaySubMenu.submenu3, left: subMenuPosition.submenu3, top: subMenuTop}}>
-                <li className="submenu-option">Champsions League</li>
-                <li className="submenu-option">Europa League</li>
-                <li className="submenu-option">Conference League</li>
+            <ul id="competiciones-europeas-options" onMouseOver={displaySubmenu3} onMouseLeave={handleDisplaySubMenu3} style={{display: displaySubMenu.submenu3, left: subMenuLeft, top: subMenuTop}}>
+                <li className="submenu-option" onClick={() => navigate('/tags/Champions League')}>Champions League</li>
+                <li className="submenu-option" onClick={() => navigate('/tags/Europa League')}>Europa League</li>
+                <li className="submenu-option" onClick={() => navigate('/tags/Conference League')}>Conference League</li>
             </ul>
-            <ul id="competiciones-internacionales-options" onMouseOver={displaySubmenu4} onMouseLeave={handleDisplaySubMenu4} style={{display: displaySubMenu.submenu4, left: subMenuPosition.submenu4, top: subMenuTop}}>
-                <li className="submenu-option">Eurocopa</li>
-                <li className="submenu-option">Copa América</li>
-                <li className="submenu-option">Nations League</li>
+            <ul id="competiciones-internacionales-options" onMouseOver={displaySubmenu4} onMouseLeave={handleDisplaySubMenu4} style={{display: displaySubMenu.submenu4, left: subMenuLeft, top: subMenuTop}}>
+                <li className="submenu-option" onClick={() => navigate('/tags/Eurocopa')}>Eurocopa</li>
+                <li className="submenu-option" onClick={() => navigate('/tags/Copa América')}>Copa América</li>
+                <li className="submenu-option" onClick={() => navigate('/tags/Nations League')}>Nations League</li>
             </ul>
-            <ul id="historia-de-los-mundiales-options" onMouseOver={displaySubmenu5} onMouseLeave={handleDisplaySubMenu5} style={{display: displaySubMenu.submenu5, left: subMenuPosition.submenu5, top: subMenuTop}}>
-                <li className="submenu-option">Mundial Uruguay 1930</li>
-                <li className="submenu-option">Mundial Qatar 2022</li>
+            <ul id="historia-de-los-mundiales-options" onMouseOver={displaySubmenu5} onMouseLeave={handleDisplaySubMenu5} style={{display: displaySubMenu.submenu5, left: subMenuLeft, top: subMenuTop}}>
+                <li className="submenu-option" onClick={() => navigate('/tags/Mundial Uruguay 1930')}>Mundial Uruguay 1930</li>
+                <li className="submenu-option" onClick={() => navigate('/tags/Mundial Qatar 2022')}>Mundial Qatar 2022</li>
             </ul>
         </>
     )

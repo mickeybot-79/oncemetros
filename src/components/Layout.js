@@ -8,7 +8,7 @@ const Layout = () => {
             window.sessionStorage.setItem('backgroundAnimation', 'y')
         }, 1000)
 
-        return () => window.sessionStorage.removeItem('backgroundAnimation')
+        //return () => window.sessionStorage.removeItem('backgroundAnimation')
     }, [])
 
     return (

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { useGetPostsQuery } from "../features/posts/postsApiSlice"
 import PageHeader from "./PageHeader"
+import Presentation from "./Presentation"
 import { useNavigate } from "react-router-dom"
 
 const MainPage = () => {
@@ -14,14 +15,10 @@ const MainPage = () => {
         pollingInterval: 60000
     })
 
-    const [presentationHeight, setPresentationHeight] = useState('')
-
-    const [hidePresentation, setHidePresentation] = useState('')
-
     const [presentationDisplay, setPresentationDisplay] = useState('grid')
 
     const [backgroundAnimation, setBackGroundAnimation] = useState({
-        display: 'none',
+        display: 'block',
         animation: ''
     })
 
@@ -45,21 +42,15 @@ const MainPage = () => {
 
     const [mainStoriesContainerAnimation, setMainStoriesContainerAnimation] = useState('stories-animation 1s linear 1')
 
-    const [logoPresentation, setLogoPresentation] = useState('')
-
-    const [timeOfLastClick, settimeOfLastClick] = useState(0)
+    const [timeOfLastClick, setTimeOfLastClick] = useState(0)
 
     useEffect(() => {
         const backgroundAnimationMark = window.sessionStorage.getItem('backgroundAnimation')
         if (!backgroundAnimationMark) {
-            setPresentationHeight('100%')
-            setLogoPresentation('presentation-animation 0.8s cubic-bezier(0.5, 0.4, 0.35, 1.15) 1')
             setTimeout(() => {
-                setHidePresentation('hide-presentation 2s cubic-bezier(.58,.46,.65,1) 1')
-                setPresentationHeight('20vh')
-                setBackGroundAnimation(() => {
+                setBackGroundAnimation((prevState) => {
                     return {
-                        display: 'none',
+                        ...prevState,
                         animation: 'background-animation 2s ease-out 1'
                     }
                 })
@@ -78,11 +69,16 @@ const MainPage = () => {
                 setPresentationDisplay('none')
             }, 3200)
 
-            //window.sessionStorage.setItem('backgroundAnimation', 'y')
+            setTimeout(() => {
+                setDownPromptDisplay({
+                    display: 'block',
+                    animation: 'down-prompt-display 0.3s linear 1'
+                })
+            }, 5000)
+
         } else {
             setCount(0)
             setPresentationDisplay('none')
-            setPresentationHeight('0px')
             setMainStoriesContainerAnimation('')
             setBackGroundAnimation(() => {
                 return {
@@ -90,24 +86,21 @@ const MainPage = () => {
                     display: 'none'
                 }
             })
-        }
-        setTimeout(() => {
             setDownPromptDisplay({
                 display: 'block',
                 animation: 'down-prompt-display 0.3s linear 1'
             })
-        }, 5000)
-
-        //return () => window.sessionStorage.removeItem('backgroundAnimation')
+        }
     }, [])
 
     useEffect(() => {
         if (isSuccess) {
             setMainStories(() => {
+                const filteresPosts = posts?.ids.slice(0, 10)
                 const finalPosts = []
-                const allPosts = posts?.ids.map((story) => {
+                const allPosts = filteresPosts.map((story) => {
                     let headingEnd
-                    const subsHeading = posts?.entities[story].heading.substring(0, 100)
+                    const subsHeading = posts?.entities[story].heading.substring(0, 95)
                     if (subsHeading[subsHeading.length - 1] !== '.') {
                         headingEnd = `${subsHeading}...`
                     } else {
@@ -123,12 +116,14 @@ const MainPage = () => {
                     return (
                         <div key={posts?.entities[story].id} className="main-story" style={{transform: mainStoriesAnimaton.transform, transition: mainStoriesAnimaton.transition}} onClick={() => navigate(`/post/${posts?.entities[story].searchField}`)}>
                             <img src={posts?.entities[story].thumbnail} alt="story" className="story-thumbnail" />
-                            <h4 className="story-title">{titleEnd}</h4>
-                            <p className="story-heading">{headingEnd}</p>
+                            <div id="title-heading-container">
+                                <h4 className="story-title">{titleEnd}</h4>
+                                <p className="story-heading">{headingEnd}</p>
+                            </div>
                         </div>
                     )
                 })
-                for (let i = 0; i < 100; i++) {
+                for (let i = 0; i < 20; i++) {
                     finalPosts.push(allPosts)
                 }
                 return finalPosts
@@ -140,7 +135,7 @@ const MainPage = () => {
         setInterval(() => {
             if (autoScroll) {
                 setCount(prevCount => {
-                    const newCount = !document.hidden ? prevCount < 1195 ? prevCount + 1 : 0 : prevCount
+                    const newCount = !document.hidden ? prevCount < 395 ? prevCount + 1 : 0 : prevCount
                     return newCount
                 })
             }
@@ -150,7 +145,7 @@ const MainPage = () => {
 
     useEffect(() => {
         setInterval(() => {
-            settimeOfLastClick((prevState) => {
+            setTimeOfLastClick((prevState) => {
                 if ((Date.now() - prevState) >= 4000) {
                     if (!autoScroll) {
                         setLeftScroll(0)
@@ -163,7 +158,6 @@ const MainPage = () => {
                 return prevState
             })
         }, 1000)
-        //eslint-disable-next-line
     }, [autoScroll, timeOfLastClick])
 
     useEffect(() => {
@@ -180,33 +174,35 @@ const MainPage = () => {
     }, [count, autoScroll])
 
     const handleScrollLeft = () => {
-        settimeOfLastClick(Date.now())
         setAutoScroll(false)
         const prevScrollFactor = (count / 2)
-        const scrollFactor = leftScroll === 0 ? prevScrollFactor > 0 ? prevScrollFactor - 1 : 0 : leftScroll - 1
-        setLeftScroll(scrollFactor)
-        setCount((scrollFactor * 2) - 2)
+        const scrollFactor = leftScroll === 0 ? prevScrollFactor > 0 ? prevScrollFactor - 1 : 0 : leftScroll > 196 ? 0 : leftScroll - 1
+        console.log(scrollFactor)
         setMainStoriesAnimation(() => {
             return {
                 transition: '0.5s',
                 transform: `translateX(-${scrollFactor * 321}px)`
             }
         })
+        setTimeOfLastClick(Date.now())
+        setLeftScroll(scrollFactor)
+        setCount((scrollFactor * 2) - 2)
     }
 
     const handleScrollRight = () => {
-        settimeOfLastClick(Date.now())
         setAutoScroll(false)
         const prevScrollFactor = (count / 2)
-        const scrollFactor = leftScroll === 0 ? prevScrollFactor + 1 : leftScroll + 1
-        setLeftScroll(scrollFactor)
-        setCount((scrollFactor * 2) - 2)
+        const scrollFactor = leftScroll === 0 ? prevScrollFactor + 1 : leftScroll > 196 ? 0 : leftScroll + 1
+        console.log(scrollFactor)
         setMainStoriesAnimation(() => {
             return {
                 transition: '0.5s',
                 transform: `translateX(-${scrollFactor  * 321}px)`
             }
         })
+        setTimeOfLastClick(Date.now())
+        setLeftScroll(scrollFactor)
+        setCount((scrollFactor * 2) - 2)
     }
 
     return (
@@ -215,10 +211,7 @@ const MainPage = () => {
             <PageHeader />
             <div id="main-page-container">
                 {/*Presentation*/}
-                <section id="presentation-content" style={{ height: presentationHeight, animation: hidePresentation, display: presentationDisplay }}>
-                    <img src="../Images/logo 3.jpg" alt="logo" id="logo-presentation" style={{animation: logoPresentation}}/>
-                    {/* <img src="../Images/logo 3.jpg" alt="logo" id="logo-presentation"/> */}
-                </section>
+                <Presentation presentationDisplay={presentationDisplay}/>
                 <main style={{ display: presentationDisplay === 'none' ? 'grid' : 'none' }}>
                     {/*Main stories*/}
                     <section id="main-stories">
