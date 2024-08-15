@@ -36,7 +36,23 @@ const NewPost = () => {
         confirmButton: 'none'
     })
 
+    const [selectedText, setSelectedText] = useState('')
+
+    const [contentInnerHTML, setContentInnerHTML] = useState('')
+
     const newTagRef = useRef()
+
+    useEffect(() => {
+        document.addEventListener("mouseup", () => {
+            let selection = window.getSelection()
+            setSelectedText((prevState) => {
+                const newState = selection.toString() !== '' ? selection.toString() : prevState
+                return newState
+            })
+            //console.log(contentInnerHTML.indexOf(selection.toString()))
+          })
+          // eslint-disable-next-line
+    }, [])
 
     useEffect(() => {
         const imageElement = document.getElementById('uploaded-image')
@@ -227,14 +243,63 @@ const NewPost = () => {
                     onChange={handleChange}
                 ></textarea>
                 <label htmlFor="new-post-content" className="new-post-label">Contenido principal:</label>
-                <textarea
+                {/* <textarea
                     id="new-post-content"
                     name="content"
                     placeholder="Escribe aquí"
                     value={postData.content}
                     onChange={handleChange}
-                ></textarea>
-                {/* <div id="new-post-content" contentEditable></div> */}
+                ></textarea> */}
+                <div
+                    id="new-post-content-div"
+                    contentEditable
+                    onChange={() => {
+                        console.log(contentInnerHTML)
+                    }}
+                >{contentInnerHTML}</div>
+                {/* <input
+                    id="new-post-content"
+                    name="content"
+                    placeholder="Escribe aquí"
+                    value={postData.content}
+                    onChange={handleChange}
+                >Test</input> */}
+                <div id="format-options">
+                    <p className="format-option" onClick={() => {
+                        //const selectionText = window.sessionStorage.getItem('selection')
+                        //console.log(selectedText)
+                        //selectedText.outterHTML = `<b>${selectedText}</b>`
+                        setContentInnerHTML((prevState) => {
+                            const newState = prevState
+                            console.log(selectedText)
+                            console.log(newState.indexOf('es'))
+                            const arrayString = [...newState]
+                            arrayString.splice(newState.indexOf(selectedText), selectedText.length, (<b>{selectedText}</b>))
+                            return arrayString
+                        })
+                    }}>Bold</p>
+                    <p className="format-option" onClick={() => {
+                        setContentInnerHTML((prevState) => {
+                            const newState = prevState
+                            console.log(selectedText)
+                            console.log(newState.indexOf('es'))
+                            const arrayString = [...newState]
+                            arrayString.splice(newState.indexOf(selectedText), selectedText.length, (<i>{selectedText}</i>))
+                            return arrayString
+                        })
+                    }}>Italics</p>
+                    <p className="format-option" onClick={() => {
+                        setContentInnerHTML((prevState) => {
+                            //const newState = prevState
+                            //console.log(selectedText)
+                            const arrayString = [...prevState]
+                            console.log(arrayString.indexOf(selectedText))
+                            console.log(selectedText.length)
+                            arrayString.splice(arrayString.indexOf(selectedText), selectedText.length, (<u>{selectedText}</u>))
+                            return arrayString
+                        })
+                    }}>Underlined</p>
+                </div>
                 <label htmlFor="new-post-image" className="new-post-label">Imagen:</label>
                 <div style={{ display: 'flex', width: '100%' }}>
                     <input

@@ -40,7 +40,7 @@ const MainPage = () => {
 
     const [autoScroll, setAutoScroll] = useState(true)
 
-    const [mainStoriesContainerAnimation, setMainStoriesContainerAnimation] = useState('stories-animation 1s linear 1')
+    const [mainStoriesContainerAnimation, setMainStoriesContainerAnimation] = useState('stories-animation 1.2s linear 1')
 
     const [timeOfLastClick, setTimeOfLastClick] = useState(0)
 
@@ -96,9 +96,11 @@ const MainPage = () => {
     useEffect(() => {
         if (isSuccess) {
             setMainStories(() => {
-                const filteresPosts = posts?.ids.slice(0, 10)
+                const resultPosts = [...posts?.ids]
+                const slicedPosts = resultPosts.sort((a, b) => posts?.entities[b].date - posts?.entities[a].date).slice(0, 10)
+                //const slicedPosts = sortedPosts.slice(0, 10)
                 const finalPosts = []
-                const allPosts = filteresPosts.map((story) => {
+                const allPosts = slicedPosts.map((story) => {
                     let headingEnd
                     const subsHeading = posts?.entities[story].heading.substring(0, 95)
                     if (subsHeading[subsHeading.length - 1] !== '.') {

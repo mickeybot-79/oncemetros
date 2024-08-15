@@ -442,6 +442,29 @@ ul {
   font-size: 20px;
 }
 
+#new-post-content-div {
+  width: 100%;
+  max-width: 100%;
+  min-height: 20rem;
+  font-size: 20px;
+  background-color: white;
+  border: 1px solid rgb(87, 87, 87);
+  border-radius: 2px;
+}
+
+#format-options {
+  width: 80px;
+  height: 300px;
+  position: absolute;
+  top: 500px;
+  left: 350px;
+  background-color: white;
+}
+
+.format-option {
+  cursor: pointer;
+}
+
 #new-post-image {
   width: 25%;
 }
