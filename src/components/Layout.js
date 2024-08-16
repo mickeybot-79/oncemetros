@@ -6,7 +6,7 @@ const Layout = () => {
     useEffect(() => {
         setTimeout(() => {
             window.sessionStorage.setItem('backgroundAnimation', 'y')
-        }, 1000)
+        }, 2000)
 
         //return () => window.sessionStorage.removeItem('backgroundAnimation')
     }, [])

@@ -18,7 +18,10 @@ const NewPost = () => {
     const [postData, setPostData] = useState({
         title: '',
         heading: '',
-        content: '',
+        content: {
+            allContent: '',
+            currentParagraph: '<p></p>'
+        },
         thumbnail: '../../Images/placeholder.png',
         imgDesc: '',
         imgCred: '',
@@ -38,7 +41,9 @@ const NewPost = () => {
 
     const [selectedText, setSelectedText] = useState('')
 
-    const [contentInnerHTML, setContentInnerHTML] = useState('')
+    // const [contentInnerHTML, setContentInnerHTML] = useState('')
+
+    // const [currentParagraph, setCurrentParagraph] = useState('<p></p>')
 
     const newTagRef = useRef()
 
@@ -49,7 +54,6 @@ const NewPost = () => {
                 const newState = selection.toString() !== '' ? selection.toString() : prevState
                 return newState
             })
-            //console.log(contentInnerHTML.indexOf(selection.toString()))
           })
           // eslint-disable-next-line
     }, [])
@@ -69,6 +73,100 @@ const NewPost = () => {
                 [name]: value
             }
         })
+    }
+
+    const handleKeyDown = (e) => {
+        const pattern = /^[A-Za-z0-9\s]$/
+        //console.log(e.key)
+        if (pattern.test(e.key)) {
+            setPostData((prevState) => {
+                const contentDiv = document.getElementById('new-post-content-div')
+                console.log(prevState.content.currentParagraph.split('').splice(3, prevState.content.currentParagraph.length - 7).join('') + e.key)
+                let currentParagraphInnerHTML
+                if (prevState.content.currentParagraph.split('').splice(3, prevState.content.currentParagraph.length - 7).length !== contentDiv.innerText.length) {
+                    currentParagraphInnerHTML = ''
+                } else {
+                    currentParagraphInnerHTML = contentDiv.innerText + e.key
+                }
+                console.log(`<p>${currentParagraphInnerHTML}</p>`)
+                return {
+                    ...prevState, 
+                    content: {
+                        ...prevState.content,
+                        currentParagraph: `<p>${currentParagraphInnerHTML}</p>`
+                    }
+                }
+
+                // let newParagraphText = prevState.content.currentParagraph
+                // const arrString = newParagraphText.split('')
+                // arrString.splice(-4, 0, e.key)
+                // let newContent = prevState.content.allContent
+                // const arrContent = newContent.split('')
+                // arrContent.splice(0, prevState.content.allContent.length, arrString.join(''))
+                // console.log(arrString.join(''))
+                // console.log(arrContent.join(''))
+                // return {
+                //     ...prevState,
+                //     content: {
+                //         allContent: arrContent.join(''),
+                //         currentParagraph: arrString.join('')
+                //     }
+                // }
+            })
+            // setCurrentParagraph((prevState) => {
+            //     let newState = prevState
+            //     const arrString = newState.split('')
+            //     arrString.splice(-4, 0, e.key)
+            //     setContentInnerHTML((prevContent) => {
+            //         let newState = prevContent
+            //         const arrContent = newState.split('')
+            //         arrContent.splice(0, prevContent.length, arrString.join(''))
+            //         console.log(arrContent.join(''))
+            //         return arrContent.join('')
+            //     })
+            //     console.log(arrString.join(''))
+            //     return arrString.join('')
+            // })
+            // const contentDiv = document.getElementById('new-post-content-div')
+            // contentDiv.innerHTML = ''
+            // contentDiv.innerHTML = contentInnerHTML
+        } else if (e.key === 'Backspace') {
+            setPostData((prevState) => {
+                const contentDiv = document.getElementById('new-post-content-div')
+                console.log(`<p>${contentDiv.innerText}</p>`)
+                return {
+                    ...prevState, 
+                    content: {
+                        ...prevState.content,
+                        currentParagraph: `<p>${contentDiv.innerText}</p>`
+                    }
+                }
+            })
+            // setCurrentParagraph(() => {
+            //     const contentDiv = document.getElementById('new-post-content-div')
+            //     console.log(`<p>${contentDiv.innerText}</p>`)
+            //     return `<p>${contentDiv.innerText}</p>`
+            //     // if (prevState !== '<p></p>') {
+            //     //     let newState = prevState
+            //     //     const arrString = newState.split('')
+            //     //     arrString.splice(-5, 1)
+            //     //     console.log(arrString.join(''))
+            //     //     return arrString.join('')
+            //     // } else {
+            //     //     return prevState
+            //     // }
+            // })
+        } else if (e.key === 'Enter') {
+            // setContentInnerHTML((prevState) => {
+            //     //const selection = window.getSelection()
+            //     //const newState = selection.anchorNode.data
+            //     const pattern = /^[A-Za-z0-9\s]$/
+            //     const newState = pattern.test(e.key) ? prevState + e.key : prevState
+            //     //newState.push(selection.anchorNode.data)
+            //     console.log(newState)
+            //     return newState
+            // })
+        }
     }
 
     const handleSubmit = async () => {
@@ -253,51 +351,45 @@ const NewPost = () => {
                 <div
                     id="new-post-content-div"
                     contentEditable
-                    onChange={() => {
-                        console.log(contentInnerHTML)
-                    }}
-                >{contentInnerHTML}</div>
-                {/* <input
-                    id="new-post-content"
-                    name="content"
-                    placeholder="Escribe aquí"
-                    value={postData.content}
-                    onChange={handleChange}
-                >Test</input> */}
+                    onKeyDown={handleKeyDown}
+                ></div>
                 <div id="format-options">
                     <p className="format-option" onClick={() => {
-                        //const selectionText = window.sessionStorage.getItem('selection')
-                        //console.log(selectedText)
-                        //selectedText.outterHTML = `<b>${selectedText}</b>`
-                        setContentInnerHTML((prevState) => {
-                            const newState = prevState
-                            console.log(selectedText)
-                            console.log(newState.indexOf('es'))
-                            const arrayString = [...newState]
-                            arrayString.splice(newState.indexOf(selectedText), selectedText.length, (<b>{selectedText}</b>))
-                            return arrayString
-                        })
+                        // setContentInnerHTML((prevState) => {
+                        //     //console.log(prevState)
+                        //     const newState = prevState
+                        //     //const newState = Array.from(prevState)
+                        //     //console.log(newState)
+                        //     //console.log(newState.indexOf(selectedText))
+                        //     const arrayString = Array.from(newState)
+                        //     arrayString.splice(newState.indexOf(selectedText), parseInt(selectedText.length), (<b>{selectedText}</b>))
+                        //     //newState.splice(newState.indexOf(selectedText), parseInt(selectedText.length), (<b>{selectedText}</b>))
+                        //     console.log(<p>{arrayString}</p>)
+                        //     const contentDiv = document.getElementById('new-post-content-div')
+                        //     contentDiv.innerHTML = (<p>{arrayString}</p>)
+                        //     return arrayString
+                        // })
                     }}>Bold</p>
                     <p className="format-option" onClick={() => {
-                        setContentInnerHTML((prevState) => {
-                            const newState = prevState
-                            console.log(selectedText)
-                            console.log(newState.indexOf('es'))
-                            const arrayString = [...newState]
-                            arrayString.splice(newState.indexOf(selectedText), selectedText.length, (<i>{selectedText}</i>))
-                            return arrayString
-                        })
+                        // setContentInnerHTML((prevState) => {
+                        //     const newState = prevState
+                        //     console.log(selectedText)
+                        //     console.log(newState.indexOf('es'))
+                        //     const arrayString = [...newState]
+                        //     arrayString.splice(newState.indexOf(selectedText), selectedText.length, (<i>{selectedText}</i>))
+                        //     return arrayString
+                        // })
                     }}>Italics</p>
                     <p className="format-option" onClick={() => {
-                        setContentInnerHTML((prevState) => {
-                            //const newState = prevState
-                            //console.log(selectedText)
-                            const arrayString = [...prevState]
-                            console.log(arrayString.indexOf(selectedText))
-                            console.log(selectedText.length)
-                            arrayString.splice(arrayString.indexOf(selectedText), selectedText.length, (<u>{selectedText}</u>))
-                            return arrayString
-                        })
+                        // setContentInnerHTML((prevState) => {
+                        //     const newState = prevState
+                        //     //console.log(selectedText)
+                        //     const arrayString = [...newState]
+                        //     console.log(arrayString.indexOf(selectedText))
+                        //     console.log(selectedText.length)
+                        //     arrayString.splice(newState.indexOf(selectedText), selectedText.length, (<u>{selectedText}</u>))
+                        //     return arrayString
+                        // })
                     }}>Underlined</p>
                 </div>
                 <label htmlFor="new-post-image" className="new-post-label">Imagen:</label>

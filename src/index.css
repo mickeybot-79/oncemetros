@@ -347,6 +347,39 @@ ul {
   color: rgb(29, 28, 28);
 }
 
+#popular-stories-container {
+  display: grid;
+  place-content: center;
+  width: 100%;
+  height: auto;
+  gap: 20px;
+}
+
+.popular-story-container {
+  width: 800px;
+  height: auto;
+  display: grid;
+  place-content: center;
+  place-items: center;
+  padding: 30px;
+  background-color: rgba(98, 191, 207, 0.788);
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.popular-story-thumbnail {
+  width: 400px;
+  height: auto;
+}
+
+.popular-story-title {
+  
+}
+
+.popular-story-heading {
+  
+}
+
 /*New Post*/
 #new-post-container {
   width: 100%;
@@ -457,7 +490,7 @@ ul {
   height: 300px;
   position: absolute;
   top: 500px;
-  left: 350px;
+  left: 100px;
   background-color: white;
 }
 

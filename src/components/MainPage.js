@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useGetPostsQuery } from "../features/posts/postsApiSlice"
 import PageHeader from "./PageHeader"
 import Presentation from "./Presentation"
@@ -12,7 +12,7 @@ const MainPage = () => {
         data: posts,
         isSuccess
     } = useGetPostsQuery('postsList', {
-        pollingInterval: 60000
+        pollingInterval: 120000
     })
 
     const [presentationDisplay, setPresentationDisplay] = useState('grid')
@@ -23,6 +23,8 @@ const MainPage = () => {
     })
 
     const [mainStories, setMainStories] = useState([])
+
+    const [popularStories, setPopularStories] = useState([])
 
     const [downPromptDisplay, setDownPromptDisplay] = useState({
         display: 'none',
@@ -43,6 +45,8 @@ const MainPage = () => {
     const [mainStoriesContainerAnimation, setMainStoriesContainerAnimation] = useState('stories-animation 1.2s linear 1')
 
     const [timeOfLastClick, setTimeOfLastClick] = useState(0)
+
+    const popularStoriesRef = useRef()
 
     useEffect(() => {
         const backgroundAnimationMark = window.sessionStorage.getItem('backgroundAnimation')
@@ -95,11 +99,12 @@ const MainPage = () => {
 
     useEffect(() => {
         if (isSuccess) {
+            let mainStoriesArray
             setMainStories(() => {
+                const finalPosts = []
                 const resultPosts = [...posts?.ids]
                 const slicedPosts = resultPosts.sort((a, b) => posts?.entities[b].date - posts?.entities[a].date).slice(0, 10)
-                //const slicedPosts = sortedPosts.slice(0, 10)
-                const finalPosts = []
+                mainStoriesArray = [...slicedPosts]
                 const allPosts = slicedPosts.map((story) => {
                     let headingEnd
                     const subsHeading = posts?.entities[story].heading.substring(0, 95)
@@ -116,8 +121,8 @@ const MainPage = () => {
                         titleEnd = subsTitle
                     }
                     return (
-                        <div key={posts?.entities[story].id} className="main-story" style={{transform: mainStoriesAnimaton.transform, transition: mainStoriesAnimaton.transition}} onClick={() => navigate(`/post/${posts?.entities[story].searchField}`)}>
-                            <img src={posts?.entities[story].thumbnail} alt="story" className="story-thumbnail" />
+                        <div key={posts?.entities[story].id} className="main-story" style={{transform: mainStoriesAnimaton.transform, transition: mainStoriesAnimaton.transition}} onClick={() => navigate(`/post/${posts?.entities[story].id}`)}>
+                            <img src={posts?.entities[story].thumbnail} alt="main-story" className="story-thumbnail" />
                             <div id="title-heading-container">
                                 <h4 className="story-title">{titleEnd}</h4>
                                 <p className="story-heading">{headingEnd}</p>
@@ -125,10 +130,43 @@ const MainPage = () => {
                         </div>
                     )
                 })
-                for (let i = 0; i < 20; i++) {
+                for (let i = 0; i < 10; i++) {
                     finalPosts.push(allPosts)
                 }
                 return finalPosts
+            })
+            setPopularStories(() => {
+                const popularStoriesArray = []
+                for (let i = 0; i < posts?.ids.length; i++) {
+                    if (!mainStoriesArray.includes(posts?.ids[i])) {
+                        popularStoriesArray.push(posts?.ids[i])
+                    }
+                }
+                const slicedStories = popularStoriesArray.sort((a, b) => posts?.entities[a].views - posts?.entities[b].views).slice(0, 10)
+                const allPopularPosts = slicedStories.map((story) => {
+                    let headingEnd
+                    const subsHeading = posts?.entities[story].heading.substring(0, 200)
+                    if (subsHeading[subsHeading.length - 1] !== '.') {
+                        headingEnd = `${subsHeading}...`
+                    } else {
+                        headingEnd = subsHeading
+                    }
+                    let titleEnd
+                    const subsTitle = posts?.entities[story].title.substring(0, 70)
+                    if (posts?.entities[story].title.length > 70) {
+                        titleEnd = `${subsTitle}...`
+                    } else {
+                        titleEnd = subsTitle
+                    }
+                    return (
+                        <div key={posts?.entities[story].id} className="popular-story-container" onClick={() => navigate(`/post/${posts?.entities[story].id}`)}>
+                            <img src={posts?.entities[story].thumbnail} alt="popular-story" className="popular-story-thumbnail"/>
+                            <h4 className="popular-story-title">{titleEnd}</h4>
+                            <p className="popular-story-heading">{headingEnd}</p>
+                        </div>
+                    )
+                })
+                return allPopularPosts
             })
         }
     }, [isSuccess, posts, mainStoriesAnimaton, navigate])
@@ -137,7 +175,7 @@ const MainPage = () => {
         setInterval(() => {
             if (autoScroll) {
                 setCount(prevCount => {
-                    const newCount = !document.hidden ? prevCount < 395 ? prevCount + 1 : 0 : prevCount
+                    const newCount = !document.hidden ? prevCount < 195 ? prevCount + 1 : 0 : prevCount
                     return newCount
                 })
             }
@@ -148,14 +186,9 @@ const MainPage = () => {
     useEffect(() => {
         setInterval(() => {
             setTimeOfLastClick((prevState) => {
-                if ((Date.now() - prevState) >= 4000) {
-                    if (!autoScroll) {
-                        setLeftScroll(0)
-                        setAutoScroll(true)
-                    } else {
-                        setLeftScroll(prevState => prevState)
-                        setAutoScroll(prevState => prevState)
-                    }
+                if ((Date.now() - prevState) >= 4000 && !autoScroll) {
+                    setLeftScroll(0)
+                    setAutoScroll(true)
                 }
                 return prevState
             })
@@ -178,8 +211,7 @@ const MainPage = () => {
     const handleScrollLeft = () => {
         setAutoScroll(false)
         const prevScrollFactor = (count / 2)
-        const scrollFactor = leftScroll === 0 ? prevScrollFactor > 0 ? prevScrollFactor - 1 : 0 : leftScroll > 196 ? 0 : leftScroll - 1
-        console.log(scrollFactor)
+        const scrollFactor = leftScroll === 0 ? prevScrollFactor > 0 ? prevScrollFactor - 1 : 0 : leftScroll > 96 ? 0 : leftScroll - 1
         setMainStoriesAnimation(() => {
             return {
                 transition: '0.5s',
@@ -194,8 +226,7 @@ const MainPage = () => {
     const handleScrollRight = () => {
         setAutoScroll(false)
         const prevScrollFactor = (count / 2)
-        const scrollFactor = leftScroll === 0 ? prevScrollFactor + 1 : leftScroll > 196 ? 0 : leftScroll + 1
-        console.log(scrollFactor)
+        const scrollFactor = leftScroll === 0 ? prevScrollFactor + 1 : leftScroll > 96 ? 0 : leftScroll + 1
         setMainStoriesAnimation(() => {
             return {
                 transition: '0.5s',
@@ -225,17 +256,18 @@ const MainPage = () => {
                         </div>
                         <div id="stories-scroll-right" onClick={handleScrollRight} style={{animation: mainStoriesContainerAnimation}}><p>{'>'}</p></div>
                     </section>
-                    <div id="down-prompt-container" style={{ display: downPromptDisplay.display, animation: downPromptDisplay.animation }}><p id="down-prompt">{'<'}</p></div>
+                    <div id="down-prompt-container" style={{ display: downPromptDisplay.display, animation: downPromptDisplay.animation }} onClick={() => {
+                        window.scrollTo({ top: popularStoriesRef.current.offsetTop, behavior: 'smooth' })
+                    }}><p id="down-prompt">{'<'}</p></div>
                     {/*Popular stories*/}
-                    <section id="popular-stories">
-
+                    <section id="popular-stories" ref={popularStoriesRef}>
+                        <h2>Historias populares</h2>
+                        <div id="popular-stories-container">
+                            {popularStories}
+                        </div>
                     </section>
                     {/*Highlights*/}
                     <section id="highlights">
-
-                    </section>
-                    {/*Most viewed stories*/}
-                    <section id="most-viewed">
 
                     </section>
                 </main>
