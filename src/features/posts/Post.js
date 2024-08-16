@@ -4,22 +4,31 @@ const Post = ({ post }) => {
 
     const navigate = useNavigate()
 
-    const allKeys = []
+    let allParagraphElements
 
-    const allParagraphElements = post.content.split('\n').map(paragraph => {
-        let currentKey
-        for (let i = 0; i < post.content.split('\n').length; i++) {
-            if (post.content.split('\n')[i] === '') {
-                currentKey = allKeys.length + 1
-            } else {
-                allKeys.push(paragraph)
-                currentKey = allKeys.length - 1
+    if (post.content[0] === '<') {
+        setTimeout(() => {
+            const contentElement = document.getElementById('post-content')
+            allParagraphElements = post.content
+            contentElement.innerHTML = allParagraphElements 
+        })
+    } else {
+        const allKeys = []
+        allParagraphElements = post.content.split('\n').map(paragraph => {
+            let currentKey
+            for (let i = 0; i < post.content.split('\n').length; i++) {
+                if (post.content.split('\n')[i] === '') {
+                    currentKey = allKeys.length + 1
+                } else {
+                    allKeys.push(paragraph)
+                    currentKey = allKeys.length - 1
+                }
             }
-        }
-        return (
-            <p key={currentKey}>{paragraph}</p>
-        )
-    })
+            return (
+                <p key={currentKey}>{paragraph}</p>
+            )
+        })
+    }
 
     const tagElements = post.tags.map(tag => {
         const endingComma = post.tags.indexOf(tag) < post.tags.length - 1 ? ',' : ''
@@ -83,12 +92,12 @@ const Post = ({ post }) => {
     return (
         <div id="post-container">
             <h2 id="post-title">{post.title}</h2>
-            <img id="post-thumbnail" src={post.thumbnail} alt="post-thumbnail" />
-            {post.imgDesc && imageDescElement}
-            <p id="post-heading">{post.heading}</p>
+            {post.thumbnail && <img id="post-thumbnail" src={post.thumbnail} alt="post-thumbnail" />}
+            {post.imgDesc && post.thumbnail && imageDescElement}
+            {post.heading && <p id="post-heading">{post.heading}</p>}
             <div id="post-content">{allParagraphElements}</div>
             <div style={{ display: 'inline', placeSelf: 'start' }}>
-                <p id="post-author">Por {post.author}</p>
+                <p id="post-author" onClick={() => navigate(`/posts/${post.author}`)}>Por <span>{post.author}</span></p>
                 <p id="post-date">{`${translatedDate[0]} ${translatedDate[1]}, ${translatedDate[2]}`}</p>
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'left', alignItems: 'center', placeSelf: 'start', lineHeight: '5px' }}>Etiquetas: {tagElements}</div>

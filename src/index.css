@@ -246,6 +246,7 @@ ul {
 #main-stories-container {
   place-self: center;
   /* animation: stories-animation 1s linear 1; */
+  width: fit-content;
 }
 
 #stories-scroll-container {
@@ -347,6 +348,10 @@ ul {
   color: rgb(29, 28, 28);
 }
 
+#down-prompt-container:hover {
+  background-color: rgba(238, 231, 231, 0.589);
+}
+
 #popular-stories-container {
   display: grid;
   place-content: center;
@@ -355,29 +360,47 @@ ul {
   gap: 20px;
 }
 
+#popular-stories-title {
+  text-align: center;
+  font-size: 60px;
+  margin-top: 50px;
+  color: rgb(245, 245, 245);
+  text-shadow: 2px 2px rgb(46, 46, 46);
+}
+
 .popular-story-container {
-  width: 800px;
+  width: 700px;
   height: auto;
   display: grid;
   place-content: center;
   place-items: center;
   padding: 30px;
-  background-color: rgba(98, 191, 207, 0.788);
+  /* background-color: rgba(122, 182, 192, 0.945); */
+  background: radial-gradient(circle, rgb(133, 200, 212), rgb(59, 184, 163));
   cursor: pointer;
   border-radius: 10px;
 }
 
+.popular-story-container:hover {
+  /* background-color: rgba(171, 219, 228, 0.945); */
+  background: radial-gradient(circle, rgb(181, 211, 216), rgb(115, 197, 182));
+}
+
 .popular-story-thumbnail {
   width: 400px;
-  height: auto;
+  height: 300px;
+  object-fit: cover;
+  justify-self: center;
 }
 
 .popular-story-title {
-  
+  font-size: 25px;
+  text-align: center;
 }
 
 .popular-story-heading {
-  
+  font-size: 20px;
+  margin-top: -10px;
 }
 
 /*New Post*/
@@ -475,24 +498,24 @@ ul {
   font-size: 20px;
 }
 
-#new-post-content-div {
-  width: 100%;
-  max-width: 100%;
-  min-height: 20rem;
-  font-size: 20px;
-  background-color: white;
-  border: 1px solid rgb(87, 87, 87);
-  border-radius: 2px;
-}
+  #new-post-content-div {
+    width: 100%;
+    max-width: 100%;
+    min-height: 20rem;
+    font-size: 20px;
+    background-color: white;
+    border: 1px solid rgb(87, 87, 87);
+    border-radius: 2px;
+  }
 
-#format-options {
-  width: 80px;
-  height: 300px;
-  position: absolute;
-  top: 500px;
-  left: 100px;
-  background-color: white;
-}
+  #format-options {
+    width: 80px;
+    height: 300px;
+    position: absolute;
+    top: 500px;
+    left: 100px;
+    background-color: white;
+  }
 
 .format-option {
   cursor: pointer;
@@ -676,7 +699,7 @@ textarea {
 }
 
 #post-title {
-  font-size: 35px;
+  font-size: 40px;
   text-align: center;
   color: rgba(43, 42, 42, 0.959);
   /* text-shadow: 10px 10px rgba(128, 128, 128, 0.692); */
@@ -695,6 +718,15 @@ textarea {
 #post-imgDesc,
 #post-imgCred {
   color: rgb(22, 22, 22);
+}
+
+#post-author span{
+  cursor: pointer;
+}
+
+#post-author span:hover {
+  text-decoration: underline;
+  color: rgb(46, 46, 46);
 }
 
 #post-heading {
@@ -727,15 +759,22 @@ textarea {
 #tag-posts-container {
   width: 100%;
   display: grid;
-  place-content: center;
+  place-items: center;
   margin-top: 20px;
 }
 
 #tag-posts-container h2 {
   text-align: center;
-  justify-self: center;
-  align-self: center;
-  place-self: center;
+  font-size: 40px;
+  color: rgb(224, 224, 224);
+  -webkit-background-clip: text;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: rgb(0, 0, 0);
+  text-shadow: 3px 3px rgb(80, 80, 80);
+}
+
+#tag-posts-container h2 span {
+  color: rgb(108, 108, 223);
 }
 
 .post-tag-container {
@@ -748,18 +787,82 @@ textarea {
   align-items: center;
   place-items: center;
   border-radius: 10px;
-  background-color: rgba(150, 120, 76, 0.767);
+  background-color: rgba(123, 123, 161, 0.938);
+}
+
+.post-tag-container:hover {
+  background-color: rgba(158, 158, 196, 0.938);
 }
 
 .post-tag-thumbnail {
-  width: auto;
+  width: 300px;
   height: 200px;
+  object-fit: cover;
 }
 
 .post-tag-title {
-
+  text-align: center;
+  font-size: 22px;
+  color: rgb(32, 51, 78);
 }
 
 .post-tag-heading {
+  font-size: 18px;
+  margin-top: -10px;
+}
 
+/*User Posts Page*/
+#posts-user-container {
+  width: 100%;
+  display: grid;
+  place-items: center;
+  margin-top: 20px;
+}
+
+#posts-user-container h2 {
+  text-align: center;
+  font-size: 40px;
+  color: rgb(224, 224, 224);
+  -webkit-background-clip: text;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: rgb(0, 0, 0);
+  text-shadow: 3px 3px rgb(80, 80, 80);
+}
+
+#posts-user-container h2 span {
+  color: rgb(69, 130, 165);
+}
+
+.user-posts-container {
+  width: 500px;
+  height: 350px;
+  display: grid;
+  padding: 30px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  align-items: center;
+  place-items: center;
+  border-radius: 10px;
+  background-color: rgba(57, 122, 160, 0.938);
+}
+
+.user-posts-container:hover {
+  background-color: rgba(89, 138, 167, 0.938);
+}
+
+.user-posts-thumbnail {
+  width: 300px;
+  height: 200px;
+  object-fit: cover;
+}
+
+.user-posts-title {
+  text-align: center;
+  font-size: 22px;
+  color: rgb(34, 44, 58);
+}
+
+.user-posts-heading {
+  font-size: 18px;
+  margin-top: -10px;
 }

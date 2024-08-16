@@ -27,7 +27,7 @@ const MainPage = () => {
     const [popularStories, setPopularStories] = useState([])
 
     const [downPromptDisplay, setDownPromptDisplay] = useState({
-        display: 'none',
+        opacity: '0',
         animation: ''
     })
 
@@ -75,7 +75,7 @@ const MainPage = () => {
 
             setTimeout(() => {
                 setDownPromptDisplay({
-                    display: 'block',
+                    opacity: '1',
                     animation: 'down-prompt-display 0.3s linear 1'
                 })
             }, 5000)
@@ -91,7 +91,7 @@ const MainPage = () => {
                 }
             })
             setDownPromptDisplay({
-                display: 'block',
+                opacity: '1',
                 animation: 'down-prompt-display 0.3s linear 1'
             })
         }
@@ -142,18 +142,18 @@ const MainPage = () => {
                         popularStoriesArray.push(posts?.ids[i])
                     }
                 }
-                const slicedStories = popularStoriesArray.sort((a, b) => posts?.entities[a].views - posts?.entities[b].views).slice(0, 10)
+                const slicedStories = popularStoriesArray.sort((a, b) => posts?.entities[b].views - posts?.entities[a].views).slice(0, 10)
                 const allPopularPosts = slicedStories.map((story) => {
                     let headingEnd
-                    const subsHeading = posts?.entities[story].heading.substring(0, 200)
-                    if (subsHeading[subsHeading.length - 1] !== '.') {
+                    const subsHeading = posts?.entities[story].heading.substring(0, 220)
+                    if (posts?.entities[story].heading.length > 220) {
                         headingEnd = `${subsHeading}...`
                     } else {
                         headingEnd = subsHeading
                     }
                     let titleEnd
-                    const subsTitle = posts?.entities[story].title.substring(0, 70)
-                    if (posts?.entities[story].title.length > 70) {
+                    const subsTitle = posts?.entities[story].title.substring(0, 120)
+                    if (posts?.entities[story].title.length > 120) {
                         titleEnd = `${subsTitle}...`
                     } else {
                         titleEnd = subsTitle
@@ -186,7 +186,7 @@ const MainPage = () => {
     useEffect(() => {
         setInterval(() => {
             setTimeOfLastClick((prevState) => {
-                if ((Date.now() - prevState) >= 4000 && !autoScroll) {
+                if (!autoScroll && (Date.now() - prevState) >= 4000) {
                     setLeftScroll(0)
                     setAutoScroll(true)
                 }
@@ -230,7 +230,7 @@ const MainPage = () => {
         setMainStoriesAnimation(() => {
             return {
                 transition: '0.5s',
-                transform: `translateX(-${scrollFactor  * 321}px)`
+                transform: `translateX(-${scrollFactor * 321}px)`
             }
         })
         setTimeOfLastClick(Date.now())
@@ -250,18 +250,21 @@ const MainPage = () => {
                     <section id="main-stories">
                         <div id="stories-scroll-left" onClick={handleScrollLeft} style={{animation: mainStoriesContainerAnimation}}><p>{'<'}</p></div>
                         <div id="main-stories-container" style={{animation: mainStoriesContainerAnimation}}>
-                            <div id="stories-scroll-container" style={{animation: mainStoriesContainerAnimation}}>
+                            <div
+                                id="stories-scroll-container"
+                                style={{ animation: mainStoriesContainerAnimation }}
+                                >
                                 {mainStories}
                             </div>
                         </div>
                         <div id="stories-scroll-right" onClick={handleScrollRight} style={{animation: mainStoriesContainerAnimation}}><p>{'>'}</p></div>
                     </section>
-                    <div id="down-prompt-container" style={{ display: downPromptDisplay.display, animation: downPromptDisplay.animation }} onClick={() => {
+                    <div id="down-prompt-container" style={{ opacity: downPromptDisplay.opacity, animation: downPromptDisplay.animation }} onClick={() => {
                         window.scrollTo({ top: popularStoriesRef.current.offsetTop, behavior: 'smooth' })
                     }}><p id="down-prompt">{'<'}</p></div>
                     {/*Popular stories*/}
                     <section id="popular-stories" ref={popularStoriesRef}>
-                        <h2>Historias populares</h2>
+                        <h2 id="popular-stories-title">Historias populares</h2>
                         <div id="popular-stories-container">
                             {popularStories}
                         </div>

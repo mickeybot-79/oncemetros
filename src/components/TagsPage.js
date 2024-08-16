@@ -6,7 +6,9 @@ import { useEffect } from "react"
 const TagsPage = () => {
 
     useEffect(() => {
-        window.scrollTo(0, 0)
+        setTimeout(() => {
+            window.scrollTo(0, 0)  
+        })
     }, [])
 
     const { tag } = useParams()
@@ -25,7 +27,7 @@ const TagsPage = () => {
         const allPostElements = allTagPosts.map(post => {
 
             let headingEnd
-            const subsHeading = posts?.entities[post].heading.substring(0, 200)
+            const subsHeading = posts?.entities[post].heading.substring(0, 120)
             if (subsHeading[subsHeading.length - 1] !== '.') {
                 headingEnd = `${subsHeading}...`
             } else {
@@ -45,7 +47,7 @@ const TagsPage = () => {
             <>
                 <PageHeader />
                 <div id="tag-posts-container">
-                    <h2>Publicaciones sobre "{tag}":</h2>
+                    <h2>Publicaciones sobre <span>"{tag}"</span>:</h2>
                     {allPostElements}
                 </div>
             </>

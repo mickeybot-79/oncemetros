@@ -25,6 +25,8 @@ const PostPage = () => {
                 <PageHeader />
                 <div id="post-page-container">
                     <Post post={post} />
+                    {/*Share options*/}
+                    <div id="share-options-container"></div>
                     <Comments comments={post.comments} />
                 </div>
             </>
