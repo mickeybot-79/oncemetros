@@ -13,8 +13,6 @@ const UserPosts = () => {
 
     const { user } = useParams()
 
-    console.log(user)
-
     const navigate = useNavigate()
 
     const {
@@ -25,8 +23,10 @@ const UserPosts = () => {
     if (isSuccess) {
 
         const allUserPosts = posts?.ids.filter(id => posts?.entities[id].author === user)
+
+        const sortedPosts = allUserPosts.sort((a, b) => posts?.entities[b].date - posts?.entities[a].date)
     
-        const userPostElements = allUserPosts.map(post => {
+        const userPostElements = sortedPosts.map(post => {
 
             let headingEnd
             const subsHeading = posts?.entities[post].heading.substring(0, 110)

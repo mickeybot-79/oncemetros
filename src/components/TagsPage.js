@@ -23,21 +23,30 @@ const TagsPage = () => {
     if (isSuccess) {
 
         const allTagPosts = posts?.ids.filter(id => posts?.entities[id].tags.includes(tag))
+
+        const sortedPosts = allTagPosts.sort((a, b) => posts?.entities[b].date - posts?.entities[a].date)
     
-        const allPostElements = allTagPosts.map(post => {
+        const allPostElements = sortedPosts.map(post => {
 
             let headingEnd
-            const subsHeading = posts?.entities[post].heading.substring(0, 120)
+            const subsHeading = posts?.entities[post].heading.substring(0, 110)
             if (subsHeading[subsHeading.length - 1] !== '.') {
                 headingEnd = `${subsHeading}...`
             } else {
                 headingEnd = subsHeading
             }
+            let titleEnd
+            const subsTitle = posts?.entities[post].title.substring(0, 80)
+            if (posts?.entities[post].title.length > 80) {
+                titleEnd = `${subsTitle}...`
+            } else {
+                titleEnd = subsTitle
+            }
     
             return (
                 <div key={posts?.entities[post].id} className="post-tag-container" onClick={() => navigate(`/post/${post}`)}>
                     <img src={posts?.entities[post].thumbnail} alt="" className="post-tag-thumbnail"/>
-                    <h3 className="post-tag-title">{posts?.entities[post].title}</h3>
+                    <h3 className="post-tag-title">{titleEnd}</h3>
                     <p className="post-tag-heading">{headingEnd}</p>
                 </div>
             )

@@ -143,7 +143,8 @@ const MainPage = () => {
                     }
                 }
                 const slicedStories = popularStoriesArray.sort((a, b) => posts?.entities[b].views - posts?.entities[a].views).slice(0, 10)
-                const allPopularPosts = slicedStories.map((story) => {
+                const sortedPosts = slicedStories.sort((a, b) => posts?.entities[b].date - posts?.entities[a].date)
+                const allPopularPosts = sortedPosts.map((story) => {
                     let headingEnd
                     const subsHeading = posts?.entities[story].heading.substring(0, 220)
                     if (posts?.entities[story].heading.length > 220) {
@@ -172,6 +173,7 @@ const MainPage = () => {
     }, [isSuccess, posts, mainStoriesAnimaton, navigate])
 
     useEffect(() => {
+        //const interval = setInterval(() => {
         setInterval(() => {
             if (autoScroll) {
                 setCount(prevCount => {
@@ -180,10 +182,13 @@ const MainPage = () => {
                 })
             }
         }, 3000)
+
+        //return () => clearInterval(interval)
         // eslint-disable-next-line
     }, [])
 
     useEffect(() => {
+        //const timeInterval = setInterval(() => {
         setInterval(() => {
             setTimeOfLastClick((prevState) => {
                 if (!autoScroll && (Date.now() - prevState) >= 4000) {
@@ -193,12 +198,14 @@ const MainPage = () => {
                 return prevState
             })
         }, 1000)
+        //return () => clearInterval(timeInterval)
     }, [autoScroll, timeOfLastClick])
 
     useEffect(() => {
         const updateAnimation = () => {
             setMainStoriesAnimation(() => {
                 const scrollFactor = (count / 2)
+                //const scrollFactor = count
                 return {
                     transition: '1.5s',
                     transform: `translateX(-${scrollFactor * 321}px)`
@@ -211,7 +218,9 @@ const MainPage = () => {
     const handleScrollLeft = () => {
         setAutoScroll(false)
         const prevScrollFactor = (count / 2)
+        //const prevScrollFactor = count
         const scrollFactor = leftScroll === 0 ? prevScrollFactor > 0 ? prevScrollFactor - 1 : 0 : leftScroll > 96 ? 0 : leftScroll - 1
+        //const scrollFactor = count > 96 ? 0 : count - 1
         setMainStoriesAnimation(() => {
             return {
                 transition: '0.5s',
@@ -221,12 +230,15 @@ const MainPage = () => {
         setTimeOfLastClick(Date.now())
         setLeftScroll(scrollFactor)
         setCount((scrollFactor * 2) - 2)
+        //setCount(scrollFactor)
     }
 
     const handleScrollRight = () => {
         setAutoScroll(false)
         const prevScrollFactor = (count / 2)
+        //const prevScrollFactor = count
         const scrollFactor = leftScroll === 0 ? prevScrollFactor + 1 : leftScroll > 96 ? 0 : leftScroll + 1
+        //const scrollFactor = count > 96 ? 0 : count + 1
         setMainStoriesAnimation(() => {
             return {
                 transition: '0.5s',
@@ -236,6 +248,7 @@ const MainPage = () => {
         setTimeOfLastClick(Date.now())
         setLeftScroll(scrollFactor)
         setCount((scrollFactor * 2) - 2)
+        //setCount(scrollFactor)
     }
 
     return (
