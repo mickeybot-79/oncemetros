@@ -37,7 +37,7 @@ const Post = ({ post }) => {
         )
     })
 
-    const convertedDate = new Date(parseInt(post.date)).toDateString(undefined, { timeZone: 'Asia/Kolkata' })
+    const convertedDate = new Date(parseInt(post.date)).toDateString(undefined, {})
     const translatedDate = []
 
     switch (convertedDate.split(' ')[1]) {
