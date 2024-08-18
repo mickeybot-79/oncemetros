@@ -1,14 +1,31 @@
 import { useState } from "react"
+import { useAddCommentMutation } from "./postsApiSlice"
 
-const Comments = ({ comments }) => {
+const Comments = ({ post, handleSetPost }) => {
 
     const [newComment, setNewComment] = useState('')
 
+    const [addComment] = useAddCommentMutation()
+
+    const handleSubmit = async () => {
+        const result = await addComment({
+            post: post.searchField,
+            user: '',
+            date: Date.now(),
+            content: newComment
+        })
+        //console.log(result)
+        if (result?.data?.searchField) {
+            setNewComment('')
+            handleSetPost(result.data)
+        }
+    }
+
     let commentsElements
 
-    if (comments.length > 0) {
-        commentsElements = comments.map(comment => {
-            const convertedDate = new Date(parseInt(comment.date)).toDateString(undefined, {})
+    if (post.comments.length > 0) {
+        commentsElements = post.comments.map(comment => {
+            const convertedDate = new Date(parseInt(comment.date)).toDateString()
             const translatedDate = []
         
             switch (convertedDate.split(' ')[1]) {
@@ -53,16 +70,19 @@ const Comments = ({ comments }) => {
             translatedDate.push(convertedDate.split(' ')[3])
             return (
                 <>
-                    <div key={comment._id} className="comment-container">
+                    <div key={comment.searchField} className="comment-container">
                         <div className="comment-content-image">
                             <img src="../../Images/favicon.png" alt="user-image" className="comment-image" />
                             <p className="comment-content">{comment.content}</p>
                         </div>
                         <div className="comment-date-options">
                             <p className="comment-date">{`${translatedDate[0]} ${translatedDate[1]}, ${translatedDate[2]}`}</p>
-                            <div>
-                                <button>{comment.likes} Me gusta</button>
-                                <button>Reply</button>
+                            <div className="comment-options-container">
+                                <div className="comment-like-options">
+                                    <p className="comment-likes">{comment.likes}</p>
+                                    <button className="like-comment">Me gusta</button>
+                                </div>
+                                <button className="comment-reply">Responder...</button>
                             </div>
                         </div>
                     </div>
@@ -96,7 +116,7 @@ const Comments = ({ comments }) => {
                 </div>
                 <div id="new-comment-buttons">
                     <button id="new-comment-cancel" disabled={newComment.length > 0 ? false: true} onClick={() => setNewComment('')}>Cancelar</button>
-                    <button id="new-comment-submit" disabled={newComment.length > 0 ? false: true}>Publicar</button>
+                    <button id="new-comment-submit" disabled={newComment.length > 0 ? false: true} onClick={handleSubmit}>Publicar</button>
                 </div>
             </div>
         </div>

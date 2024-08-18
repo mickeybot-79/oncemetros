@@ -282,12 +282,13 @@ const MainPage = () => {
                             {popularStories}
                         </div>
                     </section>
-                    {/*Highlights*/}
-                    <section id="highlights">
+                    {/*Explore by Author and Tags*/}
+                    <section id="explore">
 
                     </section>
                 </main>
             </div>
+            {/*Footer*/}
         </>
     )
 

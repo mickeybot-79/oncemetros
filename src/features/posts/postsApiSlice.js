@@ -1,4 +1,4 @@
-import { createEntityAdapter, createSelector } from "@reduxjs/toolkit"
+import { createEntityAdapter, /*createSelector*/ } from "@reduxjs/toolkit"
 import { apiSlice } from "../../app/api/apiSlice"
 
 const postsAdapter = createEntityAdapter({
@@ -41,12 +41,22 @@ export const postsApiSlice = apiSlice.injectEndpoints({
                 }
             })
         }),
+        addComment: builder.mutation({
+            query: ({...comment}) => ({
+                url: '/posts/comment',
+                method: 'PUT',
+                body: {
+                    ...comment
+                }
+            })
+        })
     })
 })
 
 export const {
     useGetPostsQuery,
-    useCreatePostMutation
+    useCreatePostMutation,
+    useAddCommentMutation
 } = postsApiSlice
 
 // export const selectPostsResult = postsApiSlice.endpoints.getPosts.select()

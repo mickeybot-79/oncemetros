@@ -681,6 +681,11 @@ textarea {
   overflow: scroll;
   background-color: white;
   margin-top: 20px;
+  font-size: 20px;
+}
+
+.ql-editor::-webkit-scrollbar {
+  display: none;
 }
 
 .ql-toolbar {
@@ -820,11 +825,11 @@ svg {
 
 #comments-container{
   display: grid;
-  width: 50%;
+  width: 55%;
   place-content: center;
   place-self: center;
-  background: linear-gradient(90deg, rgba(108, 115, 117, 0.233), rgba(169, 206, 223, 0.884), rgba(169, 206, 223, 0.884), rgba(169, 206, 223, 0.884), rgba(169, 206, 223, 0.884), rgba(108, 115, 117, 0.233));
-  border-radius: 50px;
+  background: linear-gradient(90deg, rgba(108, 115, 117, 0.013), rgba(169, 206, 223, 0.884), rgba(169, 206, 223, 0.884), rgba(169, 206, 223, 0.884), rgba(169, 206, 223, 0.884), rgba(108, 115, 117, 0.013));
+  /* border-radius: 50px; */
   margin-bottom: 50px;
 }
 
@@ -840,9 +845,9 @@ svg {
   padding: 30px;
   justify-content: space-between;
   /* background: linear-gradient(90deg, gray, white, white, white, white, gray); */
-  background: linear-gradient(90deg, rgba(95, 139, 189, 0.26), rgba(111, 188, 224, 0.884), rgb(95, 139, 189, 0.26));
+  background: linear-gradient(90deg, rgba(95, 139, 189, 0.016),rgba(145, 199, 224, 0.555), rgba(95, 139, 189, 0.016));
   border-radius: 20px;
-}
+  }
 
 .comment-content-image {
   display: flex;
@@ -864,6 +869,32 @@ svg {
   gap: 50px;
   padding: 20px;
   margin-top: -30px;
+  place-items: center;
+}
+
+.comment-options-container {
+  display: flex;
+  gap: 10px;
+}
+
+.comment-like-options {
+  display: flex;
+}
+
+.like-comment, 
+.comment-reply {
+  border: 0;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 15px;
+  border-radius: 10px;
+  width: 90px;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.like-comment:hover, 
+.comment-reply:hover {
+  background-color: rgba(123, 221, 114, 0.288);
 }
 
 #no-coments {

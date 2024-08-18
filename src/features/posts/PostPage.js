@@ -3,7 +3,7 @@ import Post from "./Post"
 import { useGetPostsQuery } from "./postsApiSlice"
 import Comments from "./Comments"
 import PageHeader from "../../components/PageHeader"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 const PostPage = () => {
 
@@ -19,7 +19,15 @@ const PostPage = () => {
         }),
     })
 
+    const [currentPost, setCurrentPost] = useState({})
+
+    const handleSetPost = (post) => {
+        console.log(post)
+        setCurrentPost(post)
+    }
+
     if (post) {
+         if (!currentPost?.id) setCurrentPost(post)
         return (
             <>
                 <PageHeader />
@@ -27,7 +35,7 @@ const PostPage = () => {
                     <Post post={post} />
                     {/*Share options*/}
                     <div id="share-options-container"></div>
-                    <Comments comments={post.comments} />
+                    <Comments post={currentPost} handleSetPost={handleSetPost}/>
                 </div>
             </>
         )

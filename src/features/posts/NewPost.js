@@ -318,7 +318,12 @@ const NewPost = () => {
                     onChange={handleChange}
                 ></textarea>
                 <label htmlFor="new-post-content" className="new-post-label" ref={topRef}>Contenido principal:</label>
-                <Editor defaultValue={new Delta()} ref={quillRef}/>
+                <Editor
+                    defaultValue={new Delta()
+                        .insert('Escribe aquí')
+                    }
+                    ref={quillRef}
+                />
                 <label htmlFor="new-post-image" className="new-post-label">Imagen:</label>
                 <div style={{ display: 'flex', width: '100%' }}>
                     <input
