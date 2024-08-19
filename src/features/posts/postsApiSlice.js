@@ -49,14 +49,24 @@ export const postsApiSlice = apiSlice.injectEndpoints({
                     ...comment
                 }
             })
-        })
+        }),
+        likeComment: builder.mutation({
+            query: ({...comment}) => ({
+                url: '/posts/comment/like',
+                method: 'PUT',
+                body: {
+                    ...comment
+                }
+            })
+        }),
     })
 })
 
 export const {
     useGetPostsQuery,
     useCreatePostMutation,
-    useAddCommentMutation
+    useAddCommentMutation,
+    useLikeCommentMutation
 } = postsApiSlice
 
 // export const selectPostsResult = postsApiSlice.endpoints.getPosts.select()

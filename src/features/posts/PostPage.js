@@ -19,15 +19,15 @@ const PostPage = () => {
         }),
     })
 
-    const [currentPost, setCurrentPost] = useState({})
+    //const [currentPost, setCurrentPost] = useState({})
 
-    const handleSetPost = (post) => {
-        console.log(post)
-        setCurrentPost(post)
-    }
+    // const handleSetPost = (post) => {
+    //     console.log(post)
+    //     setCurrentPost(post)
+    // }
 
     if (post) {
-         if (!currentPost?.id) setCurrentPost(post)
+        //  if (!currentPost?.id) setCurrentPost(post)
         return (
             <>
                 <PageHeader />
@@ -35,7 +35,8 @@ const PostPage = () => {
                     <Post post={post} />
                     {/*Share options*/}
                     <div id="share-options-container"></div>
-                    <Comments post={currentPost} handleSetPost={handleSetPost}/>
+                    {/* <Comments post={currentPost} handleSetPost={handleSetPost}/> */}
+                    <Comments post={post}/>
                 </div>
             </>
         )

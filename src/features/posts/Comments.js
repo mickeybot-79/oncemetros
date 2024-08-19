@@ -1,30 +1,47 @@
-import { useState } from "react"
-import { useAddCommentMutation } from "./postsApiSlice"
+import { useEffect, useState } from "react"
+import { useAddCommentMutation, useLikeCommentMutation } from "./postsApiSlice"
 
-const Comments = ({ post, handleSetPost }) => {
+const Comments = ({ post }) => {
+
+    const [allComments, setAllComments] = useState({})
+
+    useEffect(() => {
+        setAllComments(post.comments)
+        // eslint-disable-next-line
+    }, [])
 
     const [newComment, setNewComment] = useState('')
 
     const [addComment] = useAddCommentMutation()
 
+    const [likeComment] = useLikeCommentMutation()
+
+    const handleLikeComment = async (id) => {
+        const result = await likeComment({
+            post: post.searchField,
+            comment: id
+        })
+        if (result?.data?.searchField) {
+            setAllComments(result?.data?.comments)
+        }
+    }
+
     const handleSubmit = async () => {
         const result = await addComment({
             post: post.searchField,
             user: '',
-            date: Date.now(),
             content: newComment
         })
-        //console.log(result)
         if (result?.data?.searchField) {
             setNewComment('')
-            handleSetPost(result.data)
+            setAllComments([...result.data.comments])
         }
     }
 
     let commentsElements
 
-    if (post.comments.length > 0) {
-        commentsElements = post.comments.map(comment => {
+    if (allComments.length > 0) {
+        commentsElements = [...allComments].sort((a, b) => b.date - a.date).map(comment => {
             const convertedDate = new Date(parseInt(comment.date)).toDateString()
             const translatedDate = []
         
@@ -68,9 +85,10 @@ const Comments = ({ post, handleSetPost }) => {
         
             translatedDate.push(convertedDate.split(' ')[2])
             translatedDate.push(convertedDate.split(' ')[3])
+            
             return (
-                <>
-                    <div key={comment.searchField} className="comment-container">
+                <div key={comment.searchField}>
+                    <div className="comment-container">
                         <div className="comment-content-image">
                             <img src="../../Images/favicon.png" alt="user-image" className="comment-image" />
                             <p className="comment-content">{comment.content}</p>
@@ -80,14 +98,14 @@ const Comments = ({ post, handleSetPost }) => {
                             <div className="comment-options-container">
                                 <div className="comment-like-options">
                                     <p className="comment-likes">{comment.likes}</p>
-                                    <button className="like-comment">Me gusta</button>
+                                    <button className="like-comment" onClick={() => handleLikeComment(comment.searchField)}>Me gusta</button>
                                 </div>
                                 <button className="comment-reply">Responder...</button>
                             </div>
                         </div>
                     </div>
                     <hr style={{ width: '100%', height: '1px', borderWidth: '0', color: 'gray', backgroundColor: 'black', marginTop: '50px', marginBottom: '50px' }} />
-                </>
+                </div>
             )
         })
     } else {

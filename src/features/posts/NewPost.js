@@ -146,7 +146,7 @@ const NewPost = () => {
 
     const handleSubmit = async () => {
         const author = ''
-        const canSave = [postData.title, postData.heading, postData.content, postData.tags].every(Boolean) && !isLoading
+        const canSave = [postData.title, postData.content, postData.tags].every(Boolean) && !isLoading
         const editorElement = document.getElementsByClassName('ql-editor')[0]
         if (canSave) {
             try {

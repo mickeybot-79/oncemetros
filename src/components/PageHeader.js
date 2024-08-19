@@ -154,7 +154,11 @@ const PageHeader = () => {
     return (
         <>
             <header id="header-container" style={{ display: displayHeader }}>
-                <img src="../Images/logo 3.jpg" alt="logo" id="header-logo" />
+                <div id="options-image-container">
+                    <img src="../Images/search.png" alt="search" id="search-option" />
+                    <img src="../Images/logo 3.jpg" alt="logo" id="header-logo" />
+                    <img src="../Images/user-icon.png" alt="login" id="login-option" />
+                </div>
                 <ul id="main-menu-options">
                     <li className="menu-item" onClick={() => navigate('/')}>Inicio</li>
                     <li className="menu-item" ref={subMenu1} onMouseOver={displaySubmenu1} onMouseLeave={handleDisplaySubMenu1}>Fútbol Nacional</li>
