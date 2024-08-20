@@ -13,7 +13,7 @@ body {
   position: fixed;
   z-index: -5;
   filter:blur(5px) grayscale(40%) contrast(70%) brightness(80%);
-  background-size: cover;
+  object-fit: cover;
 }
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
@@ -397,7 +397,7 @@ ul {
   place-content: center;
   width: 100%;
   height: auto;
-  gap: 20px;
+  /* gap: 20px; */
 }
 
 #popular-stories-title {
@@ -409,21 +409,50 @@ ul {
 }
 
 .popular-story-container {
-  width: 700px;
+  /* width: 700px;
   height: auto;
   display: grid;
   place-content: center;
   place-items: center;
   padding: 30px;
-  /* background-color: rgba(122, 182, 192, 0.945); */
   background: radial-gradient(circle, rgb(133, 200, 212), rgb(59, 184, 163));
   cursor: pointer;
-  border-radius: 10px;
+  border-radius: 10px; */
+  width: 700px;
+    background: linear-gradient(90deg,
+        rgba(128, 128, 128, 0.015),
+        /* rgba(173, 232, 240, 0.884), */
+        rgba(169, 188, 218, 0.863),
+        rgba(169, 188, 218, 0.863),
+        rgba(169, 188, 218, 0.863),
+        rgba(169, 188, 218, 0.863),
+        rgba(169, 188, 218, 0.863),
+        rgba(169, 188, 218, 0.863),
+        rgba(169, 188, 218, 0.863),
+        rgba(169, 188, 218, 0.863),
+        rgba(128, 128, 128, 0.015));
+    display: grid;
+    place-items: center;
+    padding: 50px 100px 50px 100px;
+    cursor: pointer;
+    opacity: 0.9;
 }
 
 .popular-story-container:hover {
   /* background-color: rgba(171, 219, 228, 0.945); */
-  background: radial-gradient(circle, rgb(181, 211, 216), rgb(115, 197, 182));
+  /* background: radial-gradient(circle, rgb(181, 211, 216), rgb(115, 197, 182)); */
+  background: linear-gradient(90deg,
+      rgba(128, 128, 128, 0.015),
+      rgba(187, 201, 224, 0.863),
+      rgba(187, 201, 224, 0.863),
+      rgba(187, 201, 224, 0.863),
+      rgba(187, 201, 224, 0.863),
+      rgba(187, 201, 224, 0.863),
+      rgba(187, 201, 224, 0.863),
+      rgba(187, 201, 224, 0.863),
+      rgba(187, 201, 224, 0.863),
+      rgba(128, 128, 128, 0.015));
+      opacity: 1;
 }
 
 .popular-story-thumbnail {
@@ -436,11 +465,14 @@ ul {
 .popular-story-title {
   font-size: 25px;
   text-align: center;
+  max-width: 700px;
 }
 
 .popular-story-heading {
   font-size: 20px;
   margin-top: -10px;
+  max-width: 750px;
+  text-align: center;
 }
 
 /*New Post*/
@@ -916,11 +948,6 @@ svg {
   gap: 10px;
 }
 
-.comment-like-options {
-  display: flex;
-}
-
-.like-comment, 
 .comment-reply {
   border: 0;
   background-color: transparent;
@@ -929,9 +956,9 @@ svg {
   border-radius: 10px;
   width: 90px;
   font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  height: 30px;
 }
 
-.like-comment:hover, 
 .comment-reply:hover {
   background-color: rgba(123, 221, 114, 0.288);
 }
@@ -1120,4 +1147,73 @@ svg {
 .user-posts-heading {
   font-size: 18px;
   margin-top: -10px;
+}
+
+/*Search Page*/
+#search-page-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  place-content: center;
+}
+
+#search-filter-options {
+  display: flex;
+    gap: 20px;
+    background: linear-gradient(90deg,
+        rgba(128, 128, 128, 0.055),
+        rgb(245, 245, 245),
+        rgb(245, 245, 245),
+        rgb(245, 245, 245),
+        rgb(245, 245, 245),
+        rgba(128, 128, 128, 0.055));
+    width: 60%;
+    place-content: center;
+    padding-right: 50px;
+    padding-top: 30px;
+    padding-bottom: 50px;
+    height: 80px;
+    align-items: center;
+}
+
+#filter-title {
+  font-size: 25px; 
+}
+
+#filter-select {
+  height: 30px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* #input-search-container {
+  background: linear-gradient(90deg,
+      rgb(245, 245, 245),
+      rgb(245, 245, 245),
+      rgb(245, 245, 245),
+      rgb(245, 245, 245),
+      rgba(128, 128, 128, 0.055));
+  width: 30%;
+  place-content: start;
+  padding-left: 0px;
+  padding-top: 30px;
+  padding-bottom: 50px;
+  height: 80px;
+  align-items: center;
+  display: flex;
+  gap: 15px;
+} */
+
+#search-input{
+  height: 30px;
+  font-size: 18px;
+  width: 350px;
+}
+
+#search-button {
+  width: 35px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: 1px solid;
 }

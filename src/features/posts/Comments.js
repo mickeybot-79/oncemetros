@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useAddCommentMutation, useLikeCommentMutation } from "./postsApiSlice"
+import { useAddCommentMutation } from "./postsApiSlice"
 
 const Comments = ({ post }) => {
 
@@ -13,18 +13,6 @@ const Comments = ({ post }) => {
     const [newComment, setNewComment] = useState('')
 
     const [addComment] = useAddCommentMutation()
-
-    const [likeComment] = useLikeCommentMutation()
-
-    const handleLikeComment = async (id) => {
-        const result = await likeComment({
-            post: post.searchField,
-            comment: id
-        })
-        if (result?.data?.searchField) {
-            setAllComments(result?.data?.comments)
-        }
-    }
 
     const handleSubmit = async () => {
         const result = await addComment({
@@ -96,10 +84,10 @@ const Comments = ({ post }) => {
                         <div className="comment-date-options">
                             <p className="comment-date">{`${translatedDate[0]} ${translatedDate[1]}, ${translatedDate[2]}`}</p>
                             <div className="comment-options-container">
-                                <div className="comment-like-options">
+                                {/* <div className="comment-like-options">
                                     <p className="comment-likes">{comment.likes}</p>
                                     <button className="like-comment" onClick={() => handleLikeComment(comment.searchField)}>Me gusta</button>
-                                </div>
+                                </div> */}
                                 <button className="comment-reply">Responder...</button>
                             </div>
                         </div>

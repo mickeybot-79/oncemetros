@@ -13,6 +13,7 @@ import NewPost2 from './features/posts/NewPost2'
 import PostPage from './features/posts/PostPage'
 import TagsPage from './components/TagsPage'
 import UserPosts from './features/posts/UserPosts'
+import SearchPage from './components/SearchPage'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -24,6 +25,7 @@ const router = createBrowserRouter(
       <Route path="post/:id" index element={<PostPage />} />
       <Route path="tags/:tag" index element={<TagsPage />} />
       <Route path="posts/:user" index element={<UserPosts />} />
+      <Route path="search" index element={<SearchPage />} />
     </Route>
   )
 )

@@ -155,7 +155,7 @@ const PageHeader = () => {
         <>
             <header id="header-container" style={{ display: displayHeader }}>
                 <div id="options-image-container">
-                    <img src="../Images/search.png" alt="search" id="search-option" />
+                    <img src="../Images/search.png" alt="search" id="search-option" onClick={() => navigate('/search')}/>
                     <img src="../Images/logo 3.jpg" alt="logo" id="header-logo" />
                     <img src="../Images/user-icon.png" alt="login" id="login-option" />
                 </div>

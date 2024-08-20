@@ -160,11 +160,23 @@ const MainPage = () => {
                         titleEnd = subsTitle
                     }
                     return (
-                        <div key={posts?.entities[story].id} className="popular-story-container" onClick={() => navigate(`/post/${posts?.entities[story].id}`)}>
-                            <img src={posts?.entities[story].thumbnail} alt="popular-story" className="popular-story-thumbnail"/>
-                            <h4 className="popular-story-title">{titleEnd}</h4>
-                            <p className="popular-story-heading">{headingEnd}</p>
-                        </div>
+                        <>
+                            <div key={posts?.entities[story].id} className="popular-story-container" onClick={() => navigate(`/post/${posts?.entities[story].id}`)}>
+                                <img src={posts?.entities[story].thumbnail} alt="popular-story" className="popular-story-thumbnail" />
+                                <h4 className="popular-story-title">{titleEnd}</h4>
+                                <p className="popular-story-heading">{headingEnd}</p>
+                            </div>
+                            <hr style={{
+                                width: '100%',
+                                height: '1px',
+                                borderWidth: '0',
+                                color: 'gray',
+                                backgroundColor: 'black',
+                                marginTop: '0px',
+                                marginBottom: '0px'
+                            }}
+                            />
+                        </>
                     )
                 })
                 return allPopularPosts
