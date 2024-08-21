@@ -30,13 +30,13 @@ const SearchPage = () => {
                         <p id="filter-title">Buscar por</p>
                         <select id="filter-select">
                             <option>Título</option>
-                            <option>Etiqueta</option>
                             <option>Autor</option>
+                            <option>Etiqueta</option>
                         </select>
                         <input
                             id="search-input"
                             type="text"
-                            placeholder="buscar..."
+                            placeholder="buscar historias..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />

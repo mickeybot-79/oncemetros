@@ -19,6 +19,13 @@ const PageHeader = () => {
 
     const [subMenuTop, setSubMenuTop] = useState('')
 
+    const [displayPrompt, setDisplayPrompt] = useState('')
+
+    const [promptPosition, setPromptPosition] = useState({
+        top: '',
+        left: ''
+    })
+
     const subMenu1 = useRef()
     const subMenu2 = useRef()
     const subMenu3 = useRef()
@@ -151,16 +158,64 @@ const PageHeader = () => {
         })
     }
 
+    const handleDisplayPrompt = (prompt) => {
+        setDisplayPrompt(prompt)
+    }
+
+    const handleHidePrompt = () => {
+        setDisplayPrompt('none')
+    }
+
+    const handlePosition = (e) => {
+        setPromptPosition(() => {
+            return {
+                top: `${e.clientY}px`,
+                left: `${e.clientX}px`
+            }
+        })
+    }
+
     return (
         <>
             <header id="header-container" style={{ display: displayHeader }}>
                 <div id="options-image-container">
-                    <img src="../Images/search.png" alt="search" id="search-option" onClick={() => navigate('/search')}/>
-                    <img src="../Images/logo 3.jpg" alt="logo" id="header-logo" />
-                    <img src="../Images/user-icon.png" alt="login" id="login-option" />
+                    <img
+                        src="../Images/search.png"
+                        alt="search"
+                        id="search-option"
+                        onClick={() => navigate('/search')}
+                        onMouseOver={() => handleDisplayPrompt('search')}
+                        onMouseMove={(e) => handlePosition(e)}
+                        onMouseLeave={handleHidePrompt} />
+                    <p
+                        id="search-icon-prompt"
+                        style={{ display: displayPrompt === 'search' ? 'block' : 'none', top: promptPosition.top, left: promptPosition.left }}
+                    >Buscar</p>
+                    <img
+                        src="../Images/logo 3.jpg"
+                        alt="logo"
+                        id="header-logo"
+                        onClick={() => navigate('/')}
+                        onMouseOver={() => handleDisplayPrompt('home')}
+                        onMouseMove={(e) => handlePosition(e)}
+                        onMouseLeave={handleHidePrompt} />
+                    <p
+                        id="home-icon-prompt"
+                        style={{ display: displayPrompt === 'home' ? 'block' : 'none', top: promptPosition.top, left: promptPosition.left }}
+                    >Inicio</p>
+                    <img
+                        src="../Images/user-icon.png"
+                        alt="login"
+                        id="login-option"
+                        onMouseOver={() => handleDisplayPrompt('login')}
+                        onMouseMove={(e) => handlePosition(e)}
+                        onMouseLeave={handleHidePrompt} />
+                    <p
+                        id="login-icon-prompt"
+                        style={{ display: displayPrompt === 'login' ? 'block' : 'none', top: promptPosition.top, left: promptPosition.left }}
+                    >Iniciar sesión</p>
                 </div>
                 <ul id="main-menu-options">
-                    <li className="menu-item" onClick={() => navigate('/')}>Inicio</li>
                     <li className="menu-item" ref={subMenu1} onMouseOver={displaySubmenu1} onMouseLeave={handleDisplaySubMenu1}>Fútbol Nacional</li>
                     <li className="menu-item" ref={subMenu2} onMouseOver={displaySubmenu2} onMouseLeave={handleDisplaySubMenu2}>Fútbol Internacional</li>
                     <li className="menu-item" ref={subMenu3} onMouseOver={displaySubmenu3} onMouseLeave={handleDisplaySubMenu3}>Competiciones Europeas</li>
