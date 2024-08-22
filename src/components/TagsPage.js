@@ -1,15 +1,10 @@
 import { useNavigate, useParams } from "react-router-dom"
 import { useGetPostsQuery } from "../features/posts/postsApiSlice"
 import PageHeader from "./PageHeader"
-import { useEffect } from "react"
 
 const TagsPage = () => {
 
-    useEffect(() => {
-        setTimeout(() => {
-            window.scrollTo(0, 0)  
-        })
-    }, [])
+    window.scrollTo(0, 0)
 
     const { tag } = useParams()
 

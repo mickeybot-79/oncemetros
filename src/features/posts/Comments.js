@@ -3,6 +3,8 @@ import { useAddCommentMutation } from "./postsApiSlice"
 
 const Comments = ({ post }) => {
 
+    window.scrollTo(0, 0)
+
     const [allComments, setAllComments] = useState({})
 
     useEffect(() => {

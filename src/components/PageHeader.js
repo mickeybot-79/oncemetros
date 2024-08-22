@@ -53,6 +53,14 @@ const PageHeader = () => {
         })
     }, [displayHeader])
 
+    const handleSubMenuTop = () => {
+        setSubMenuTop(() => {
+            const headerElement = document.getElementById('header-container')
+            const rect = headerElement.getBoundingClientRect()
+            return `${rect.bottom - 20}px`
+        })
+    }
+
     const displaySubmenu1 = () => {
         const rect = subMenu1.current.getBoundingClientRect()
         const x = rect.left
@@ -63,6 +71,7 @@ const PageHeader = () => {
                 submenu1: 'block'
             }
         })
+        handleSubMenuTop()
     }
 
     const displaySubmenu2 = () => {
@@ -75,6 +84,7 @@ const PageHeader = () => {
                 submenu2: 'block'
             }
         })
+        handleSubMenuTop()
     }
 
     const displaySubmenu3 = () => {
@@ -87,6 +97,7 @@ const PageHeader = () => {
                 submenu3: 'block'
             }
         })
+        handleSubMenuTop()
     }
 
     const displaySubmenu4 = () => {
@@ -99,6 +110,7 @@ const PageHeader = () => {
                 submenu4: 'block'
             }
         })
+        handleSubMenuTop()
     }
 
     const displaySubmenu5 = () => {
@@ -111,6 +123,7 @@ const PageHeader = () => {
                 submenu5: 'block'
             }
         })
+        handleSubMenuTop()
     }
 
     const handleDisplaySubMenu1 = () => {
@@ -162,10 +175,6 @@ const PageHeader = () => {
         setDisplayPrompt(prompt)
     }
 
-    const handleHidePrompt = () => {
-        setDisplayPrompt('none')
-    }
-
     const handlePosition = (e) => {
         setPromptPosition(() => {
             return {
@@ -186,7 +195,7 @@ const PageHeader = () => {
                         onClick={() => navigate('/search')}
                         onMouseOver={() => handleDisplayPrompt('search')}
                         onMouseMove={(e) => handlePosition(e)}
-                        onMouseLeave={handleHidePrompt} />
+                        onMouseLeave={() => setDisplayPrompt('')} />
                     <p
                         id="search-icon-prompt"
                         style={{ display: displayPrompt === 'search' ? 'block' : 'none', top: promptPosition.top, left: promptPosition.left }}
@@ -198,7 +207,7 @@ const PageHeader = () => {
                         onClick={() => navigate('/')}
                         onMouseOver={() => handleDisplayPrompt('home')}
                         onMouseMove={(e) => handlePosition(e)}
-                        onMouseLeave={handleHidePrompt} />
+                        onMouseLeave={() => setDisplayPrompt('')} />
                     <p
                         id="home-icon-prompt"
                         style={{ display: displayPrompt === 'home' ? 'block' : 'none', top: promptPosition.top, left: promptPosition.left }}
@@ -207,9 +216,10 @@ const PageHeader = () => {
                         src="../Images/user-icon.png"
                         alt="login"
                         id="login-option"
+                        // onClick={() => navigate('/login')}
                         onMouseOver={() => handleDisplayPrompt('login')}
                         onMouseMove={(e) => handlePosition(e)}
-                        onMouseLeave={handleHidePrompt} />
+                        onMouseLeave={() => setDisplayPrompt('')} />
                     <p
                         id="login-icon-prompt"
                         style={{ display: displayPrompt === 'login' ? 'block' : 'none', top: promptPosition.top, left: promptPosition.left }}

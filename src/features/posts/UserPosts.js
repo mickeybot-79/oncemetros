@@ -1,15 +1,10 @@
 import { useNavigate, useParams } from "react-router-dom"
 import { useGetPostsQuery } from "./postsApiSlice"
 import PageHeader from "../../components/PageHeader"
-import { useEffect } from "react"
 
 const UserPosts = () => {
 
-    useEffect(() => {
-        setTimeout(() => {
-            window.scrollTo(0, 0)  
-        })
-    }, [])
+    window.scrollTo(0, 0)  
 
     const { user } = useParams()
 

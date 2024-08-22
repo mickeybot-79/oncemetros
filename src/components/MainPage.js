@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react"
 import { useGetPostsQuery } from "../features/posts/postsApiSlice"
-import PageHeader from "./PageHeader"
-import Presentation from "./Presentation"
 import { useNavigate } from "react-router-dom"
+import Presentation from "./Presentation"
+import PageHeader from "./PageHeader"
 
 const MainPage = () => {
 
@@ -36,9 +36,7 @@ const MainPage = () => {
         transition: ''
     })
 
-    const [leftScroll, setLeftScroll] = useState(0)
-
-    const [count, setCount] = useState(-2)
+    const [count, setCount] = useState(-1)
 
     const [autoScroll, setAutoScroll] = useState(true)
 
@@ -47,6 +45,8 @@ const MainPage = () => {
     const [timeOfLastClick, setTimeOfLastClick] = useState(0)
 
     const popularStoriesRef = useRef()
+
+    const exploreRef = useRef()
 
     useEffect(() => {
         const backgroundAnimationMark = window.sessionStorage.getItem('backgroundAnimation')
@@ -142,7 +142,7 @@ const MainPage = () => {
                         popularStoriesArray.push(posts?.ids[i])
                     }
                 }
-                const slicedStories = popularStoriesArray.sort((a, b) => posts?.entities[b].views - posts?.entities[a].views).slice(0, 10)
+                const slicedStories = popularStoriesArray.sort((a, b) => posts?.entities[b].views - posts?.entities[a].views).slice(3, 10)
                 const sortedPosts = slicedStories.sort((a, b) => posts?.entities[b].date - posts?.entities[a].date)
                 const allPopularPosts = sortedPosts.map((story) => {
                     let headingEnd
@@ -160,8 +160,8 @@ const MainPage = () => {
                         titleEnd = subsTitle
                     }
                     return (
-                        <>
-                            <div key={posts?.entities[story].id} className="popular-story-container" onClick={() => navigate(`/post/${posts?.entities[story].id}`)}>
+                        <div key={posts?.entities[story].id}>
+                            <div className="popular-story-container" onClick={() => navigate(`/post/${posts?.entities[story].id}`)}>
                                 <img src={posts?.entities[story].thumbnail} alt="popular-story" className="popular-story-thumbnail" />
                                 <h4 className="popular-story-title">{titleEnd}</h4>
                                 <p className="popular-story-heading">{headingEnd}</p>
@@ -174,9 +174,8 @@ const MainPage = () => {
                                 backgroundColor: 'black',
                                 marginTop: '0px',
                                 marginBottom: '0px'
-                            }}
-                            />
-                        </>
+                            }} />
+                        </div>
                     )
                 })
                 return allPopularPosts
@@ -185,54 +184,44 @@ const MainPage = () => {
     }, [isSuccess, posts, mainStoriesAnimaton, navigate])
 
     useEffect(() => {
-        //const interval = setInterval(() => {
-        setInterval(() => {
+        const interval = setInterval(() => {
             if (autoScroll) {
                 setCount(prevCount => {
-                    const newCount = !document.hidden ? prevCount < 195 ? prevCount + 1 : 0 : prevCount
-                    return newCount
+                    return !document.hidden ? prevCount < 97 ? prevCount + 1 : 0 : prevCount
                 })
             }
         }, 3000)
 
-        //return () => clearInterval(interval)
-        // eslint-disable-next-line
-    }, [])
+        return () => clearInterval(interval)
+    }, [autoScroll])
 
     useEffect(() => {
-        //const timeInterval = setInterval(() => {
-        setInterval(() => {
+        const timeInterval = setInterval(() => {
             setTimeOfLastClick((prevState) => {
-                if (!autoScroll && (Date.now() - prevState) >= 4000) {
-                    setLeftScroll(0)
+                if (!autoScroll && (Date.now() - prevState) >= 1000) {
                     setAutoScroll(true)
                 }
                 return prevState
             })
         }, 1000)
-        //return () => clearInterval(timeInterval)
+
+        return () => clearInterval(timeInterval)
     }, [autoScroll, timeOfLastClick])
 
     useEffect(() => {
-        const updateAnimation = () => {
+        if (autoScroll) {
             setMainStoriesAnimation(() => {
-                const scrollFactor = (count / 2)
-                //const scrollFactor = count
                 return {
                     transition: '1.5s',
-                    transform: `translateX(-${scrollFactor * 321}px)`
+                    transform: `translateX(-${count * 321}px)`
                 }
             })
         }
-        if (autoScroll) updateAnimation()
     }, [count, autoScroll])
 
     const handleScrollLeft = () => {
         setAutoScroll(false)
-        const prevScrollFactor = (count / 2)
-        //const prevScrollFactor = count
-        const scrollFactor = leftScroll === 0 ? prevScrollFactor > 0 ? prevScrollFactor - 1 : 0 : leftScroll > 96 ? 0 : leftScroll - 1
-        //const scrollFactor = count > 96 ? 0 : count - 1
+        const scrollFactor = count > 96 ? 0 : count - 1
         setMainStoriesAnimation(() => {
             return {
                 transition: '0.5s',
@@ -240,17 +229,12 @@ const MainPage = () => {
             }
         })
         setTimeOfLastClick(Date.now())
-        setLeftScroll(scrollFactor)
-        setCount((scrollFactor * 2) - 2)
-        //setCount(scrollFactor)
+        setCount(scrollFactor)
     }
 
     const handleScrollRight = () => {
         setAutoScroll(false)
-        const prevScrollFactor = (count / 2)
-        //const prevScrollFactor = count
-        const scrollFactor = leftScroll === 0 ? prevScrollFactor + 1 : leftScroll > 96 ? 0 : leftScroll + 1
-        //const scrollFactor = count > 96 ? 0 : count + 1
+        const scrollFactor = count > 96 ? 0 : count + 1
         setMainStoriesAnimation(() => {
             return {
                 transition: '0.5s',
@@ -258,9 +242,7 @@ const MainPage = () => {
             }
         })
         setTimeOfLastClick(Date.now())
-        setLeftScroll(scrollFactor)
-        setCount((scrollFactor * 2) - 2)
-        //setCount(scrollFactor)
+        setCount(scrollFactor)
     }
 
     return (
@@ -268,36 +250,66 @@ const MainPage = () => {
             <div id="background-div" style={{display: backgroundAnimation.display, animation: backgroundAnimation.animation}}></div>
             <PageHeader />
             <div id="main-page-container">
-                {/*Presentation*/}
                 <Presentation presentationDisplay={presentationDisplay}/>
                 <main style={{ display: presentationDisplay === 'none' ? 'grid' : 'none' }}>
-                    {/*Main stories*/}
                     <section id="main-stories">
                         <div id="stories-scroll-left" onClick={handleScrollLeft} style={{animation: mainStoriesContainerAnimation}}><p>{'<'}</p></div>
                         <div id="main-stories-container" style={{animation: mainStoriesContainerAnimation}}>
-                            <div
-                                id="stories-scroll-container"
-                                style={{ animation: mainStoriesContainerAnimation }}
-                                >
+                            <div id="stories-scroll-container" style={{ animation: mainStoriesContainerAnimation }}>
                                 {mainStories}
                             </div>
                         </div>
                         <div id="stories-scroll-right" onClick={handleScrollRight} style={{animation: mainStoriesContainerAnimation}}><p>{'>'}</p></div>
                     </section>
-                    <div id="down-prompt-container" style={{ opacity: downPromptDisplay.opacity, animation: downPromptDisplay.animation }} onClick={() => {
-                        window.scrollTo({ top: popularStoriesRef.current.offsetTop, behavior: 'smooth' })
-                    }}><p id="down-prompt">{'<'}</p></div>
-                    {/*Popular stories*/}
+                    <div
+                        className="down-prompt-container"
+                        style={{ opacity: downPromptDisplay.opacity, animation: downPromptDisplay.animation }}
+                        onClick={() => {
+                            window.scrollTo({ top: popularStoriesRef.current.offsetTop + 50, behavior: 'smooth' })
+                        }}>
+                        <p className="down-prompt">{'<'}</p>
+                    </div>
                     <section id="popular-stories" ref={popularStoriesRef}>
-                        <h2 id="popular-stories-title">Historias populares</h2>
+                        <h2 id="popular-stories-title">Historias Destacadas</h2>
                         <div id="popular-stories-container">
                             {popularStories}
                         </div>
                     </section>
-                    {/*Explore by Author and Tags*/}
-                    <section id="explore">
-
+                    <section id="explore" ref={exploreRef}>
+                        <h2 id="explore-title">Explorar</h2>
+                        <div id="explore-authors-container">
+                            <h3 id="explore-authors-title">Autores</h3>
+                            <ul id="authors-list">
+                                <li className="authors-list-item" onClick={() => navigate('/posts/Matías Vázquez')}>Matías Vázquez</li>
+                                <li className="authors-list-item" onClick={() => navigate('/posts/Antonio Peñalver')}>Antonio Peñalver</li>
+                                <li className="authors-list-item" onClick={() => navigate('/posts/Aymen Smaili Miri')}>Aymen Smaili Miri</li>
+                                <li className="authors-list-item" onClick={() => navigate('/posts/Martín')}>Martín</li>
+                                <li className="authors-list-item" onClick={() => navigate('/posts/Izan Villaverde')}>Izan Villaverde</li>
+                                <li className="authors-list-item" onClick={() => navigate('/posts/Diego Andrés Cano López')}>Diego Andrés Cano López</li>
+                                <li className="authors-list-item" onClick={() => navigate('/posts/Jesús Ascó')}>Jesús Ascó</li>
+                            </ul>
+                        </div>
+                        <div id="explore-tags-container">
+                            <h3 id="explore-tags-title">Etiquetas</h3>
+                            <ul id="tags-list">
+                                <li className="tags-list-item" onClick={() => navigate('/tags/LaLiga EA Sports')}>LaLiga EA Sports</li>
+                                <li className="tags-list-item" onClick={() => navigate('/tags/Copa del rey')}>Copa del rey</li>
+                                <li className="tags-list-item" onClick={() => navigate('/tags/Premier League')}>Premier League</li>
+                                <li className="tags-list-item" onClick={() => navigate('/tags/Champions League')}>Champions League</li>
+                                <li className="tags-list-item" onClick={() => navigate('/tags/Europa League')}>Europa League</li>
+                                <li className="tags-list-item" onClick={() => navigate('/tags/Conference League')}>Conference League</li>
+                                <li className="tags-list-item" onClick={() => navigate('/')}>Más...</li>
+                            </ul>
+                        </div>
                     </section>
+                    <div
+                        className="down-prompt-container"
+                        style={{ opacity: downPromptDisplay.opacity, animation: downPromptDisplay.animation, marginBottom: '100px' }}
+                        onClick={() => {
+                            window.scrollTo({top: 0, behavior: 'smooth' })
+                        }}>
+                        <p className="down-prompt">{'>'}</p>
+                    </div>
                 </main>
             </div>
             {/*Footer*/}
