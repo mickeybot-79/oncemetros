@@ -121,7 +121,7 @@ const MainPage = () => {
                         titleEnd = subsTitle
                     }
                     return (
-                        <div key={posts?.entities[story].id} className="main-story" style={{transform: mainStoriesAnimaton.transform, transition: mainStoriesAnimaton.transition}} onClick={() => navigate(`/post/${posts?.entities[story].id}`)}>
+                        <div key={story} className="main-story" style={{transform: mainStoriesAnimaton.transform, transition: mainStoriesAnimaton.transition}} onClick={() => navigate(`/post/${story}`)}>
                             <img src={posts?.entities[story].thumbnail} alt="main-story" className="story-thumbnail" />
                             <div id="title-heading-container">
                                 <h4 className="story-title">{titleEnd}</h4>
@@ -160,7 +160,7 @@ const MainPage = () => {
                         titleEnd = subsTitle
                     }
                     return (
-                        <div key={posts?.entities[story].id}>
+                        <div key={story}>
                             <div className="popular-story-container" onClick={() => navigate(`/post/${posts?.entities[story].id}`)}>
                                 <img src={posts?.entities[story].thumbnail} alt="popular-story" className="popular-story-thumbnail" />
                                 <h4 className="popular-story-title">{titleEnd}</h4>
@@ -270,6 +270,9 @@ const MainPage = () => {
                         <p className="down-prompt">{'<'}</p>
                     </div>
                     <section id="popular-stories" ref={popularStoriesRef}>
+                        {/* <div id="popular-background-container">
+                            <img src="../Images/football-1331838_1280.jpg" alt="background" id="popular-stories-background"/>
+                        </div> */}
                         <h2 id="popular-stories-title">Historias Destacadas</h2>
                         <div id="popular-stories-container">
                             {popularStories}

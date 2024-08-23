@@ -50,13 +50,23 @@ export const postsApiSlice = apiSlice.injectEndpoints({
                 }
             })
         }),
+        addTag: builder.mutation({
+            query: (tags) => ({
+                url: 'posts/tags/new',
+                method: 'POST',
+                body: {
+                    tags
+                }
+            })
+        })
     })
 })
 
 export const {
     useGetPostsQuery,
     useCreatePostMutation,
-    useAddCommentMutation
+    useAddCommentMutation,
+    useAddTagMutation
 } = postsApiSlice
 
 // export const selectPostsResult = postsApiSlice.endpoints.getPosts.select()
