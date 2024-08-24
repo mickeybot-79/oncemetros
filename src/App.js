@@ -14,6 +14,7 @@ import PostPage from './features/posts/PostPage'
 import TagsPage from './components/TagsPage'
 import UserPosts from './features/posts/UserPosts'
 import SearchPage from './components/SearchPage'
+import AllTagsPage from './components/AllTagsPage'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -23,6 +24,7 @@ const router = createBrowserRouter(
       <Route path="post/new" index element={<NewPost />} />
       <Route path="post/new2" index element={<NewPost2 />} />
       <Route path="post/:id" index element={<PostPage />} />
+      <Route path="tags" index element={<AllTagsPage />} />
       <Route path="tags/:tag" index element={<TagsPage />} />
       <Route path="posts/:user" index element={<UserPosts />} />
       <Route path="search" index element={<SearchPage />} />

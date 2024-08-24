@@ -107,7 +107,7 @@ const MainPage = () => {
                 mainStoriesArray = [...slicedPosts]
                 const allPosts = slicedPosts.map((story) => {
                     let headingEnd
-                    const subsHeading = posts?.entities[story].heading.substring(0, 95)
+                    const subsHeading = posts?.entities[story].heading.substring(0, 90)
                     if (subsHeading[subsHeading.length - 1] !== '.') {
                         headingEnd = `${subsHeading}...`
                     } else {
@@ -159,9 +159,15 @@ const MainPage = () => {
                     } else {
                         titleEnd = subsTitle
                     }
+                    let itemClass
+                    if (sortedPosts.indexOf(story) % 2 === 1) {
+                        itemClass = "popular-story-container-odd"
+                    } else {
+                        itemClass = "popular-story-container"
+                    }
                     return (
                         <div key={story}>
-                            <div className="popular-story-container" onClick={() => navigate(`/post/${posts?.entities[story].id}`)}>
+                            <div className={itemClass} onClick={() => navigate(`/post/${posts?.entities[story].id}`)}>
                                 <img src={posts?.entities[story].thumbnail} alt="popular-story" className="popular-story-thumbnail" />
                                 <h4 className="popular-story-title">{titleEnd}</h4>
                                 <p className="popular-story-heading">{headingEnd}</p>
@@ -248,9 +254,9 @@ const MainPage = () => {
     return (
         <>
             <div id="background-div" style={{display: backgroundAnimation.display, animation: backgroundAnimation.animation}}></div>
+            <Presentation presentationDisplay={presentationDisplay}/>
             <PageHeader />
             <div id="main-page-container">
-                <Presentation presentationDisplay={presentationDisplay}/>
                 <main style={{ display: presentationDisplay === 'none' ? 'grid' : 'none' }}>
                     <section id="main-stories">
                         <div id="stories-scroll-left" onClick={handleScrollLeft} style={{animation: mainStoriesContainerAnimation}}><p>{'<'}</p></div>
@@ -301,7 +307,7 @@ const MainPage = () => {
                                 <li className="tags-list-item" onClick={() => navigate('/tags/Champions League')}>Champions League</li>
                                 <li className="tags-list-item" onClick={() => navigate('/tags/Europa League')}>Europa League</li>
                                 <li className="tags-list-item" onClick={() => navigate('/tags/Conference League')}>Conference League</li>
-                                <li className="tags-list-item" onClick={() => navigate('/')}>Más...</li>
+                                <li className="tags-list-item" onClick={() => navigate('/tags')}>Más...</li>
                             </ul>
                         </div>
                     </section>

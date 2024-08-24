@@ -1,11 +1,20 @@
 import { useEffect, useRef, useState } from "react"
-import allTags from "../../config/allTags"
-import { useCreatePostMutation } from "./postsApiSlice"
+import { useCreatePostMutation, useGetTagsQuery, useAddTagMutation } from "./postsApiSlice"
 import { useNavigate } from "react-router-dom"
 import Quill from "quill"
 import Editor from "./EditorTest"
 
 const NewPost = () => {
+
+    const date = new Date("2023-03-13");
+    console.log(date.getTime())
+
+    const {
+        data,
+        isSuccess
+    } = useGetTagsQuery('tagsList', {})
+
+    const [addTag] = useAddTagMutation()
 
     const Delta = Quill.import('delta')
 
@@ -18,6 +27,8 @@ const NewPost = () => {
         // isError,
         // error
     }] = useCreatePostMutation()
+
+    const [tagOptions, setTagOptions] = useState([])
 
     const [postData, setPostData] = useState({
         title: '',
@@ -40,10 +51,10 @@ const NewPost = () => {
         confirmButton: 'none'
     })
 
+    const [writingStyle, setWritingStyle] = useState('type')
+
     const newTagRef = useRef()
-
     const quillRef = useRef()
-
     const topRef = useRef()
 
     useEffect(() => {
@@ -54,14 +65,15 @@ const NewPost = () => {
     }, [postData.thumbnail])
 
     useEffect(() => {
-        setTimeout(() => {
-            const boldButton = document.querySelector('.ql-bold')
-            const italicsButton = document.querySelector('.ql-italic')
-            const underlineButton = document.querySelector('.ql-underline')
-            const linkButton = document.querySelector('.ql-link')
-            const listButtons = document.querySelectorAll('.ql-list')
-            const clearButton = document.querySelector('.ql-clean')
-            boldButton.innerHTML = `<svg height="800px" width="800px" id="bold-content" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+        if (writingStyle === 'type') {
+            setTimeout(() => {
+                const boldButton = document.querySelector('.ql-bold')
+                const italicsButton = document.querySelector('.ql-italic')
+                const underlineButton = document.querySelector('.ql-underline')
+                const linkButton = document.querySelector('.ql-link')
+                const listButtons = document.querySelectorAll('.ql-list')
+                const clearButton = document.querySelector('.ql-clean')
+                boldButton.innerHTML = `<svg height="800px" width="800px" id="bold-content" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                     viewBox="0 0 21.891 21.891" xml:space="preserve">
                     <g>
                         <path style="fill:#010002;" d="M18.266,11.592c-0.446-0.586-1.004-1.075-1.667-1.462c0.407-0.359,0.749-0.762,1.022-1.207
@@ -77,14 +89,14 @@ const NewPost = () => {
 		c0.413,0.595,0.622,1.295,0.622,2.083C15.526,16.371,15.383,16.974,15.099,17.498z"/>
                     </g>
                 </svg>`
-            italicsButton.innerHTML = `<svg fill="#000000" width="800px" height="800px" id="italics-content" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg">
+                italicsButton.innerHTML = `<svg fill="#000000" width="800px" height="800px" id="italics-content" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg">
                     <path d="M 17.7344 44.7578 L 32.5703 44.7578 C 33.6718 44.7578 34.4453 44.0781 34.4453 42.9766 C 34.4453 41.9219 33.6953 41.2422 32.5938 41.2422 L 27.3203 41.2422 L 33.0156 14.7578 L 38.2656 14.7578 C 39.3672 14.7578 40.1406 14.0781 40.1406 12.9766 C 40.1406 11.9219 39.3906 11.2422 38.2891 11.2422 L 23.4297 11.2422 C 22.3281 11.2422 21.5547 11.9219 21.5547 12.9766 C 21.5547 14.0781 22.3516 14.7578 23.4531 14.7578 L 28.6797 14.7578 L 22.9844 41.2422 L 17.7109 41.2422 C 16.6094 41.2422 15.8594 41.9219 15.8594 42.9766 C 15.8594 44.0781 16.6328 44.7578 17.7344 44.7578 Z" />
                 </svg>`
-            underlineButton.innerHTML = `<svg fill="#000000" width="800px" height="800px" id="underlined-content" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                underlineButton.innerHTML = `<svg fill="#000000" width="800px" height="800px" id="underlined-content" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d='M14.41,4.53V4.18h4.66v.36h-.49a1.34,1.34,0,0,0-1.19.65,3,3,0,0,0-.2,1.4v5.33A9.45,9.45,0,0,1,16.78,15a3.85,3.85,0,0,1-1.54,1.87,5.49,5.49,0,0,1-3.13.78,5.89,5.89,0,0,1-3.27-.75,4,4,0,0,1-1.58-2A11.14,11.14,0,0,1,7,11.64V6.5a2.58,2.58,0,0,0-.33-1.59,1.38,1.38,0,0,0-1.08-.38H5V4.18h5.68v.36h-.5A1.3,1.3,0,0,0,9.06,5,2.87,2.87,0,0,0,8.81,6.5v5.73A12.52,12.52,0,0,0,9,14a3.71,3.71,0,0,0,.51,1.54,2.77,2.77,0,0,0,1.06.91,3.68,3.68,0,0,0,1.7.36,4.69,4.69,0,0,0,2.31-.56,3,3,0,0,0,1.39-1.44,8.33,8.33,0,0,0,.37-3V6.5A2.72,2.72,0,0,0,16,5a1.43,1.43,0,0,0-1.12-.43Z' />
                     <path d='M4.93,20V19H19v1Z' />
                 </svg>`
-            linkButton.innerHTML = `<svg fill="#000000" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                linkButton.innerHTML = `<svg fill="#000000" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
                 width="800px" height="800px" viewBox="0 0 72 72" enable-background="new 0 0 72 72" xml:space="preserve">
            <g>
                <g>
@@ -116,12 +128,12 @@ const NewPost = () => {
                </g>
            </g>
            </svg>`
-            for (let i = 0; i < listButtons.length; i++) {
-                listButtons[i].innerHTML = `<svg fill="#000000" width="800px" height="800px" viewBox="-5 -6 24 24" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin" class="jam jam-ordered-list">
+                for (let i = 0; i < listButtons.length; i++) {
+                    listButtons[i].innerHTML = `<svg fill="#000000" width="800px" height="800px" viewBox="-5 -6 24 24" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin" class="jam jam-ordered-list">
                         <path d='M4 1h9a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 8h9a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0-4h9a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zM.438.845h.72L1.111 3H.65L.7 1.28H.224L.438.845zM.523 5.59l-.45-.053c.011-.244.09-.439.234-.582a.76.76 0 0 1 .556-.214c.139 0 .263.03.37.089a.67.67 0 0 1 .26.258.677.677 0 0 1 .097.342.988.988 0 0 1-.115.435c-.075.153-.211.33-.407.535l-.158.17h.647V7H.014l.015-.231.666-.68c.158-.16.263-.288.313-.382a.531.531 0 0 0 .074-.245.227.227 0 0 0-.067-.17.242.242 0 0 0-.179-.067.233.233 0 0 0-.182.081c-.034.038-.077.132-.131.284zm.982 4.398c.08.106.121.23.121.373a.7.7 0 0 1-.23.528.813.813 0 0 1-.579.215.758.758 0 0 1-.545-.203c-.142-.136-.22-.32-.183-.603l.456.042c.015.101.05.174.1.22.05.045.115.068.194.068.083 0 .15-.026.203-.078a.253.253 0 0 0 .08-.19.256.256 0 0 0-.109-.209c-.075-.06-.187-.09-.386-.143l.046-.401a.622.622 0 0 0 .203-.042.223.223 0 0 0 .092-.077.175.175 0 0 0 .032-.1.142.142 0 0 0-.045-.109.176.176 0 0 0-.127-.044.211.211 0 0 0-.13.044.217.217 0 0 0-.08.113l-.048.035-.444-.056a.703.703 0 0 1 .185-.413.71.71 0 0 1 .53-.217c.189 0 .35.06.479.182a.58.58 0 0 1 .195.436.516.516 0 0 1-.087.29c-.056.085-.136.153-.246.12a.626.626 0 0 1 .323.219z' />
                     </svg>`
-            }
-            clearButton.innerHTML = `<svg fill="#000000" id="clear-button" xmlns="http://www.w3.org/2000/svg"
+                }
+                clearButton.innerHTML = `<svg fill="#000000" id="clear-button" xmlns="http://www.w3.org/2000/svg"
                     width="800px" height="800px" viewBox="0 0 52 52" enable-background="new 0 0 52 52" xml:space="preserve">
                     <path d="M45.1,40.9l4.6-4.6c0.4-0.4,0.4-1,0-1.4l-2.8-2.8c-0.4-0.4-1-0.4-1.4,0L41,36.8l-4.3-4.3
 	c-0.4-0.4-1-0.4-1.4,0l-2.8,2.8c-0.4,0.4-0.4,1,0,1.4l4.3,4.3l-4.2,4.2c-0.4,0.4-0.4,1,0,1.4l2.8,2.8c0.4,0.4,1,0.4,1.4,0l4.2-4.2
@@ -131,8 +143,9 @@ const NewPost = () => {
                     <path d="M28,38.5c0-0.8-0.7-1.5-1.5-1.5h-23C2.7,37,2,37.7,2,38.5v3C2,42.3,2.7,43,3.5,43h23c0.8,0,1.5-0.7,1.5-1.5
 	V38.5z"/>
                 </svg>`
-        }, 100)
-    }, [])
+            }, 100)
+        }
+    }, [writingStyle])
 
     const handleChange = (e) => {
         const { name, value } = e.target
@@ -146,13 +159,19 @@ const NewPost = () => {
 
     const handleSubmit = async () => {
         const author = ''
-        const canSave = [postData.title, postData.content, postData.tags].every(Boolean) && !isLoading
-        const editorElement = document.getElementsByClassName('ql-editor')[0]
+        let postContent = ''
+        if (writingStyle === 'type') {
+            const editorElement = document.getElementsByClassName('ql-editor')[0]
+            postContent = editorElement.innerHTML.toString()
+        } else {
+            postContent = postData.content
+        }
+        const canSave = [postData.title, postContent !== '', postData.tags].every(Boolean) && !isLoading
         if (canSave) {
             try {
                 const result = await createPost({
                     ...postData,
-                    content: editorElement.innerHTML.toString(),
+                    content: postContent,
                     author
                 })
                 console.log(result)
@@ -217,15 +236,23 @@ const NewPost = () => {
         }
     }
 
-    const tagOptions = allTags.map(tag => {
-        return (
-            <option
-                key={tag}
-                value={tag}
-            >{tag}
-            </option>
-        )
-    })
+    useEffect(() => {
+        if (isSuccess) {
+            console.log(data)
+            setTagOptions(() => {
+                const tagElements = [...data[0].allTags].sort().map(tag => {
+                    return (
+                        <option
+                            key={tag}
+                            value={tag}
+                        >{tag}
+                        </option>
+                    )
+                })
+                return tagElements
+            })
+        }
+    }, [data, isSuccess])
 
     const pictureElement = (
         <div
@@ -296,7 +323,6 @@ const NewPost = () => {
     return (
         <div id="new-post-container">
             <button id="new-post-back" onClick={() => navigate(-1)}><div>➜</div> Atrás</button>
-            {/* <button id="new-post-back" onClick={() => navigate('/')}><div>➜</div> Inicio</button> */}
             <h1 id="new-post-h1">Nueva Publicación</h1>
             <form id="new-post-form">
                 <label htmlFor="new-post-title" className="new-post-label">Título:</label>
@@ -317,13 +343,24 @@ const NewPost = () => {
                     value={postData.heading}
                     onChange={handleChange}
                 ></textarea>
-                <label htmlFor="new-post-content" className="new-post-label" ref={topRef}>Contenido principal:</label>
-                <Editor
+                <label className="new-post-label" ref={topRef}>Contenido principal:</label>
+                <select id="writing-select" defaultValue="type" onChange={(e) => setWritingStyle(e.target.value)}>
+                    <option value="type">Edición libre</option>
+                    <option value="html-input">HTML</option>
+                </select>
+                {writingStyle === 'type' && <Editor
                     defaultValue={new Delta()
                         .insert('Escribe aquí')
                     }
                     ref={quillRef}
-                />
+                />}
+                {writingStyle === 'html-input' && <textarea
+                    id="new-post-content"
+                    name="content"
+                    placeholder="Ingresar contenido HTML"
+                    value={postData.content}
+                    onChange={handleChange}
+                ></textarea>}
                 <label htmlFor="new-post-image" className="new-post-label">Imagen:</label>
                 <div style={{ display: 'flex', width: '100%' }}>
                     <input
@@ -394,8 +431,36 @@ const NewPost = () => {
                         }, 10)
                     }}>{addingTag ? 'Cancelar': 'Agregar etiqueta'}</button>
                     <input id="new-tag-input" type="text" style={{display: addingTag ? 'block': 'none'}} ref={newTagRef} placeholder="Nueva etiqueta"/>
-                    <button id="add-tag-confirm" style={{display: addingTag ? 'block': 'none'}} onClick={(e) => {
+                    <button id="add-tag-confirm" style={{display: addingTag ? 'block': 'none'}} onClick={async (e) => {
                         e.preventDefault()
+                        const result = await addTag(newTagRef.current.value)
+                        if (result?.data?.allTags) {
+                            setTagOptions(() => {
+                                const tagElements = result.data.allTags.map(tag => {
+                                    return (
+                                        <option
+                                            key={tag}
+                                            value={tag}
+                                        >{tag}
+                                        </option>
+                                    )
+                                })
+                                return tagElements
+                            })
+                            console.log(result)
+                            newTagRef.current.value = ''
+                            setAddingTag(false)
+                        } else {
+                            console.log(result)
+                            setResultMessage((prevState) => {
+                                return {
+                                    ...prevState,
+                                    message: result.data.message,
+                                    display: 'grid',
+                                    confirmButton: 'block'
+                                }
+                            })
+                        }
                     }}>✓</button>
                 </div>
                 <div id="tag-elements-container">
@@ -403,7 +468,7 @@ const NewPost = () => {
                 </div>
             </form>
             <div id="new-post-buttons">
-                <button id="new-post-cancel" onClick={() => { }}>Cancelar</button>
+                <button id="new-post-cancel" onClick={() => navigate(-1)}>Cancelar</button>
                 <button id="new-post-submit" onClick={handleSubmit}>Guardar</button>
             </div>
             <div id="post-result-container" style={{display: resultMessage.display}}>

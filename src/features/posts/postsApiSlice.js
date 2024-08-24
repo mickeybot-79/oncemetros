@@ -50,12 +50,25 @@ export const postsApiSlice = apiSlice.injectEndpoints({
                 }
             })
         }),
+        getTags: builder.query({
+            query: () => ({
+                url: 'posts/tags'
+            }),
+            providesTags: (result, error, arg) => {
+                if (result?.data?.allTags) {
+                    return [
+                        { type: 'Tags', id: 'LIST' },
+                        ...result.data.allTags.map(i => ({ type: 'Tags', i }))
+                    ]
+                } else return [{ type: 'Tags', id: 'LIST' }]
+            }
+        }),
         addTag: builder.mutation({
-            query: (tags) => ({
+            query: (tag) => ({
                 url: 'posts/tags/new',
                 method: 'POST',
                 body: {
-                    tags
+                    tag
                 }
             })
         })
@@ -66,6 +79,7 @@ export const {
     useGetPostsQuery,
     useCreatePostMutation,
     useAddCommentMutation,
+    useGetTagsQuery,
     useAddTagMutation
 } = postsApiSlice
 

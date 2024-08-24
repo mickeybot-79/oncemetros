@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react"
-import allTags from "../../config/allTags"
 import { useCreatePostMutation } from "./postsApiSlice"
 import { useNavigate } from "react-router-dom"
 import Quill from "quill"
@@ -332,15 +331,15 @@ const NewPost2 = () => {
         }
     }
 
-    const tagOptions = allTags.map(tag => {
-        return (
-            <option
-                key={tag}
-                value={tag}
-            >{tag}
-            </option>
-        )
-    })
+    // const tagOptions = allTags.map(tag => {
+    //     return (
+    //         <option
+    //             key={tag}
+    //             value={tag}
+    //         >{tag}
+    //         </option>
+    //     )
+    // })
 
     const pictureElement = (
         <div
@@ -546,7 +545,7 @@ const NewPost2 = () => {
                     }}
                     style={{fontFamily: 'Impact, Haettenschweiler, `Arial Narrow Bold`, sans-serif', fontSize: '15px'}}>
                         <option value="" disabled hidden id='hidden' readOnly>Seleccionar</option>
-                        {tagOptions}
+                        {/* {tagOptions} */}
                     </select>
                     <button id="add-tag-button" aria-label="test" onClick={(e) => {
                         e.preventDefault()
