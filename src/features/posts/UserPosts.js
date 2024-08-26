@@ -24,14 +24,14 @@ const UserPosts = () => {
         const userPostElements = sortedPosts.map(post => {
 
             let headingEnd
-            const subsHeading = posts?.entities[post].heading.substring(0, 110)
+            const subsHeading = posts?.entities[post].heading.substring(0, 100)
             if (subsHeading[subsHeading.length - 1] !== '.') {
                 headingEnd = `${subsHeading}...`
             } else {
                 headingEnd = subsHeading
             }
             let titleEnd
-            const subsTitle = posts?.entities[post].title.substring(0, 80)
+            const subsTitle = posts?.entities[post].title.substring(0, 75)
             if (posts?.entities[post].title.length > 80) {
                 titleEnd = `${subsTitle}...`
             } else {

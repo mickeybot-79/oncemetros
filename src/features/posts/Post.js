@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 const Post = ({ post }) => {
@@ -5,6 +6,31 @@ const Post = ({ post }) => {
     const navigate = useNavigate()
 
     let allParagraphElements
+
+    const [headingContentElement, setHeadingContentElement] = useState([])
+
+    useEffect(() => {
+        setTimeout(() => {
+            const allKeys = []
+            setHeadingContentElement(() => {
+                const newHeadingContent = post.heading.split('\n').map(paragraph => {
+                    let currentKey
+                    for (let i = 0; i < post.heading.split('\n').length; i++) {
+                        if (post.heading.split('\n')[i] === '') {
+                            currentKey = allKeys.length + 1
+                        } else {
+                            allKeys.push(paragraph)
+                            currentKey = allKeys.length - 1
+                        }
+                    }
+                    return (
+                        <p key={currentKey}>{paragraph}</p>
+                    )
+                })
+                return newHeadingContent
+            })
+        }, 100)
+    }, [post.heading])
 
     if (post.content[0] === '<') {
         setTimeout(() => {
@@ -83,9 +109,9 @@ const Post = ({ post }) => {
 
     const imageDescElement = (
         <div style={{ display: 'flex' }}>
-            <p id="post-imgDesc">{post.imgDesc}</p>
-            <p style={{ marginLeft: '5px', marginRight: '5px' }}>|</p>
-            <p id="post-imgCred">{post.imgCred}</p>
+            <p id="post-imgDesc">{post.imgDesc} | {post.imgCred} </p>
+            {/* <p style={{ marginLeft: '5px', marginRight: '5px' }}>|</p>
+            <p id="post-imgCred">{post.imgCred}</p> */}
         </div>
     )
 
@@ -94,7 +120,7 @@ const Post = ({ post }) => {
             <h2 id="post-title">{post.title}</h2>
             {post.thumbnail && <img id="post-thumbnail" src={post.thumbnail} alt="post-thumbnail" />}
             {post.imgDesc && post.thumbnail && imageDescElement}
-            {post.heading && <p id="post-heading">{post.heading}</p>}
+            {post.heading && <div id="post-heading">{headingContentElement}</div>}
             <div id="post-content">{allParagraphElements}</div>
             <div style={{ display: 'inline', placeSelf: 'start' }}>
                 <p id="post-author" onClick={() => navigate(`/posts/${post.author}`)}>Por <span>{post.author}</span></p>

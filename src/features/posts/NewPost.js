@@ -6,8 +6,8 @@ import Editor from "./EditorTest"
 
 const NewPost = () => {
 
-    // const date = new Date("2023-03-13");
-    // console.log(date.getTime())
+    const date = new Date("2022-10-04")
+    console.log(date.getTime())
 
     const {
         data,
@@ -166,26 +166,32 @@ const NewPost = () => {
         } else {
             postContent = postData.content
         }
-        let startSlice
-        do {
-            startSlice = postContent.search('background-color')
-            console.log(startSlice)
-            if (startSlice !== -1) {
-                const endSlice = postContent.slice(startSlice, postContent.length).search(';')
-                const halfOne = postContent.slice(0, startSlice)
-                const halfTwo = postContent.slice(endSlice, postContent.length)
-                console.log(halfOne)
-                console.log(halfTwo)
-                postContent = halfOne + halfTwo
+        const getIndicesOf = (searchStr, str) => {
+            var startIndex = 0, 
+                index,
+                indices = []
+            str = str.toLowerCase()
+            searchStr = searchStr.toLowerCase()
+            while ((index = str.indexOf(searchStr, startIndex)) > -1) {
+                indices.push(index)
+                startIndex = index + searchStr.length
             }
-        } while (startSlice !== -1)
-
-        console.log(postContent)
-        // console.log(postContent.slice(0, postContent.search('background-color')))
-        // console.log(postContent.slice(postContent.search('"background-color'), postContent.length - 1).search(';'))
-        // console.log(postContent.slice(postContent.search(';') + 1))
-        // console.log(postContent.slice(postContent.search('background-color'), postContent.length - 1).search(';'))
-        // console.log(postContent.slice(0, postContent.search('background-color') - 1), postContent.slice(postContent.search(';') + 1))
+            return indices
+        } 
+        var endIndices = getIndicesOf('background-color', postContent)
+        if (endIndices.length > 0) {
+            const updatedContent = []
+            for (let i = 0; i < endIndices.length; i++) {
+                let currentStartIndex
+                if (i === 0) {
+                    currentStartIndex = 0
+                } else {
+                    currentStartIndex = postContent.substring(endIndices[i - 1], postContent.length).search(';') + endIndices[i - 1] + 1
+                }
+                updatedContent.push(postContent.substring(currentStartIndex, endIndices[i]))
+            }
+            postContent = updatedContent.join('')
+        }
         const canSave = [postData.title, postContent !== '', postData.tags].every(Boolean) && !isLoading
         if (canSave) {
             try {
@@ -200,7 +206,8 @@ const NewPost = () => {
                         return {
                             ...prevState,
                             message: 'Publicación creada correctamente.',
-                            display: 'grid'
+                            display: 'grid',
+                            image: '../../Images/success.gif'
                         }
                     })
                     setTimeout(() => {
@@ -211,9 +218,10 @@ const NewPost = () => {
                     setResultMessage((prevState) => {
                         return {
                             ...prevState,
-                            message: `Error al crear la publicación: ${result?.error?.data?.message}`,
+                            message: `${result?.error?.data?.message}`,
                             display: 'grid',
-                            confirmButton: 'block'
+                            confirmButton: 'block',
+                            image: '../../Images/error-image.png'
                         }
                     })
                 }
@@ -227,16 +235,8 @@ const NewPost = () => {
                         ...prevState,
                         message: 'La publicación requiere un título.',
                         display: 'grid',
-                        confirmButton: 'block'
-                    }
-                })
-            } else if (!postData.heading) {
-                setResultMessage((prevState) => {
-                    return {
-                        ...prevState,
-                        message: 'La publicación requiere un encabezado.',
-                        display: 'grid',
-                        confirmButton: 'block'
+                        confirmButton: 'block',
+                        image: '../../Images/error-image.png'
                     }
                 })
             } else if (!postData.content) {
@@ -245,7 +245,8 @@ const NewPost = () => {
                         ...prevState,
                         message: 'La publicación requiere contenido principal.',
                         display: 'grid',
-                        confirmButton: 'block'
+                        confirmButton: 'block',
+                        image: '../../Images/error-image.png'
                     }
                 })
             } else if (!postData.tags) {
@@ -254,7 +255,8 @@ const NewPost = () => {
                         ...prevState,
                         message: 'Por favor, agrega al menos una etiqueta.',
                         display: 'grid',
-                        confirmButton: 'block'
+                        confirmButton: 'block',
+                        image: '../../Images/error-image.png'
                     }
                 })
             }
@@ -263,7 +265,6 @@ const NewPost = () => {
 
     useEffect(() => {
         if (isSuccess) {
-            //console.log(data)
             setTagOptions(() => {
                 const tagElements = [...data[0].allTags].sort().map(tag => {
                     return (
@@ -326,24 +327,27 @@ const NewPost = () => {
         </div >
     )
 
-    const selectedTagsElements = postData.tags.map(tag => {
+    //setSelectedTagsElements(() => {
+        const selectedTagsElements = postData.tags.map(tag => {
 
-        const listener = () => {
-            setPostData((prevState) => {
-                const updatedTags = [...prevState.tags]
-                const tagIndex = updatedTags.indexOf(tag)
-                updatedTags.splice(tagIndex, 1)
-                return {
-                    ...prevState,
-                    tags: updatedTags
-                }
-            })
-        }
-
-        return (
-            <div key={tag} className="tag-element">{tag} <span onClick={listener}>x</span></div>
-        )
-    })
+            const listener = () => {
+                setPostData((prevState) => {
+                    const updatedTags = [...prevState.tags]
+                    const tagIndex = updatedTags.indexOf(tag)
+                    updatedTags.splice(tagIndex, 1)
+                    return {
+                        ...prevState,
+                        tags: updatedTags
+                    }
+                })
+            }
+    
+            return (
+                <div key={tag} className="tag-element">{tag} <span onClick={listener}>x</span></div>
+            )
+        })
+        //return newSelectedTags
+    //})
 
     return (
         <div id="new-post-container">
@@ -375,7 +379,7 @@ const NewPost = () => {
                 </select>
                 {writingStyle === 'type' && <Editor
                     defaultValue={new Delta()
-                        .insert('Escribe aquí')
+                        .insert('[Escribe aquí...]')
                     }
                     ref={quillRef}
                 />}
@@ -458,8 +462,17 @@ const NewPost = () => {
                     <input id="new-tag-input" type="text" style={{display: addingTag ? 'block': 'none'}} ref={newTagRef} placeholder="Nueva etiqueta"/>
                     <button id="add-tag-confirm" style={{display: addingTag ? 'block': 'none'}} onClick={async (e) => {
                         e.preventDefault()
-                        const result = await addTag(newTagRef.current.value)
+                        const newTag = newTagRef.current.value
+                        const result = await addTag(newTag)
                         if (result?.data?.allTags) {
+                            setPostData((prevState) => {
+                                const updatedTags = [...prevState.tags]
+                                if (!updatedTags.includes(newTag)) updatedTags.push(newTag)
+                                return {
+                                    ...prevState,
+                                    tags: updatedTags
+                                }
+                            })
                             setTagOptions(() => {
                                 const tagElements = result.data.allTags.map(tag => {
                                     return (
@@ -498,8 +511,8 @@ const NewPost = () => {
             </div>
             <div id="post-result-container" style={{display: resultMessage.display}}>
                 <div id="result-container">
-                    <p id="post-result-message">{resultMessage.message}</p>
                     <img src={resultMessage.image} alt="" id="post-result-image"/>
+                    <p id="post-result-message">{resultMessage.message}</p>
                     <button id="result-confirm" style={{display: resultMessage.confirmButton}} onClick={() => {
                         setResultMessage((prevState) => {
                             return {
@@ -508,7 +521,7 @@ const NewPost = () => {
                                 confirmButton: 'none'
                             }
                         })
-                    }}>Cerrar</button>
+                    }}>Aceptar</button>
                 </div>
             </div>
         </div>

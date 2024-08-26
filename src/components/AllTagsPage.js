@@ -14,7 +14,7 @@ const AllTagsPage = () => {
 
     if (isSuccess) {
         console.log(tags)
-        const allTagsElements = tags[0].allTags.map(tag => {
+        const allTagsElements = [...tags[0].allTags].sort().map(tag => {
             return (
                 <p key={tag} className="tag-label" onClick={() => navigate(`/tags/${tag}`)}>{tag}</p>
             )

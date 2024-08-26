@@ -35,11 +35,55 @@ const SearchPage = () => {
                             } else {
                                 titleEnd = subsTitle
                             }
+                            const convertedDate = new Date(parseInt(posts?.entities[post].date)).toDateString(undefined, {})
+                            const translatedDate = []
+                        
+                            switch (convertedDate.split(' ')[1]) {
+                                case 'Jan':
+                                    translatedDate.push('Enero')
+                                    break;
+                                case 'Feb':
+                                    translatedDate.push('Febrero')
+                                    break;
+                                case 'Mar':
+                                    translatedDate.push('Marzo')
+                                    break;
+                                case 'Apr':
+                                    translatedDate.push('Abril')
+                                    break;
+                                case 'May':
+                                    translatedDate.push('Mayo')
+                                    break;
+                                case 'Jun':
+                                    translatedDate.push('Junio')
+                                    break;
+                                case 'Jul':
+                                    translatedDate.push('Julio')
+                                    break;
+                                case 'Aug':
+                                    translatedDate.push('Agosto')
+                                    break;
+                                case 'Sep':
+                                    translatedDate.push('Septiembre')
+                                    break;
+                                case 'Oct':
+                                    translatedDate.push('Octubre')
+                                    break;
+                                case 'Nov':
+                                    translatedDate.push('Noviembre')
+                                    break;
+                                default:
+                                    translatedDate.push('Diciembre')
+                            }
+                        
+                            translatedDate.push(convertedDate.split(' ')[2])
+                            translatedDate.push(convertedDate.split(' ')[3])
                             return (
                                 <div key={post} className="search-result-container" onClick={() => navigate(`/post/${post}`)}>
                                     <img src={posts?.entities[post].thumbnail} alt="post-image" className="search-result-image" />
                                     <p className="search-result-title">{titleEnd}</p>
                                     <p className="search-result-author">Por {posts?.entities[post].author}</p>
+                                    <p className="search-result-date">{`${translatedDate[0]} ${translatedDate[1]}, ${translatedDate[2]}`}</p>
                                 </div>
                             )
                         })
@@ -69,11 +113,55 @@ const SearchPage = () => {
                             } else {
                                 titleEnd = subsTitle
                             }
+                            const convertedDate = new Date(parseInt(posts?.entities[post].date)).toDateString(undefined, {})
+                            const translatedDate = []
+                        
+                            switch (convertedDate.split(' ')[1]) {
+                                case 'Jan':
+                                    translatedDate.push('Enero')
+                                    break;
+                                case 'Feb':
+                                    translatedDate.push('Febrero')
+                                    break;
+                                case 'Mar':
+                                    translatedDate.push('Marzo')
+                                    break;
+                                case 'Apr':
+                                    translatedDate.push('Abril')
+                                    break;
+                                case 'May':
+                                    translatedDate.push('Mayo')
+                                    break;
+                                case 'Jun':
+                                    translatedDate.push('Junio')
+                                    break;
+                                case 'Jul':
+                                    translatedDate.push('Julio')
+                                    break;
+                                case 'Aug':
+                                    translatedDate.push('Agosto')
+                                    break;
+                                case 'Sep':
+                                    translatedDate.push('Septiembre')
+                                    break;
+                                case 'Oct':
+                                    translatedDate.push('Octubre')
+                                    break;
+                                case 'Nov':
+                                    translatedDate.push('Noviembre')
+                                    break;
+                                default:
+                                    translatedDate.push('Diciembre')
+                            }
+                        
+                            translatedDate.push(convertedDate.split(' ')[2])
+                            translatedDate.push(convertedDate.split(' ')[3])
                             return (
                                 <div key={post} className="search-result-container" onClick={() => navigate(`/post/${post}`)}>
                                     <img src={posts?.entities[post].thumbnail} alt="post-image" className="search-result-image" />
                                     <p className="search-result-title">{titleEnd}</p>
                                     <p className="search-result-author">Por {posts?.entities[post].author}</p>
+                                    <p className="search-result-date">{`${translatedDate[0]} ${translatedDate[1]}, ${translatedDate[2]}`}</p>
                                 </div>
                             )
                         })
@@ -110,11 +198,55 @@ const SearchPage = () => {
                             } else {
                                 titleEnd = subsTitle
                             }
+                            const convertedDate = new Date(parseInt(posts?.entities[post].date)).toDateString(undefined, {})
+                            const translatedDate = []
+                        
+                            switch (convertedDate.split(' ')[1]) {
+                                case 'Jan':
+                                    translatedDate.push('Enero')
+                                    break;
+                                case 'Feb':
+                                    translatedDate.push('Febrero')
+                                    break;
+                                case 'Mar':
+                                    translatedDate.push('Marzo')
+                                    break;
+                                case 'Apr':
+                                    translatedDate.push('Abril')
+                                    break;
+                                case 'May':
+                                    translatedDate.push('Mayo')
+                                    break;
+                                case 'Jun':
+                                    translatedDate.push('Junio')
+                                    break;
+                                case 'Jul':
+                                    translatedDate.push('Julio')
+                                    break;
+                                case 'Aug':
+                                    translatedDate.push('Agosto')
+                                    break;
+                                case 'Sep':
+                                    translatedDate.push('Septiembre')
+                                    break;
+                                case 'Oct':
+                                    translatedDate.push('Octubre')
+                                    break;
+                                case 'Nov':
+                                    translatedDate.push('Noviembre')
+                                    break;
+                                default:
+                                    translatedDate.push('Diciembre')
+                            }
+                        
+                            translatedDate.push(convertedDate.split(' ')[2])
+                            translatedDate.push(convertedDate.split(' ')[3])
                             return (
                                 <div key={post} className="search-result-container" onClick={() => navigate(`/post/${post}`)}>
                                     <img src={posts?.entities[post].thumbnail} alt="post-image" className="search-result-image" />
                                     <p className="search-result-title">{titleEnd}</p>
                                     <p className="search-result-author">Por {posts?.entities[post].author}</p>
+                                    <p className="search-result-date">{`${translatedDate[0]} ${translatedDate[1]}, ${translatedDate[2]}`}</p>
                                 </div>
                             )
                         })

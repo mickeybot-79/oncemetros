@@ -836,18 +836,21 @@ textarea {
   border-radius: 10px;
   display: grid;
   place-content: center;
+  padding: 20px;
 }
 
 #post-result-message {
   text-align: center;
   font-size: 25px;
-  margin-top: -10px;
+  margin-top: 0px;
+  margin-bottom: -10px;
 }
 
 #post-result-image {
-  width: 250px;
+  width: 120px;
   height: auto;
   place-self: center;
+  margin-bottom: 20px;
 }
 
 #result-confirm {
@@ -942,10 +945,8 @@ svg {
   display: grid;
   place-items: center;
   place-self: center;
-  /* background: radial-gradient(circle, rgba(179, 193, 212, 0.918), rgba(145, 164, 190, 0.925)); */
   background: linear-gradient(90deg,
-      rgba(145, 164, 190, 0.01),
-      rgba(145, 164, 190, 0.8),
+      rgba(204, 213, 226, 0.01),
       rgba(153, 173, 202, 0.925),
       rgba(153, 173, 202, 0.925),
       rgba(153, 173, 202, 0.925),
@@ -954,9 +955,14 @@ svg {
       rgba(153, 173, 202, 0.925),
       rgba(153, 173, 202, 0.925),
       rgba(153, 173, 202, 0.925),
-      rgba(145, 164, 190, 0.8),
-      rgba(145, 164, 190, 0.01));
-  padding: 0px 120px 20px 120px;
+      rgba(153, 173, 202, 0.925),
+      rgba(153, 173, 202, 0.925),
+      rgba(153, 173, 202, 0.925),
+      rgba(153, 173, 202, 0.925),
+      rgba(153, 173, 202, 0.925),
+      rgba(153, 173, 202, 0.925),
+      rgba(204, 213, 226, 0.01));
+  padding: 0px 70px 20px 70px;
   margin-top: 30px;
   margin-bottom: 30px;
   border-radius: 20px;
@@ -1033,7 +1039,7 @@ svg {
 
 #comments-container {
   display: grid;
-  width: 55%;
+  width: 52%;
   place-content: center;
   place-self: center;
   background: linear-gradient(90deg,
@@ -1046,8 +1052,10 @@ svg {
       rgba(169, 206, 223, 0.884),
       rgba(169, 206, 223, 0.884),
       rgba(169, 206, 223, 0.884),
+      rgba(169, 206, 223, 0.884),
+      rgba(169, 206, 223, 0.884),
       rgba(108, 115, 117, 0.01));
-  /* border-radius: 50px; */
+  border-radius: 20px;
   margin-bottom: 50px;
 }
 #all-comments {
@@ -1473,6 +1481,14 @@ svg {
  font-size: 18px;
  font-weight: 700;
  color: rgb(44, 44, 44);
+}
+
+.search-result-date{
+  position: absolute;
+  margin-left: 210px;
+  margin-top: 180px;
+  font-weight: 700;
+  color: rgb(77, 77, 77);
 }
 
 /*All Tags Page*/
