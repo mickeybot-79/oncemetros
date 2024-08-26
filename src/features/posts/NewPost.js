@@ -6,8 +6,8 @@ import Editor from "./EditorTest"
 
 const NewPost = () => {
 
-    const date = new Date("2023-03-13");
-    console.log(date.getTime())
+    // const date = new Date("2023-03-13");
+    // console.log(date.getTime())
 
     const {
         data,
@@ -166,6 +166,26 @@ const NewPost = () => {
         } else {
             postContent = postData.content
         }
+        let startSlice
+        do {
+            startSlice = postContent.search('background-color')
+            console.log(startSlice)
+            if (startSlice !== -1) {
+                const endSlice = postContent.slice(startSlice, postContent.length).search(';')
+                const halfOne = postContent.slice(0, startSlice)
+                const halfTwo = postContent.slice(endSlice, postContent.length)
+                console.log(halfOne)
+                console.log(halfTwo)
+                postContent = halfOne + halfTwo
+            }
+        } while (startSlice !== -1)
+
+        console.log(postContent)
+        // console.log(postContent.slice(0, postContent.search('background-color')))
+        // console.log(postContent.slice(postContent.search('"background-color'), postContent.length - 1).search(';'))
+        // console.log(postContent.slice(postContent.search(';') + 1))
+        // console.log(postContent.slice(postContent.search('background-color'), postContent.length - 1).search(';'))
+        // console.log(postContent.slice(0, postContent.search('background-color') - 1), postContent.slice(postContent.search(';') + 1))
         const canSave = [postData.title, postContent !== '', postData.tags].every(Boolean) && !isLoading
         if (canSave) {
             try {
@@ -175,25 +195,30 @@ const NewPost = () => {
                     author
                 })
                 console.log(result)
-                setResultMessage((prevState) => {
-                    return {
-                        ...prevState,
-                        message: 'Publicación creada correctamente.',
-                        display: 'grid'
-                    }
-                })
-                setTimeout(() => {
-                    navigate(`/post/${result.data.searchField}`)
-                }, 2000)
+                if (result?.data?.searchField) {
+                    setResultMessage((prevState) => {
+                        return {
+                            ...prevState,
+                            message: 'Publicación creada correctamente.',
+                            display: 'grid'
+                        }
+                    })
+                    setTimeout(() => {
+                        navigate(`/post/${result.data.searchField}`)
+                    }, 2000)
+                } else {
+                    console.log(result)
+                    setResultMessage((prevState) => {
+                        return {
+                            ...prevState,
+                            message: `Error al crear la publicación: ${result?.error?.data?.message}`,
+                            display: 'grid',
+                            confirmButton: 'block'
+                        }
+                    })
+                }
             } catch (err) {
                 console.log(err)
-                setResultMessage((prevState) => {
-                    return {
-                        ...prevState,
-                        message: `Error al crear la publicación: ${err}`,
-                        display: 'grid'
-                    }
-                })
             }
         } else {
             if (!postData.title) {
@@ -238,7 +263,7 @@ const NewPost = () => {
 
     useEffect(() => {
         if (isSuccess) {
-            console.log(data)
+            //console.log(data)
             setTagOptions(() => {
                 const tagElements = [...data[0].allTags].sort().map(tag => {
                     return (

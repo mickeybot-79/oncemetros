@@ -17,8 +17,6 @@ const PageHeader = () => {
 
     const [subMenuLeft, setSubMenuLeft] = useState('')
 
-    const [subMenuTop, setSubMenuTop] = useState('')
-
     const [displayPrompt, setDisplayPrompt] = useState('')
 
     const [promptPosition, setPromptPosition] = useState({
@@ -43,24 +41,6 @@ const PageHeader = () => {
         }
     }, [])
 
-    useEffect(() => {
-        setTimeout(() => {
-            setSubMenuTop(() => {
-                const headerElement = document.getElementById('header-container')
-                const rect = headerElement.getBoundingClientRect()
-                return `${rect.bottom - 20}px`
-            })
-        })
-    }, [displayHeader])
-
-    const handleSubMenuTop = () => {
-        setSubMenuTop(() => {
-            const headerElement = document.getElementById('header-container')
-            const rect = headerElement.getBoundingClientRect()
-            return `${rect.bottom - 20}px`
-        })
-    }
-
     const displaySubmenu1 = () => {
         const rect = subMenu1.current.getBoundingClientRect()
         const x = rect.left
@@ -71,7 +51,6 @@ const PageHeader = () => {
                 submenu1: 'block'
             }
         })
-        handleSubMenuTop()
     }
 
     const displaySubmenu2 = () => {
@@ -84,7 +63,6 @@ const PageHeader = () => {
                 submenu2: 'block'
             }
         })
-        handleSubMenuTop()
     }
 
     const displaySubmenu3 = () => {
@@ -97,7 +75,6 @@ const PageHeader = () => {
                 submenu3: 'block'
             }
         })
-        handleSubMenuTop()
     }
 
     const displaySubmenu4 = () => {
@@ -110,7 +87,6 @@ const PageHeader = () => {
                 submenu4: 'block'
             }
         })
-        handleSubMenuTop()
     }
 
     const displaySubmenu5 = () => {
@@ -123,7 +99,6 @@ const PageHeader = () => {
                 submenu5: 'block'
             }
         })
-        handleSubMenuTop()
     }
 
     const handleDisplaySubMenu1 = () => {
@@ -233,7 +208,7 @@ const PageHeader = () => {
                     <li className="menu-item" ref={subMenu5} onMouseOver={displaySubmenu5} onMouseLeave={handleDisplaySubMenu5}>Historia de los mundiales</li>
                 </ul>
             </header>
-            <ul id="futbol-nacional-options" onMouseOver={displaySubmenu1} onMouseLeave={handleDisplaySubMenu1} style={{display: displaySubMenu.submenu1, left: subMenuLeft, top: subMenuTop}}>
+            <ul id="futbol-nacional-options" onMouseOver={displaySubmenu1} onMouseLeave={handleDisplaySubMenu1} style={{display: displaySubMenu.submenu1, left: subMenuLeft}}>
                 <li className="submenu-option" onClick={() => navigate('/tags/LaLiga EA Sports')}>LaLiga EA Sports</li>
                 <li className="submenu-option" onClick={() => navigate('/tags/LaLiga Hypermotion')}>LaLiga Hypermotion</li>
                 <li className="submenu-option" onClick={() => navigate('/tags/Primera RFEF')}>Primera RFEF</li>
@@ -242,7 +217,7 @@ const PageHeader = () => {
                 <li className="submenu-option" onClick={() => navigate('/tags/Copa del rey')}>Copa del rey</li>
                 <li className="submenu-option" onClick={() => navigate('/tags/Supercopa de España')}>Supercopa de España</li>
             </ul>
-            <ul id="futbot-internacional-options" onMouseOver={displaySubmenu2} onMouseLeave={handleDisplaySubMenu2} style={{display: displaySubMenu.submenu2, left: subMenuLeft, top: subMenuTop}}>
+            <ul id="futbot-internacional-options" onMouseOver={displaySubmenu2} onMouseLeave={handleDisplaySubMenu2} style={{display: displaySubMenu.submenu2, left: subMenuLeft}}>
                 <li className="submenu-option" onClick={() => navigate('/tags/Premier League')}>Premier League</li>
                 <li className="submenu-option" onClick={() => navigate('/tags/Bundesliga')}>Bundesliga</li>
                 <li className="submenu-option" onClick={() => navigate('/tags/Ligue 1')}>Ligue 1</li>
@@ -250,17 +225,17 @@ const PageHeader = () => {
                 <li className="submenu-option" onClick={() => navigate('/tags/Primeira Liga de Portugal')}>Primeira Liga de Portugal</li>
                 <li className="submenu-option" onClick={() => navigate('/tags/MLS')}>MLS</li>
             </ul>
-            <ul id="competiciones-europeas-options" onMouseOver={displaySubmenu3} onMouseLeave={handleDisplaySubMenu3} style={{display: displaySubMenu.submenu3, left: subMenuLeft, top: subMenuTop}}>
+            <ul id="competiciones-europeas-options" onMouseOver={displaySubmenu3} onMouseLeave={handleDisplaySubMenu3} style={{display: displaySubMenu.submenu3, left: subMenuLeft}}>
                 <li className="submenu-option" onClick={() => navigate('/tags/Champions League')}>Champions League</li>
                 <li className="submenu-option" onClick={() => navigate('/tags/Europa League')}>Europa League</li>
                 <li className="submenu-option" onClick={() => navigate('/tags/Conference League')}>Conference League</li>
             </ul>
-            <ul id="competiciones-internacionales-options" onMouseOver={displaySubmenu4} onMouseLeave={handleDisplaySubMenu4} style={{display: displaySubMenu.submenu4, left: subMenuLeft, top: subMenuTop}}>
+            <ul id="competiciones-internacionales-options" onMouseOver={displaySubmenu4} onMouseLeave={handleDisplaySubMenu4} style={{display: displaySubMenu.submenu4, left: subMenuLeft}}>
                 <li className="submenu-option" onClick={() => navigate('/tags/Eurocopa')}>Eurocopa</li>
                 <li className="submenu-option" onClick={() => navigate('/tags/Copa América')}>Copa América</li>
                 <li className="submenu-option" onClick={() => navigate('/tags/Nations League')}>Nations League</li>
             </ul>
-            <ul id="historia-de-los-mundiales-options" onMouseOver={displaySubmenu5} onMouseLeave={handleDisplaySubMenu5} style={{display: displaySubMenu.submenu5, left: subMenuLeft, top: subMenuTop}}>
+            <ul id="historia-de-los-mundiales-options" onMouseOver={displaySubmenu5} onMouseLeave={handleDisplaySubMenu5} style={{display: displaySubMenu.submenu5, left: subMenuLeft}}>
                 <li className="submenu-option" onClick={() => navigate('/tags/Mundial Uruguay 1930')}>Mundial Uruguay 1930</li>
                 <li className="submenu-option" onClick={() => navigate('/tags/Mundial Qatar 2022')}>Mundial Qatar 2022</li>
             </ul>

@@ -1,15 +1,9 @@
 import { useNavigate } from "react-router-dom"
 import { useGetTagsQuery } from "../features/posts/postsApiSlice"
 import PageHeader from "./PageHeader"
-import { useEffect } from "react"
+//import { useEffect } from "react"
 
 const AllTagsPage = () => {
-
-    useEffect(() => {
-        setTimeout(() => {
-            window.scrollTo(0, 0)  
-        })
-    }, [])
 
     const navigate = useNavigate()
 

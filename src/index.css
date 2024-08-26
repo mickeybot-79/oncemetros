@@ -237,6 +237,7 @@ ul {
 #competiciones-internacionales-options,
 #historia-de-los-mundiales-options {
   position: absolute;
+  margin-top: 0px;
   border-radius: 10px;
   background-color: rgb(175, 45, 45);
   width: 230px;
@@ -356,24 +357,24 @@ ul {
 #stories-scroll-left,
 #stories-scroll-right {
   /* animation: stories-animation 1s linear 1; */
-  width: 100px;
+  width: 120px;
   height: 390px;
   max-height: 500px;
   font-size: 100px;
   place-self: center;
-  color: rgba(255, 255, 255, 0.726);
+  color: rgba(255, 255, 255, 0.863);
   padding: 80px 0px 50px 0px;
   cursor: pointer;
   text-align: center;
-  opacity: 0.5;
+  opacity: 0.6;
 }
 
 #stories-scroll-left {
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.13), rgba(31, 31, 31, 0.589));
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.01), rgba(31, 31, 31, 0.9));
 }
 
 #stories-scroll-right {
-  background: linear-gradient(90deg, rgba(31, 31, 31, 0.589), rgba(0, 0, 0, 0.13));
+  background: linear-gradient(90deg, rgba(31, 31, 31, 0.9), rgba(0, 0, 0, 0.01));
 }
 
 #stories-scroll-left:hover,
@@ -406,21 +407,6 @@ ul {
   background-color: rgba(238, 231, 231, 0.589);
 }
 
-/* 
-#popular-background-container {
-  position: sticky;
-  top: 0;
-  width: 100%;
-}
-
-#popular-stories-background {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  object-fit: cover;
-  z-index: -1;
-} */
-
 #popular-stories-container {
   display: grid;
   place-content: center;
@@ -440,7 +426,7 @@ ul {
 .popular-story-container {
   width: 700px;
     background: linear-gradient(90deg,
-        rgba(128, 128, 128, 0.015),
+        rgba(128, 128, 128, 0.01),
         rgba(169, 188, 218, 0.863),
         rgba(169, 188, 218, 0.863),
         rgba(169, 188, 218, 0.863),
@@ -449,7 +435,7 @@ ul {
         rgba(169, 188, 218, 0.863),
         rgba(169, 188, 218, 0.863),
         rgba(169, 188, 218, 0.863),
-        rgba(128, 128, 128, 0.015));
+        rgba(128, 128, 128, 0.01));
     display: grid;
     place-items: center;
     padding: 50px 100px 50px 100px;
@@ -465,7 +451,7 @@ ul {
   cursor: pointer;
   opacity: 0.9;
   background: linear-gradient(90deg,
-      rgba(128, 128, 128, 0.015),
+      rgba(128, 128, 128, 0.01),
       rgba(133, 170, 229, 0.863),
       rgba(133, 170, 229, 0.863),
       rgba(133, 170, 229, 0.863),
@@ -474,12 +460,12 @@ ul {
       rgba(133, 170, 229, 0.863),
       rgba(133, 170, 229, 0.863),
       rgba(133, 170, 229, 0.863),
-      rgba(128, 128, 128, 0.015));
+      rgba(128, 128, 128, 0.01));
 }
 
 .popular-story-container:hover {
   background: linear-gradient(90deg,
-      rgba(128, 128, 128, 0.015),
+      rgba(128, 128, 128, 0.01),
       rgba(187, 201, 224, 0.863),
       rgba(187, 201, 224, 0.863),
       rgba(187, 201, 224, 0.863),
@@ -488,7 +474,7 @@ ul {
       rgba(187, 201, 224, 0.863),
       rgba(187, 201, 224, 0.863),
       rgba(187, 201, 224, 0.863),
-      rgba(128, 128, 128, 0.015));
+      rgba(128, 128, 128, 0.01));
       opacity: 1;
 }
 
@@ -538,16 +524,13 @@ ul {
   background: linear-gradient(90deg,
       transparent,
       transparent,
-      rgba(255, 253, 253, 0.199),
+      rgba(122, 189, 172, 0.199),
       rgba(122, 189, 172, 0.795),
       rgba(122, 189, 172, 0.795),
       rgba(122, 189, 172, 0.795),
       rgba(122, 189, 172, 0.795),
       rgba(122, 189, 172, 0.795),
-      rgba(122, 189, 172, 0.795),
-      rgba(122, 189, 172, 0.795),
-      rgba(122, 189, 172, 0.795),
-      rgba(255, 255, 255, 0.199),
+      rgba(122, 189, 172, 0.199),
       transparent,
       transparent);
       margin-bottom: 100px;
@@ -561,6 +544,10 @@ ul {
   text-shadow: 2px 2px rgb(46, 46, 46);
   position: absolute;
   margin-top: -120px;
+}
+
+#explore-authors-container {
+  margin-left: 150px;
 }
 
 #explore-authors-container,
@@ -979,6 +966,7 @@ svg {
   font-size: 40px;
   text-align: center;
   color: rgba(43, 42, 42, 0.959);
+  max-width: 800px;
   /* text-shadow: 10px 10px rgba(128, 128, 128, 0.692); */
   -webkit-background-clip: text;
   -webkit-text-stroke-width: 0.5px;
@@ -1043,16 +1031,25 @@ svg {
       transparent, transparent, transparent, transparent);
 }
 
-#comments-container{
+#comments-container {
   display: grid;
   width: 55%;
   place-content: center;
   place-self: center;
-  background: linear-gradient(90deg, rgba(108, 115, 117, 0.013), rgba(169, 206, 223, 0.884), rgba(169, 206, 223, 0.884), rgba(169, 206, 223, 0.884), rgba(169, 206, 223, 0.884), rgba(108, 115, 117, 0.013));
+  background: linear-gradient(90deg,
+      rgba(108, 115, 117, 0.01),
+      rgba(169, 206, 223, 0.884),
+      rgba(169, 206, 223, 0.884),
+      rgba(169, 206, 223, 0.884),
+      rgba(169, 206, 223, 0.884),
+      rgba(169, 206, 223, 0.884),
+      rgba(169, 206, 223, 0.884),
+      rgba(169, 206, 223, 0.884),
+      rgba(169, 206, 223, 0.884),
+      rgba(108, 115, 117, 0.01));
   /* border-radius: 50px; */
   margin-bottom: 50px;
 }
-
 #all-comments {
   place-self: center;
   margin-top: 20px;
@@ -1254,6 +1251,7 @@ svg {
   text-align: center;
   font-size: 22px;
   color: rgb(32, 51, 78);
+  text-shadow: 0.5px 0.5px rgba(180, 180, 180, 0.767);
 }
 
 .post-tag-heading {
@@ -1277,12 +1275,14 @@ svg {
   -webkit-background-clip: text;
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: rgb(0, 0, 0);
-  text-shadow: 3px 3px rgb(80, 80, 80);
+  text-shadow: 3px 3px rgb(59, 59, 59);
 }
 
 #posts-user-container h2 span {
   color: rgb(69, 130, 165);
-}.user-posts-container {
+}
+
+.user-posts-container {
   width: 500px;
   height: 350px;
   display: grid;
@@ -1292,21 +1292,19 @@ svg {
   align-items: center;
   place-items: center;
   border-radius: 10px;
-  /* background-color: rgba(57, 122, 160, 0.938); */
   background: linear-gradient(90deg,
       rgba(57, 122, 160, 0.01),
-      rgba(57, 122, 160, 0.938),
-      rgba(57, 122, 160, 0.938),
-      rgba(57, 122, 160, 0.938),
-      rgba(57, 122, 160, 0.938),
-      rgba(57, 122, 160, 0.938),
-      rgba(57, 122, 160, 0.938),
-      rgba(57, 122, 160, 0.938),
+      rgba(57, 122, 160, 0.9),
+      rgba(57, 122, 160, 0.9),
+      rgba(57, 122, 160, 0.9),
+      rgba(57, 122, 160, 0.9),
+      rgba(57, 122, 160, 0.9),
+      rgba(57, 122, 160, 0.9),
+      rgba(57, 122, 160, 0.9),
       rgba(57, 122, 160, 0.01));
 }
 
 .user-posts-container:hover {
-  /* background-color: rgba(89, 138, 167, 0.938); */
   background: linear-gradient(90deg,
       rgba(57, 122, 160, 0.01),
       rgba(89, 138, 167, 0.938),
@@ -1328,13 +1326,16 @@ svg {
 .user-posts-title {
   text-align: center;
   font-size: 22px;
-  color: rgb(34, 44, 58);
+  color: rgba(233, 235, 119, 0.9);
+  text-shadow: 0.5px 0.5px black;
 }
 
 .user-posts-heading {
   font-size: 18px;
   margin-top: -10px;
   text-align: center;
+  color: rgb(36, 37, 37);
+  font-weight: 700;
 }
 
 /*Search Page*/
@@ -1463,6 +1464,15 @@ svg {
   max-width: 250px;
   margin-top: 0px;
   margin-bottom: auto;
+}
+
+.search-result-author {
+ position: absolute;
+ margin-left: 210px;
+ margin-top: 140px;
+ font-size: 18px;
+ font-weight: 700;
+ color: rgb(44, 44, 44);
 }
 
 /*All Tags Page*/

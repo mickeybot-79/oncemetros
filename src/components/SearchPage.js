@@ -39,6 +39,7 @@ const SearchPage = () => {
                                 <div key={post} className="search-result-container" onClick={() => navigate(`/post/${post}`)}>
                                     <img src={posts?.entities[post].thumbnail} alt="post-image" className="search-result-image" />
                                     <p className="search-result-title">{titleEnd}</p>
+                                    <p className="search-result-author">Por {posts?.entities[post].author}</p>
                                 </div>
                             )
                         })
@@ -52,7 +53,7 @@ const SearchPage = () => {
                 } else {
                     setSearchResults(() => {
                         return (
-                            <p>No se encontraron resultados</p>
+                            <p id="search-results-label">No se encontraron resultados</p>
                         )
                     })
                 }
@@ -72,6 +73,7 @@ const SearchPage = () => {
                                 <div key={post} className="search-result-container" onClick={() => navigate(`/post/${post}`)}>
                                     <img src={posts?.entities[post].thumbnail} alt="post-image" className="search-result-image" />
                                     <p className="search-result-title">{titleEnd}</p>
+                                    <p className="search-result-author">Por {posts?.entities[post].author}</p>
                                 </div>
                             )
                         })
@@ -112,6 +114,7 @@ const SearchPage = () => {
                                 <div key={post} className="search-result-container" onClick={() => navigate(`/post/${post}`)}>
                                     <img src={posts?.entities[post].thumbnail} alt="post-image" className="search-result-image" />
                                     <p className="search-result-title">{titleEnd}</p>
+                                    <p className="search-result-author">Por {posts?.entities[post].author}</p>
                                 </div>
                             )
                         })
