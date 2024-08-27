@@ -118,6 +118,16 @@ code {
   }
 }
 
+@keyframes new-post-result {
+  0% {
+    transform: translateY(-400px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
 /*Header*/
 #header-container {
   width: 100%;

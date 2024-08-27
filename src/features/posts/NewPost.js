@@ -1,13 +1,14 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, useCallback } from "react"
 import { useCreatePostMutation, useGetTagsQuery, useAddTagMutation } from "./postsApiSlice"
 import { useNavigate } from "react-router-dom"
 import Quill from "quill"
 import Editor from "./EditorTest"
+import { useBeforeUnload } from "react-router-dom"
 
 const NewPost = () => {
 
-    const date = new Date("2022-10-04")
-    console.log(date.getTime())
+    // const date = new Date("2022-10-04")
+    // console.log(date.getTime())
 
     const {
         data,
@@ -48,10 +49,19 @@ const NewPost = () => {
         message: '',
         image: '',
         display: 'none',
-        confirmButton: 'none'
+        confirmButton: 'none',
+        animation: 'new-post-result 0.2s linear 1'
     })
 
     const [writingStyle, setWritingStyle] = useState('type')
+
+    const [isBlocking, setIsBlocking] = useState(false)
+
+    useBeforeUnload(
+        useCallback((e) => {
+            if (isBlocking) e.preventDefault()
+        }, [isBlocking])
+    )
 
     const newTagRef = useRef()
     const quillRef = useRef()
@@ -147,6 +157,14 @@ const NewPost = () => {
         }
     }, [writingStyle])
 
+    useEffect(() => {
+        if (postData.title !== '' || postData.heading !== '' || postData.thumbnail !== '../../Images/placeholder.png' || postData.tags.length > 0) {
+            setIsBlocking(true)
+        } else {
+            setIsBlocking(false)
+        }
+    }, [postData])
+
     const handleChange = (e) => {
         const { name, value } = e.target
         setPostData((prevState) => {
@@ -192,7 +210,8 @@ const NewPost = () => {
             }
             postContent = updatedContent.join('')
         }
-        const canSave = [postData.title, postContent !== '', postData.tags].every(Boolean) && !isLoading
+        const validContent = postContent !== '<p><br></p>' && postContent !== ''
+        const canSave = [postData.title, validContent, postData.tags.length > 0].every(Boolean) && !isLoading
         if (canSave) {
             try {
                 const result = await createPost({
@@ -230,35 +249,41 @@ const NewPost = () => {
             }
         } else {
             if (!postData.title) {
-                setResultMessage((prevState) => {
-                    return {
-                        ...prevState,
-                        message: 'La publicación requiere un título.',
-                        display: 'grid',
-                        confirmButton: 'block',
-                        image: '../../Images/error-image.png'
-                    }
-                })
-            } else if (!postData.content) {
-                setResultMessage((prevState) => {
-                    return {
-                        ...prevState,
-                        message: 'La publicación requiere contenido principal.',
-                        display: 'grid',
-                        confirmButton: 'block',
-                        image: '../../Images/error-image.png'
-                    }
-                })
-            } else if (!postData.tags) {
-                setResultMessage((prevState) => {
-                    return {
-                        ...prevState,
-                        message: 'Por favor, agrega al menos una etiqueta.',
-                        display: 'grid',
-                        confirmButton: 'block',
-                        image: '../../Images/error-image.png'
-                    }
-                })
+                setTimeout(() => {
+                    setResultMessage((prevState) => {
+                        return {
+                            ...prevState,
+                            message: 'La publicación requiere un título.',
+                            display: 'grid',
+                            confirmButton: 'block',
+                            image: '../../Images/error-image.png'
+                        }
+                    })
+                }, 10)
+            } else if (!validContent) {
+                setTimeout(() => {
+                    setResultMessage((prevState) => {
+                        return {
+                            ...prevState,
+                            message: 'Agregar contenido principal.',
+                            display: 'grid',
+                            confirmButton: 'block',
+                            image: '../../Images/error-image.png'
+                        }
+                    })
+                }, 10)
+            } else if (postData.tags.length === 0) {
+                setTimeout(() => {
+                    setResultMessage((prevState) => {
+                        return {
+                            ...prevState,
+                            message: 'Agregar al menos una etiqueta.',
+                            display: 'grid',
+                            confirmButton: 'block',
+                            image: '../../Images/error-image.png'
+                        }
+                    })
+                }, 10)
             }
         }
     }
@@ -351,7 +376,9 @@ const NewPost = () => {
 
     return (
         <div id="new-post-container">
-            <button id="new-post-back" onClick={() => navigate(-1)}><div>➜</div> Atrás</button>
+            <button id="new-post-back" onClick={() => {
+                navigate(-1)
+            }}><div>➜</div> Atrás</button>
             <h1 id="new-post-h1">Nueva Publicación</h1>
             <form id="new-post-form">
                 <label htmlFor="new-post-title" className="new-post-label">Título:</label>
@@ -510,7 +537,7 @@ const NewPost = () => {
                 <button id="new-post-submit" onClick={handleSubmit}>Guardar</button>
             </div>
             <div id="post-result-container" style={{display: resultMessage.display}}>
-                <div id="result-container">
+                <div id="result-container" style={{animation: resultMessage.animation}}>
                     <img src={resultMessage.image} alt="" id="post-result-image"/>
                     <p id="post-result-message">{resultMessage.message}</p>
                     <button id="result-confirm" style={{display: resultMessage.confirmButton}} onClick={() => {
