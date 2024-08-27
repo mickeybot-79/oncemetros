@@ -1,20 +1,23 @@
 import { useEffect, useState } from "react"
-import { useAddCommentMutation } from "./postsApiSlice"
+import { useAddCommentMutation, useAddReplyMutation } from "./postsApiSlice"
 
 const Comments = ({ post }) => {
 
-    window.scrollTo(0, 0)
-
     const [allComments, setAllComments] = useState({})
+
+    const [replying, setReplying] = useState('')
 
     useEffect(() => {
         setAllComments(post.comments)
-        // eslint-disable-next-line
-    }, [])
+    }, [post])
 
     const [newComment, setNewComment] = useState('')
 
+    const [newReply, setNewReply] = useState('')
+
     const [addComment] = useAddCommentMutation()
+
+    const [addReply] = useAddReplyMutation()
 
     const handleSubmit = async () => {
         const result = await addComment({
@@ -24,6 +27,21 @@ const Comments = ({ post }) => {
         })
         if (result?.data?.searchField) {
             setNewComment('')
+            setAllComments([...result.data.comments])
+        }
+    }
+
+    const handleReply = async (comment, user) => {
+        const result = await addReply({
+            post: post.searchField,
+            comment,
+            user: '',
+            content: newReply,
+            replyTo: user
+        })
+        if (result?.data?.searchField) {
+            setNewReply('')
+            setReplying('')
             setAllComments([...result.data.comments])
         }
     }
@@ -75,6 +93,18 @@ const Comments = ({ post }) => {
         
             translatedDate.push(convertedDate.split(' ')[2])
             translatedDate.push(convertedDate.split(' ')[3])
+
+            const commentReplies = comment.replies.map(reply => {
+
+                return (
+                    <div className="comment-reply-container">
+                        <img src="../../Images/favicon.png" alt="user-image"/>
+                        <p>{reply.date}</p>
+                        <p><a href='...'>{reply.replyTo}</a>{reply.content}</p>
+                        <button>Responder</button>
+                    </div>
+                )
+            })
             
             return (
                 <div key={comment.searchField}>
@@ -86,13 +116,23 @@ const Comments = ({ post }) => {
                         <div className="comment-date-options">
                             <p className="comment-date">{`${translatedDate[0]} ${translatedDate[1]}, ${translatedDate[2]}`}</p>
                             <div className="comment-options-container">
-                                {/* <div className="comment-like-options">
-                                    <p className="comment-likes">{comment.likes}</p>
-                                    <button className="like-comment" onClick={() => handleLikeComment(comment.searchField)}>Me gusta</button>
-                                </div> */}
-                                <button className="comment-reply">Responder...</button>
+                                <button className="comment-reply" onClick={() => setReplying(comment.searchField)}>Responder</button>
                             </div>
                         </div>
+                    </div>
+                    <div className="reply-container" style={{display: replying === comment.searchField ? 'grid' : 'none'}}>
+                        <textarea
+                            className="reply-content"
+                            defaultValue={`@${comment.user || 'Anonymous'}`}
+                            onChange={(e) => setNewReply(e.target.value)}
+                        ></textarea>
+                        <div style={{placeSelf: 'end', display: 'flex', gap: '20px', padding: '10px'}}>
+                            <button className="reply-cancel" onClick={() => setReplying('')}>Cancelar</button>
+                            <button className="reply-submit" onClick={() => handleReply(comment.searchField, comment.user)}>Publicar</button>
+                        </div>
+                    </div>
+                    <div>
+                        {commentReplies}
                     </div>
                     <hr style={{ width: '100%', height: '1px', borderWidth: '0', color: 'gray', backgroundColor: 'black', marginTop: '50px', marginBottom: '50px' }} />
                 </div>

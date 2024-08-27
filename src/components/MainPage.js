@@ -12,7 +12,7 @@ const MainPage = () => {
         data: posts,
         isSuccess
     } = useGetPostsQuery('postsList', {
-        pollingInterval: 120000
+        pollingInterval: 600000
     })
 
     const [presentationDisplay, setPresentationDisplay] = useState('grid')
@@ -71,7 +71,7 @@ const MainPage = () => {
 
             setTimeout(() => {
                 setPresentationDisplay('none')
-            }, 3200)
+            }, 3800)
 
             setTimeout(() => {
                 setDownPromptDisplay({
@@ -130,7 +130,7 @@ const MainPage = () => {
                         </div>
                     )
                 })
-                for (let i = 0; i < 10; i++) {
+                for (let i = 0; i < 5; i++) {
                     finalPosts.push(allPosts)
                 }
                 return finalPosts
@@ -193,7 +193,7 @@ const MainPage = () => {
         const interval = setInterval(() => {
             if (autoScroll) {
                 setCount(prevCount => {
-                    return !document.hidden ? prevCount < 97 ? prevCount + 1 : 0 : prevCount
+                    return !document.hidden ? prevCount < 47 ? prevCount + 1 : 0 : prevCount
                 })
             }
         }, 3000)
@@ -227,7 +227,7 @@ const MainPage = () => {
 
     const handleScrollLeft = () => {
         setAutoScroll(false)
-        const scrollFactor = count > 96 ? 0 : count - 1
+        const scrollFactor = count > 46 ? 0 : count - 1
         setMainStoriesAnimation(() => {
             return {
                 transition: '0.5s',
@@ -240,7 +240,7 @@ const MainPage = () => {
 
     const handleScrollRight = () => {
         setAutoScroll(false)
-        const scrollFactor = count > 96 ? 0 : count + 1
+        const scrollFactor = count > 46 ? 0 : count + 1
         setMainStoriesAnimation(() => {
             return {
                 transition: '0.5s',

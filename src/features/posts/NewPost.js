@@ -22,11 +22,7 @@ const NewPost = () => {
     const navigate = useNavigate()
 
     const [createPost, {
-        //data: post,
         isLoading,
-        // isSuccess,
-        // isError,
-        // error
     }] = useCreatePostMutation()
 
     const [tagOptions, setTagOptions] = useState([])
@@ -47,13 +43,15 @@ const NewPost = () => {
 
     const [resultMessage, setResultMessage] = useState({
         message: '',
-        image: '',
+        image: '../../Images/error-image.png',
         display: 'none',
         confirmButton: 'none',
         animation: 'new-post-result 0.2s linear 1'
     })
 
     const [writingStyle, setWritingStyle] = useState('type')
+
+    const [waiting, setWaiting] = useState('none')
 
     const [isBlocking, setIsBlocking] = useState(false)
 
@@ -176,6 +174,7 @@ const NewPost = () => {
     }
 
     const handleSubmit = async () => {
+        setWaiting('grid')
         const author = ''
         let postContent = ''
         if (writingStyle === 'type') {
@@ -240,14 +239,15 @@ const NewPost = () => {
                             message: `${result?.error?.data?.message}`,
                             display: 'grid',
                             confirmButton: 'block',
-                            image: '../../Images/error-image.png'
                         }
                     })
                 }
+                setWaiting('none')
             } catch (err) {
                 console.log(err)
             }
         } else {
+            setWaiting('none')
             if (!postData.title) {
                 setTimeout(() => {
                     setResultMessage((prevState) => {
@@ -256,7 +256,6 @@ const NewPost = () => {
                             message: 'La publicación requiere un título.',
                             display: 'grid',
                             confirmButton: 'block',
-                            image: '../../Images/error-image.png'
                         }
                     })
                 }, 10)
@@ -268,7 +267,6 @@ const NewPost = () => {
                             message: 'Agregar contenido principal.',
                             display: 'grid',
                             confirmButton: 'block',
-                            image: '../../Images/error-image.png'
                         }
                     })
                 }, 10)
@@ -280,7 +278,6 @@ const NewPost = () => {
                             message: 'Agregar al menos una etiqueta.',
                             display: 'grid',
                             confirmButton: 'block',
-                            image: '../../Images/error-image.png'
                         }
                     })
                 }, 10)
@@ -550,6 +547,18 @@ const NewPost = () => {
                         })
                     }}>Aceptar</button>
                 </div>
+            </div>
+            <div style={{
+                display: waiting,
+                position: 'fixed',
+                top: '0',
+                width: '100%',
+                height: '100%',
+                placeContent: 'center',
+                placeItems: 'center',
+                backgroundColor: 'rgba(0, 0, 0, 0.6)'
+            }}>
+                <div class="loader"></div>
             </div>
         </div>
     )

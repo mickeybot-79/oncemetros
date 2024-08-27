@@ -12,11 +12,11 @@ const Presentation = ({ presentationDisplay }) => {
         const backgroundAnimationMark = window.sessionStorage.getItem('backgroundAnimation')
         if (!backgroundAnimationMark) {
             setPresentationHeight('100%')
-            setLogoPresentation('presentation-animation 0.8s cubic-bezier(0.5, 0.4, 0.35, 1.15) 1')
+            setLogoPresentation('presentation-animation 1.2s cubic-bezier(0.5, 0.4, 0.35, 1.15) 1')
             setTimeout(() => {
-                setHidePresentation('hide-presentation 2s cubic-bezier(.58,.46,.65,1) 1')
+                setHidePresentation('hide-presentation 2.2s cubic-bezier(.58,.46,.65,1) 1')
                 setPresentationHeight('20vh')
-            }, 1200)
+            }, 1600)
         } else {
             setPresentationHeight('0px')
         }

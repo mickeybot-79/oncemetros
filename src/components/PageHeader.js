@@ -1,7 +1,9 @@
 import { useEffect, useState, useRef } from "react"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 
 const PageHeader = () => {
+
+    const currentLocation = useLocation()
 
     const navigate = useNavigate()
 
@@ -32,14 +34,14 @@ const PageHeader = () => {
 
     useEffect(() => {
         const backgroundAnimationMark = window.sessionStorage.getItem('backgroundAnimation')
-        if (!backgroundAnimationMark) {
+        if (!backgroundAnimationMark && currentLocation.pathname === '/') {
             setTimeout(() => {
                 setDisplayHeader('grid')
-            }, 3195)
+            }, 3700)
         } else {
             setDisplayHeader('grid')
         }
-    }, [])
+    }, [currentLocation])
 
     const displaySubmenu1 = () => {
         const rect = subMenu1.current.getBoundingClientRect()

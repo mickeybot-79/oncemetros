@@ -3,12 +3,15 @@ import Post from "./Post"
 import { useGetPostsQuery } from "./postsApiSlice"
 import Comments from "./Comments"
 import PageHeader from "../../components/PageHeader"
+import { useEffect } from "react"
 
 const PostPage = () => {
 
-    window.scrollTo(0, 0)
-
     const { id } = useParams()
+
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [id])
 
     const { post } = useGetPostsQuery("postsList", {
         pollingInterval: 5000,
