@@ -21,7 +21,7 @@ const router = createBrowserRouter(
     <Route path="/" element={<Layout />}>
       <Route index element={<MainPage />} />
       <Route path="login" index element={<Login />} />
-      <Route path="post/new" index element={<NewPost />} />
+      <Route path="new post" index element={<NewPost />} />
       <Route path="post/new2" index element={<NewPost2 />} />
       <Route path="post/:id" index element={<PostPage />} />
       <Route path="tags" index element={<AllTagsPage />} />
