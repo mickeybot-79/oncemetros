@@ -32,6 +32,11 @@ const Post = ({ post }) => {
         }, 100)
     }, [post.heading])
 
+    const shareOnFacebook = () => {
+        const navUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + 'https://oncemetros.onrender.com/post/ae106e52-6323-4606-9dc7-aba407c723e2'
+        window.open(navUrl, '_blank')
+    }
+
     if (post.content[0] === '<') {
         setTimeout(() => {
             const contentElement = document.getElementById('post-content')
@@ -117,6 +122,11 @@ const Post = ({ post }) => {
 
     return (
         <div id="post-container">
+            <meta property="og:url" content={`http://localhost:3000/post/${post.searchField}`} />
+            <meta property="og:type" content="article" />
+            <meta property="og:title" content={post.title} />
+            <meta property="og:description" content={post.heading} />
+            <meta property="og:image" content={`http://localhost:3000/Images/${post.thumbnail}.jpg`} />
             <h2 id="post-title">{post.title}</h2>
             {post.thumbnail && <img id="post-thumbnail" src={post.thumbnail} alt="post-thumbnail" />}
             {post.imgDesc && post.thumbnail && imageDescElement}
@@ -128,7 +138,7 @@ const Post = ({ post }) => {
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'left', alignItems: 'center', placeSelf: 'start', lineHeight: '5px' }}>Etiquetas: {tagElements}</div>
             <div id="share-options-container">
-                <img src="../../Images/fb-icon.png" alt="fb" className="share-image"/>
+                <img src="../../Images/fb-icon.png" alt="fb" className="share-image" onClick={shareOnFacebook}/>
                 <img src="../../Images/ins-icon.png" alt="ins" className="share-image"/>
                 <img src="../../Images/x-icon.png" alt="x" className="share-image"/>
                 <img src="../../Images/wp-icon.png" alt="wp" className="share-image"/>

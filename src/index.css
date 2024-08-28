@@ -1002,8 +1002,9 @@ svg {
 }
 
 #post-title {
-  font-size: 40px;
+  font-size: 50px;
   text-align: center;
+  text-wrap:balance;
   color: rgba(43, 42, 42, 0.959);
   max-width: 800px;
   /* text-shadow: 10px 10px rgba(128, 128, 128, 0.692); */
@@ -1011,6 +1012,7 @@ svg {
   -webkit-text-stroke-width: 0.5px;
   /* -webkit-text-stroke-color: black; */
   -webkit-text-stroke-color: rgb(77, 77, 77);
+  margin-top: 20px;
 }
 
 #post-thumbnail {
