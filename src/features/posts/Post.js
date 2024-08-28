@@ -127,6 +127,12 @@ const Post = ({ post }) => {
                 <p id="post-date">{`${translatedDate[0]} ${translatedDate[1]}, ${translatedDate[2]}`}</p>
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'left', alignItems: 'center', placeSelf: 'start', lineHeight: '5px' }}>Etiquetas: {tagElements}</div>
+            <div id="share-options-container">
+                <img src="../../Images/fb-icon.png" alt="fb" className="share-image"/>
+                <img src="../../Images/ins-icon.png" alt="ins" className="share-image"/>
+                <img src="../../Images/x-icon.png" alt="x" className="share-image"/>
+                <img src="../../Images/wp-icon.png" alt="wp" className="share-image"/>
+            </div>
         </div>
     )
 }

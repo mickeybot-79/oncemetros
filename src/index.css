@@ -1020,7 +1020,7 @@ svg {
 #post-imgDesc,
 #post-imgCred {
   max-width: 500px;
-  text-align: left;
+  text-align: center;
 }
 
 #post-author,
@@ -1070,9 +1070,26 @@ svg {
       transparent, transparent, transparent, transparent);
 }
 
+#share-options-container {
+  justify-self: right;
+  margin-right: 30px;
+  display: flex;
+  gap: 10px;
+}
+
+.share-image {
+  width: 40px;
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+.share-image:hover {
+  opacity: 0.9;
+}
+
 #comments-container {
   display: grid;
-  width: 52%;
+  width: 1000px;
   place-content: center;
   place-self: center;
   background: linear-gradient(90deg,
@@ -1090,6 +1107,7 @@ svg {
       rgba(108, 115, 117, 0.01));
   border-radius: 20px;
   margin-bottom: 50px;
+  padding-bottom: 20px;
 }
 #all-comments {
   place-self: center;
@@ -1161,7 +1179,7 @@ svg {
 #new-comment-container {
   width: 80%;
   height: 250px;
-  margin-bottom: 50px;
+  margin-bottom: -60px;
   display: grid;
   padding: 30px 30px 0px 30px;
   margin-top: 50px;
@@ -1230,6 +1248,8 @@ svg {
   place-content: center;
   width: 600px;
   height: 120px;
+  margin-bottom: 20px;
+  margin-top: 18px;
 }
 
 .reply-content {
@@ -1259,6 +1279,36 @@ svg {
 
 .reply-submit:hover {
   background-color: rgb(135, 207, 135);
+}
+
+.comment-reply-container {
+  width: 650px;
+  height: 120px;
+  margin-left: 170px;
+  display: flex;
+  justify-content: space-between;
+  background: linear-gradient(90deg, rgba(95, 139, 189, 0.016),rgba(145, 199, 224, 0.555), rgba(95, 139, 189, 0.016));
+  border-top: 1px solid rgba(128, 128, 128, 0.8);
+  border-bottom: 1px solid rgba(128, 128, 128, 0.8);
+  margin-bottom: 5px;
+}
+
+.comment-reply-image {
+  width: 40px;
+}
+
+.comment-reply-option {
+  margin-top: 30px;
+  margin-left: 20px;
+  border: 0;
+  background-color: transparent;
+  cursor: pointer;
+  border-radius: 5px;
+  height: 25px;
+}
+
+.comment-reply-option:hover {
+  background-color: rgba(86, 145, 223, 0.226);
 }
 
 /*Tags Page*/
