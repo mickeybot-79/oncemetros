@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+// import { 
+//     FacebookShareButton, 
+//     TwitterShareButton, 
+//     WhatsappShareButton
+// } from "react-share"
 
 const Post = ({ post }) => {
 
@@ -33,7 +38,7 @@ const Post = ({ post }) => {
     }, [post.heading])
 
     const shareOnFacebook = () => {
-        const navUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + 'https://oncemetros.onrender.com/post/ae106e52-6323-4606-9dc7-aba407c723e2'
+        const navUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + 'https://one1mbackend.onrender.com/share'
         window.open(navUrl, '_blank')
     }
 
@@ -41,7 +46,7 @@ const Post = ({ post }) => {
         setTimeout(() => {
             const contentElement = document.getElementById('post-content')
             allParagraphElements = post.content
-            contentElement.innerHTML = allParagraphElements 
+            contentElement.innerHTML = allParagraphElements
         })
     } else {
         const allKeys = []
@@ -122,11 +127,6 @@ const Post = ({ post }) => {
 
     return (
         <div id="post-container">
-            {/* <meta property="og:url" content={`https://oncemetros.onrender.com/post/${post.searchField}`} />
-            <meta property="og:type" content="article" />
-            <meta property="og:title" content={post.title} />
-            <meta property="og:description" content={post.heading} />
-            <meta property="og:image" content={`https://oncemetros.onrender.com/Images/${post.searchField}.jpg`} /> */}
             <h2 id="post-title">{post.title}</h2>
             {post.thumbnail && <img id="post-thumbnail" src={post.thumbnail} alt="post-thumbnail" />}
             {post.imgDesc && post.thumbnail && imageDescElement}
@@ -139,7 +139,10 @@ const Post = ({ post }) => {
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'left', alignItems: 'center', placeSelf: 'start', lineHeight: '5px' }}>Etiquetas: {tagElements}</div>
             <div id="share-options-container">
                 <img src="../../Images/fb-icon.png" alt="fb" className="share-image" onClick={shareOnFacebook}/>
-                <img src="../../Images/ins-icon.png" alt="ins" className="share-image"/>
+                {/* <FacebookShareButton className='share-option' children={''} url={`https://oncemetros.onrender.com/post/${post.searchField}?imageurl=https://oncemetros.onrender.com/Images/${post?.searchField}.jpg`} title={post.title}>
+                    <img src="../../Images/fb-icon.png" alt="fb" className="share-image" />
+                </FacebookShareButton> */}
+                <img src="../../Images/ins-icon.png" alt="ins" className="share-image" onClick={() => window.open('https://www.instagram.com/los11metros_/')}/>
                 <img src="../../Images/x-icon.png" alt="x" className="share-image"/>
                 <img src="../../Images/wp-icon.png" alt="wp" className="share-image"/>
             </div>

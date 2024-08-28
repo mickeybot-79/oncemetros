@@ -80,6 +80,15 @@ export const postsApiSlice = apiSlice.injectEndpoints({
                     tag
                 }
             })
+        }),
+        shareTest: builder.mutation({
+            query: (...post) => ({
+                url: 'posts/share',
+                method: 'POST',
+                body: {
+                    ...post
+                }
+            })
         })
     })
 })
@@ -90,7 +99,8 @@ export const {
     useAddCommentMutation,
     useGetTagsQuery,
     useAddTagMutation,
-    useAddReplyMutation
+    useAddReplyMutation,
+    useShareTestMutation
 } = postsApiSlice
 
 // export const selectPostsResult = postsApiSlice.endpoints.getPosts.select()
