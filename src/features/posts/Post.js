@@ -122,11 +122,11 @@ const Post = ({ post }) => {
 
     return (
         <div id="post-container">
-            <meta property="og:url" content={`http://localhost:3000/post/${post.searchField}`} />
+            <meta property="og:url" content={`https://oncemetros.onrender.com/post/${post.searchField}`} />
             <meta property="og:type" content="article" />
             <meta property="og:title" content={post.title} />
             <meta property="og:description" content={post.heading} />
-            <meta property="og:image" content={`http://localhost:3000/Images/${post.thumbnail}.jpg`} />
+            <meta property="og:image" content={`https://oncemetros.onrender.com/Images/${post.searchField}.jpg`} />
             <h2 id="post-title">{post.title}</h2>
             {post.thumbnail && <img id="post-thumbnail" src={post.thumbnail} alt="post-thumbnail" />}
             {post.imgDesc && post.thumbnail && imageDescElement}
