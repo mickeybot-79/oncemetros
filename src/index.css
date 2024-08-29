@@ -137,7 +137,7 @@ code {
 /*Header*/
 #header-container {
   width: 100%;
-  height: auto;
+  height:auto;
   display: grid;
   place-content: center;
   justify-content: center;
@@ -154,7 +154,6 @@ code {
         rgba(149, 171, 204, 0.863),
         rgba(149, 171, 204, 0.863),
         rgba(149, 171, 204, 0.863),
-        rgba(149, 171, 204, 0.863),
         rgba(179, 202, 235, 0.4));
   }
 
@@ -165,6 +164,30 @@ code {
   max-height: 180px;
 }
 
+#instagram-icon {
+  width: 90px;
+  height: 90px;
+  cursor: pointer;
+  margin-top: 40px;
+  opacity: 0.8;
+  margin-left: 50px;
+}
+
+#instagram-icon:hover {
+  opacity: 1;
+}
+
+#search-login-container {
+  display: grid;
+  justify-items: center;
+  padding: 0px 50px 0px 0px;
+  margin-bottom: -20px;
+}
+/* 
+#login-option {
+  margin-top: 20px;
+} */
+
 #search-option,
 #login-option {
   width: 70px;
@@ -173,16 +196,13 @@ code {
   font-size: 22px;
   border-radius: 100%;
   padding: 5px;
-  /* border: 1px solid rgba(52, 133, 113, 0.548); */
   background: radial-gradient(circle, rgba(156, 206, 187, 0.712), rgba(39, 172, 121, 0.658));
-  margin-top: 80px;
   cursor: pointer;
   z-index: 1;
   color: rgb(36, 36, 36);
   font-weight: 700;
   opacity: 0.5;
-  margin-bottom: 40px;
-  margin-top: 50px;
+  scale: 0.9;
 }
 
 #search-option:hover,
@@ -193,11 +213,10 @@ code {
 #header-logo {
   width: 100%;
   scale: 0.8;
-  margin-bottom: -52px;
-  margin-top: -35px;
+  margin-bottom: -38px;
+  margin-top: -22px;
   place-self: center;
-  /* animation: down-prompt-animation 1s ease-out infinite; */
-  height: auto;
+  height: 210px;
   cursor: pointer;
 }
 
@@ -207,7 +226,8 @@ code {
 
 #search-icon-prompt,
 #home-icon-prompt,
-#login-icon-prompt {
+#login-icon-prompt,
+#ins-icon-prompt {
   position: absolute;
   color: black;
   background-color: rgba(203, 235, 127, 0.932);
@@ -232,10 +252,8 @@ ul {
 .menu-item {
   font-size: 21px;
   font-weight: 400;
-  /* color: rgb(255, 255, 255); */
   color: rgba(254,254,234);
   cursor: pointer;
-  /* background-color: rgba(201, 39, 39, 0.747); */
   background-color: rgb(175, 45, 45);
   max-width: 350px;
   text-wrap:nowrap;
@@ -259,7 +277,6 @@ ul {
   width: 230px;
   padding: 5px 20px 10px 20px;
   font-size: 20px;
-  /* color: white; */
   color: rgba(254,254,234);
   z-index: 2;
 }
@@ -285,7 +302,6 @@ ul {
 /*Main Page*/
 #presentation-content {
   background: linear-gradient(90deg, rgba(119, 175, 207, 0.815), rgba(95, 183, 209, 0.788));
-  /* background: linear-gradient(90deg, rgba(179, 202, 235, 0.877), rgba(149, 171, 204, 0.863)); */
   width: 100%;
   position: absolute;
   top: 0;

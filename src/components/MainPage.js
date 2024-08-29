@@ -78,7 +78,7 @@ const MainPage = () => {
                     opacity: '1',
                     animation: 'down-prompt-display 0.3s linear 1'
                 })
-            }, 5000)
+            }, 7000)
 
         } else {
             setCount(0)

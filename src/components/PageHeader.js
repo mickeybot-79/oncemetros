@@ -166,17 +166,18 @@ const PageHeader = () => {
             <header id="header-container" style={{ display: displayHeader }}>
                 <div id="options-image-container">
                     <img
-                        src="../Images/search.png"
-                        alt="search"
-                        id="search-option"
-                        onClick={() => navigate('/search')}
-                        onMouseOver={() => handleDisplayPrompt('search')}
+                        src="../Images/ins-icon.png"
+                        alt="ins-icon"
+                        id="instagram-icon"
+                        onClick={() => window.open('https://www.instagram.com/los11metros_/')}
+                        onMouseOver={() => handleDisplayPrompt('ins')}
                         onMouseMove={(e) => handlePosition(e)}
-                        onMouseLeave={() => setDisplayPrompt('')} />
+                        onMouseLeave={() => setDisplayPrompt('')}
+                    />
                     <p
-                        id="search-icon-prompt"
-                        style={{ display: displayPrompt === 'search' ? 'block' : 'none', top: promptPosition.top, left: promptPosition.left }}
-                    >Buscar</p>
+                        id="ins-icon-prompt"
+                        style={{ display: displayPrompt === 'ins' ? 'block' : 'none', top: promptPosition.top, left: promptPosition.left }}
+                    >Instagram/Los 11 Metros</p>
                     <img
                         src="../Images/logo 3.jpg"
                         alt="logo"
@@ -189,18 +190,32 @@ const PageHeader = () => {
                         id="home-icon-prompt"
                         style={{ display: displayPrompt === 'home' ? 'block' : 'none', top: promptPosition.top, left: promptPosition.left }}
                     >Inicio</p>
-                    <img
-                        src="../Images/user-icon.png"
-                        alt="login"
-                        id="login-option"
-                        // onClick={() => navigate('/login')}
-                        onMouseOver={() => handleDisplayPrompt('login')}
-                        onMouseMove={(e) => handlePosition(e)}
-                        onMouseLeave={() => setDisplayPrompt('')} />
-                    <p
-                        id="login-icon-prompt"
-                        style={{ display: displayPrompt === 'login' ? 'block' : 'none', top: promptPosition.top, left: promptPosition.left }}
-                    >Iniciar sesión</p>
+                    <div id="search-login-container">
+                        <img
+                            src="../Images/user-icon.png"
+                            alt="login"
+                            id="login-option"
+                            // onClick={() => navigate('/login')}
+                            onMouseOver={() => handleDisplayPrompt('login')}
+                            onMouseMove={(e) => handlePosition(e)}
+                            onMouseLeave={() => setDisplayPrompt('')} />
+                        <p
+                            id="login-icon-prompt"
+                            style={{ display: displayPrompt === 'login' ? 'block' : 'none', top: promptPosition.top, left: promptPosition.left }}
+                        >Iniciar sesión</p>
+                        <img
+                            src="../Images/search.png"
+                            alt="search"
+                            id="search-option"
+                            onClick={() => navigate('/search')}
+                            onMouseOver={() => handleDisplayPrompt('search')}
+                            onMouseMove={(e) => handlePosition(e)}
+                            onMouseLeave={() => setDisplayPrompt('')} />
+                        <p
+                            id="search-icon-prompt"
+                            style={{ display: displayPrompt === 'search' ? 'block' : 'none', top: promptPosition.top, left: promptPosition.left }}
+                        >Buscar</p>
+                    </div>
                 </div>
                 <ul id="main-menu-options">
                     <li className="menu-item" ref={subMenu1} onMouseOver={displaySubmenu1} onMouseLeave={handleDisplaySubMenu1}>Fútbol Nacional</li>
