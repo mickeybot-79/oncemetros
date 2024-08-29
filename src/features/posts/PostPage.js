@@ -4,7 +4,7 @@ import { useGetPostsQuery } from "./postsApiSlice"
 import Comments from "./Comments"
 import PageHeader from "../../components/PageHeader"
 import { useEffect } from "react"
-// import { useShareTestMutation } from "./postsApiSlice"
+import { useShareTestMutation } from "./postsApiSlice"
 
 const PostPage = () => {
 
@@ -21,11 +21,24 @@ const PostPage = () => {
         }),
     })
 
-    // const [shareTest] = useShareTestMutation()
+    const [shareTest] = useShareTestMutation()
 
-    // useEffect(() => {
+    useEffect(() => {
         //setTimeout(() => {
-            // if (post?.title) {
+            if (post?.title) {
+                const createShareFile = async () => {
+                    //const result = await shareTest({
+                    await shareTest({
+                        url: `https://oncemetros.onrender.com/post/${post?.searchField}`,
+                        title: post?.title,
+                        description: post?.heading,
+                        image: `https://oncemetros.onrender.com/Images/${post?.searchField}.jpg`,
+                        post: post?.searchField
+                    })
+                    //console.log(result)
+                }
+                createShareFile()
+
                 // console.log(post)
                 // const headElement = document.getElementsByTagName('head')[0]
                 // const meta1 = document.createElement('meta')
@@ -48,21 +61,9 @@ const PostPage = () => {
                 // headElement.appendChild(meta3)
                 // headElement.appendChild(meta4)
                 // headElement.appendChild(meta5)
-
-                // const createShareFile = async () => {
-                    //const result = await shareTest({
-                    // await shareTest({
-                    //     url: `https://oncemetros.onrender.com/post/${post?.searchField}`,
-                    //     title: post?.title,
-                    //     description: post?.heading,
-                    //     image: `https://oncemetros.onrender.com/Images/${post?.searchField}.jpg`
-                    // })
-                    //console.log(result)
-                // }
-                // createShareFile()
-            // }
+            }
         //}, 2000)
-    // }, [post, shareTest])
+    }, [post, shareTest])
 
     if (post) {
         return (

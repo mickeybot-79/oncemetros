@@ -38,7 +38,7 @@ const Post = ({ post }) => {
     }, [post.heading])
 
     const shareOnFacebook = () => {
-        const navUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + 'https://one1mbackend.onrender.com/share'
+        const navUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + `https://one1mbackend.onrender.com/share/${post.searchField}`
         window.open(navUrl, '_blank')
     }
 
@@ -142,7 +142,7 @@ const Post = ({ post }) => {
                 {/* <FacebookShareButton className='share-option' children={''} url={`https://oncemetros.onrender.com/post/${post.searchField}?imageurl=https://oncemetros.onrender.com/Images/${post?.searchField}.jpg`} title={post.title}>
                     <img src="../../Images/fb-icon.png" alt="fb" className="share-image" />
                 </FacebookShareButton> */}
-                <img src="../../Images/ins-icon.png" alt="ins" className="share-image" onClick={() => window.open('https://www.instagram.com/los11metros_/')}/>
+                <img src="../../Images/ins-icon.png" alt="ins" className="share-image" onClick={() => window.open('https://www.instagram.com/p/C4dS9_GMFh-/')}/>
                 <img src="../../Images/x-icon.png" alt="x" className="share-image"/>
                 <img src="../../Images/wp-icon.png" alt="wp" className="share-image"/>
             </div>
