@@ -18,6 +18,10 @@ const Comments = ({ post }) => {
 
     const [newReply, setNewReply] = useState('')
 
+    const [displayCommentLoader, setDisplayCommentLoader] = useState('none')
+
+    const [displayReplyLoader, setDisplayReplyLoader] = useState('none')
+
     const [addComment] = useAddCommentMutation()
 
     const [addReply] = useAddReplyMutation()
@@ -27,6 +31,7 @@ const Comments = ({ post }) => {
     const allCommentsRef = useRef()
 
     const handleSubmit = async () => {
+        setDisplayCommentLoader('block')
         const result = await addComment({
             post: post.searchField,
             user: '',
@@ -35,6 +40,7 @@ const Comments = ({ post }) => {
         if (result?.data?.searchField) {
             setNewComment('')
             setAllComments([...result.data.comments])
+            setDisplayCommentLoader('none')
         }
     }
 
@@ -61,6 +67,7 @@ const Comments = ({ post }) => {
     } 
 
     const handlePostReply = async (comment, user) => {
+        setDisplayReplyLoader('block')
         const result = await addReply({
             post: post.searchField,
             comment,
@@ -73,6 +80,7 @@ const Comments = ({ post }) => {
             setNewReply('')
             setReplying('')
             setAllComments([...result.data.comments])
+            setDisplayReplyLoader('none')
             //window.scrollTo({top: allCommentsRef.current.offsetTop + 100, behavior: 'smooth'})
             // setTimeout(() => {
             //     window.scrollTo({top: allCommentsRef.current.offsetTop - 100, behavior: 'smooth'})  
@@ -208,7 +216,12 @@ const Comments = ({ post }) => {
                             onChange={(e) => setNewReply(e.target.value)}
                             value={newReply || `@${replying.user || 'Anónimo'}`}
                         ></textarea>
-                        <div style={{placeSelf: 'end', display: 'flex', gap: '20px', padding: '10px'}}>
+                        <div id='reply-loader-container' style={{display: displayReplyLoader}}>
+                            <div id="reply-loader">
+                                <div className="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+                            </div>
+                        </div>
+                        <div style={{ placeSelf: 'end', display: 'flex', gap: '20px', padding: '10px' }}>
                             <button className="reply-cancel" onClick={() => {
                                 setNewReply('')
                                 setReplying({
@@ -247,6 +260,11 @@ const Comments = ({ post }) => {
                         value={newComment}
                         onChange={(e) => setNewComment(e.target.value)}
                     ></textarea>
+                    <div id='comment-loader-container' style={{display: displayCommentLoader}}>
+                        <div id="comment-loader">
+                            <div className="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+                        </div>
+                    </div>
                 </div>
                 <div id="new-comment-buttons" style={{opacity: newComment !== '' ? 0.9 : 0}}>
                     <button id="new-comment-cancel" disabled={newComment.length > 0 ? false: true} onClick={() => setNewComment('')}>Cancelar</button>
