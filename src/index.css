@@ -1127,6 +1127,7 @@ svg {
 
 .share-image {
   width: 40px;
+  height: 40px;
   cursor: pointer;
   opacity: 0.5;
 }

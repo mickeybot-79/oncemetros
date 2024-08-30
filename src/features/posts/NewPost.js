@@ -7,8 +7,8 @@ import { useBeforeUnload } from "react-router-dom"
 
 const NewPost = () => {
 
-    // const date = new Date("2022-10-04")
-    // console.log(date.getTime())
+    const date = new Date("2021-12-31")
+    console.log(date.getTime())
 
     const {
         data,
@@ -34,7 +34,8 @@ const NewPost = () => {
         thumbnail: '../../Images/placeholder.png',
         imgDesc: '',
         imgCred: '',
-        tags: []
+        tags: [],
+        insPost: ''
     })
 
     const [imageWidth, setImageWidth] = useState('')
@@ -349,27 +350,24 @@ const NewPost = () => {
         </div >
     )
 
-    //setSelectedTagsElements(() => {
-        const selectedTagsElements = postData.tags.map(tag => {
+    const selectedTagsElements = postData.tags.map(tag => {
 
-            const listener = () => {
-                setPostData((prevState) => {
-                    const updatedTags = [...prevState.tags]
-                    const tagIndex = updatedTags.indexOf(tag)
-                    updatedTags.splice(tagIndex, 1)
-                    return {
-                        ...prevState,
-                        tags: updatedTags
-                    }
-                })
-            }
-    
-            return (
-                <div key={tag} className="tag-element">{tag} <span onClick={listener}>x</span></div>
-            )
-        })
-        //return newSelectedTags
-    //})
+        const listener = () => {
+            setPostData((prevState) => {
+                const updatedTags = [...prevState.tags]
+                const tagIndex = updatedTags.indexOf(tag)
+                updatedTags.splice(tagIndex, 1)
+                return {
+                    ...prevState,
+                    tags: updatedTags
+                }
+            })
+        }
+
+        return (
+            <div key={tag} className="tag-element">{tag} <span onClick={listener}>x</span></div>
+        )
+    })
 
     return (
         <div id="new-post-container">
@@ -458,6 +456,16 @@ const NewPost = () => {
                     className="new-post-input"
                     placeholder="Escribe aquí"
                     value={postData.imgCred}
+                    onChange={handleChange}
+                />
+                <label htmlFor="new-post-insPost" className="new-post-label">Enlace de Instagram:</label>
+                <input
+                    id="new-post-insPost"
+                    name="insPost"
+                    type="text"
+                    className="new-post-input"
+                    placeholder="Escribe aquí"
+                    value={postData.insPost}
                     onChange={handleChange}
                 />
                 <div style={{ display: 'flex', gap: '20px' }}>
@@ -558,7 +566,7 @@ const NewPost = () => {
                 placeItems: 'center',
                 backgroundColor: 'rgba(0, 0, 0, 0.6)'
             }}>
-                <div class="loader"></div>
+                <div className="loader"></div>
             </div>
         </div>
     )

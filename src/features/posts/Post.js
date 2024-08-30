@@ -33,11 +33,6 @@ const Post = ({ post }) => {
         }, 100)
     }, [post.heading])
 
-    const shareOnFacebook = () => {
-        const navUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + `https://one1mbackend.onrender.com/share/${post.searchField}`
-        window.open(navUrl, '_blank')
-    }
-
     if (post.content[0] === '<') {
         setTimeout(() => {
             const contentElement = document.getElementById('post-content')
@@ -134,11 +129,10 @@ const Post = ({ post }) => {
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'left', alignItems: 'center', placeSelf: 'start', lineHeight: '5px' }}>Etiquetas: {tagElements}</div>
             <div id="share-options-container">
-                <img src="../../Images/fb-icon.png" alt="fb" className="share-image" onClick={shareOnFacebook}/>
+                <img src="../../Images/fb-icon.png" alt="fb" className="share-image" onClick={() => window.open('https://www.facebook.com/sharer/sharer.php?u=' + `https://one1mbackend.onrender.com/share/${post.searchField}`, 'popup','width=600,height=400')}/>
                 <img src="../../Images/ins-icon.png" alt="ins" className="share-image" onClick={() => window.open(post.insPost || 'https://www.instagram.com/los11metros_/')}/>
-                <img src="../../Images/x-icon.png" alt="x" className="share-image" onClick={() => window.open(`https://twitter.com/share?url=https://one1mbackend.onrender.com/share/${post.searchField}`, '_blank')}/>
-                {/* <img src="../../Images/wp-icon.png" alt="wp" className="share-image" onClick={() => window.open(`whatsapp://send?text=https://oncemetros.onrender.com/post/${post.searchField}`, '_blank')}/> */}
-                <WhatsappShareButton className='share-option' children={''} url={`https://oncemetros.onrender.com/post/${post.searchField}`} title={post.title}>
+                <img src="../../Images/x-icon.png" alt="x" className="share-image" onClick={() => window.open(`https://twitter.com/share?url=https://one1mbackend.onrender.com/share/${post.searchField}`, 'popup','width=600,height=400')}/>
+                <WhatsappShareButton children={''} url={`https://oncemetros.onrender.com/post/${post.searchField}`} title={post.title}>
                     <img src="../../Images/wp-icon.png" alt="wp" className="share-image" />
                 </WhatsappShareButton>
             </div>

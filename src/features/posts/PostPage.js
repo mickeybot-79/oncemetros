@@ -3,10 +3,12 @@ import Post from "./Post"
 import { useGetPostsQuery } from "./postsApiSlice"
 import Comments from "./Comments"
 import PageHeader from "../../components/PageHeader"
-import { useEffect } from "react"
-// import { useShareTestMutation } from "./postsApiSlice"
+import { useEffect, useRef } from "react"
+import { useShareTestMutation } from "./postsApiSlice"
 
 const PostPage = () => {
+
+    const effectRan = useRef()
 
     const { id } = useParams()
 
@@ -24,22 +26,21 @@ const PostPage = () => {
     // const [shareTest] = useShareTestMutation()
 
     // useEffect(() => {
-    //     //setTimeout(() => {
+    //     if (effectRan.current === true || process.env.NODE_ENV !== 'development') {
     //         if (post?.title) {
     //             const createShareFile = async () => {
-    //                 //const result = await shareTest({
     //                 await shareTest({
     //                     url: `https://oncemetros.onrender.com/post/${post?.searchField}`,
     //                     title: post?.title,
-    //                     description: post?.heading,
-    //                     image: `https://oncemetros.onrender.com/Images/${post?.searchField}.jpg`,
+    //                     description: post?.heading.split('\n')[0],
+    //                     image: `https://oncemetros.onrender.com/Images/${post?.thumbnail.split('/')[2]}`,
     //                     post: post?.searchField
     //                 })
-    //                 //console.log(result)
     //             }
     //             createShareFile()
     //         }
-    //     //}, 2000)
+    //     }
+    //     return () => effectRan.current = true
     // }, [post, shareTest])
 
     if (post) {
