@@ -1,7 +1,8 @@
 import { useEffect, useState, useRef } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
+import Login from "../features/auth/Login"
 
-const PageHeader = () => {
+const PageHeader = ({ handledisplayingLogin }) => {
 
     const currentLocation = useLocation()
 
@@ -25,6 +26,10 @@ const PageHeader = () => {
         top: '',
         left: ''
     })
+
+    const [displayLogin, setDisplayLogin] = useState(false)
+
+    const [loginAnimation, setLoginAnimation] = useState('')
 
     const subMenu1 = useRef()
     const subMenu2 = useRef()
@@ -161,8 +166,22 @@ const PageHeader = () => {
         })
     }
 
+    const handleDisplayLogin = () => {
+        setLoginAnimation(() => {
+            return displayLogin === true ? 'login-form-out 0.7s cubic-bezier(.63,.12,.13,1.06) 1' : 'login-form-in 0.25s linear 1'
+        })
+        if (displayLogin) {
+            setTimeout(() => {
+                setDisplayLogin(false)
+            }, 600)
+        } else {
+            setDisplayLogin(true)
+        }
+    }
+
     return (
         <>
+        {displayLogin && <Login handleDisplayLogin={handleDisplayLogin} loginAnimation={loginAnimation} handledisplayingLogin={handledisplayingLogin}/>}
             <header id="header-container" style={{ display: displayHeader }}>
                 <div id="options-image-container">
                     <img
@@ -196,6 +215,10 @@ const PageHeader = () => {
                             alt="login"
                             id="login-option"
                             // onClick={() => navigate('/login')}
+                            onClick={() => {
+                                if (currentLocation.pathname === '/') handledisplayingLogin()
+                                handleDisplayLogin()
+                            }}
                             onMouseOver={() => handleDisplayPrompt('login')}
                             onMouseMove={(e) => handlePosition(e)}
                             onMouseLeave={() => setDisplayPrompt('')} />

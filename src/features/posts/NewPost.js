@@ -371,9 +371,7 @@ const NewPost = () => {
 
     return (
         <div id="new-post-container">
-            <button id="new-post-back" onClick={() => {
-                navigate(-1)
-            }}><div>➜</div> Atrás</button>
+            <button id="new-post-back" onClick={() => navigate(-1)}><div>➜</div> Atrás</button>
             <h1 id="new-post-h1">Nueva Publicación</h1>
             <form id="new-post-form">
                 <label htmlFor="new-post-title" className="new-post-label">Título:</label>

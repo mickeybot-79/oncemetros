@@ -44,6 +44,8 @@ const MainPage = () => {
 
     const [timeOfLastClick, setTimeOfLastClick] = useState(0)
 
+    const [displayingLogin, setDisplayingLogin] = useState(false)
+
     const popularStoriesRef = useRef()
 
     const exploreRef = useRef()
@@ -193,13 +195,14 @@ const MainPage = () => {
         const interval = setInterval(() => {
             if (autoScroll) {
                 setCount(prevCount => {
-                    return !document.hidden ? prevCount < 47 ? prevCount + 1 : 0 : prevCount
+                    return !document.hidden && !displayingLogin ? prevCount < 47 ? prevCount + 1 : 0 : prevCount
+                    // return !document.hidden ? prevCount < 47 ? prevCount + 1 : 0 : prevCount
                 })
             }
         }, 3000)
 
         return () => clearInterval(interval)
-    }, [autoScroll])
+    }, [autoScroll, displayingLogin])
 
     useEffect(() => {
         const timeInterval = setInterval(() => {
@@ -251,12 +254,16 @@ const MainPage = () => {
         setCount(scrollFactor)
     }
 
+    const handledisplayingLogin = () => {
+        setDisplayingLogin(prevState => !prevState)
+    }
+
     return (
         <>
             <div id="background-div" style={{display: backgroundAnimation.display, animation: backgroundAnimation.animation}}></div>
             <Presentation presentationDisplay={presentationDisplay}/>
-            <PageHeader />
-            <div id="main-page-container">
+            <PageHeader handledisplayingLogin={handledisplayingLogin}/>
+            <div id="main-page-container" style={{overflow: 'hidden'}}>
                 <main style={{ display: presentationDisplay === 'none' ? 'grid' : 'none' }}>
                     <section id="main-stories">
                         <div id="stories-scroll-left" onClick={handleScrollLeft} style={{animation: mainStoriesContainerAnimation}}><p>{'<'}</p></div>

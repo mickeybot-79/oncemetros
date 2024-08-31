@@ -164,6 +164,30 @@ code {
   }
 }
 
+@keyframes login-form-in {
+  0% {
+    transform: translateY(-400px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes login-form-out {
+  0% {
+    transform: translateY(0px);
+  }
+
+  25% {
+    transform: translateY(150px);
+  }
+
+  100% {
+    transform: translateY(-800px);
+  }
+}
+
 /*Header*/
 #header-container {
   width: 100%;
@@ -418,7 +442,6 @@ ul {
 
 #stories-scroll-left,
 #stories-scroll-right {
-  /* animation: stories-animation 1s linear 1; */
   width: 120px;
   height: 390px;
   max-height: 500px;
@@ -644,6 +667,141 @@ ul {
 .tags-list-item:hover {
   color: rgb(218, 108, 65);
   scale: 1.02;
+}
+
+/*Login Page*/
+#login-page-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-content: center;
+  justify-content: center;
+  z-index: 3;
+}
+
+#login-title {
+  font-size: 40px;
+  font-weight: 700;
+  place-self: center;
+  margin-bottom: 0px;
+  -webkit-background-clip: text;
+  -webkit-text-stroke-width: 0.5px;
+  -webkit-text-stroke-color: white;
+  margin-top: 20px;
+}
+
+#login-form {
+  display: grid;
+  place-content: center;
+  /* background-color: rgb(87, 192, 169); */
+  background-color: rgb(112, 201, 182);
+  padding: 0px 50px 50px 50px;
+  gap: 20px;
+  border-radius: 20px;
+  box-shadow: 20px 20px 20px rgba(255, 255, 255, 0.15), 
+  20px -20px 20px rgba(255, 255, 255, 0.15), 
+  -20px -20px 20px rgba(255, 255, 255, 0.15), 
+  -20px 20px 20px rgba(255, 255, 255, 0.15);
+}
+
+.login-label {
+  font-size: 30px;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 900;
+}
+
+.login-input {
+  width: 300px;
+  height: 30px;
+  border-radius: 5px;
+  border: 0.5px solid;
+  font-family: 'Raleway', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+#remember-login {
+  cursor: pointer;
+  margin-left: 10px;
+  width: 20px;
+  height: 20px;
+}
+
+#password-reset-option {
+  border: 0;
+  width: fit-content;
+  background-color: transparent;
+  cursor: pointer;
+  color: rgb(16, 27, 58);
+  opacity: 0.7;
+  font-size: 14px;
+  text-align: left;
+}
+
+#password-reset-option:hover {
+  color: rgb(53, 71, 233);
+  text-decoration: underline;
+  opacity: 1;
+}
+
+#new-user-button {
+  background-color: transparent;
+  border: 0;
+  font-size: 20px;
+  text-align: left;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+#new-user-button span {
+  border: 1px solid gray;
+  background-color: rgb(231, 207, 129);
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 5px;
+  margin-left: 20px;
+}
+
+#new-user-button span:hover {
+  background-color: rgb(238, 231, 158);
+}
+
+#login-options-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+#login-cancel,
+#login-submit {
+  width: 140px;
+  height: 50px;
+  font-size: 25px;
+  cursor: pointer;
+  border-radius: 10px;
+  border: 0;
+  opacity: 0.8;
+}
+
+#login-cancel {
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+#login-cancel:hover {
+  background-color: rgba(7, 28, 116, 0.25);
+  opacity: 1;
+}
+
+#login-submit {
+  background-color: rgba(46, 155, 46, 0.815);
+}
+
+#login-submit:hover {
+  background-color: rgba(231, 122, 71, 0.432);
+  opacity: 1;
 }
 
 /*New Post*/
