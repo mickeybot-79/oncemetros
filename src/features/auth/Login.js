@@ -25,7 +25,6 @@ const Login = ({ handleDisplayLogin, loginAnimation, handledisplayingLogin }) =>
 
     return (
         <div id="login-page-container">
-            {/* <button id="new-post-back" onClick={() => navigate(-1)}><div>➜</div> Atrás</button> */}
             <form id="login-form" style={{animation: loginAnimation}}>
                 <h3 id="login-title">Iniciar Sesión</h3>
                 <label htmlFor="username" className="login-label">Usuario:</label>
@@ -73,13 +72,12 @@ const Login = ({ handleDisplayLogin, loginAnimation, handledisplayingLogin }) =>
                         onChange={() => window.localStorage.setItem('persist', persist)}
                     />
                 </div>
-                <button id="new-user-button" onClick={(e) => e.preventDefault()}>¿Eres nuevo? <span onClick={() => { }}>Regístrate</span></button>
+                <button id="new-user-button" onClick={(e) => e.preventDefault()}>¿Eres nuevo? <span onClick={() => navigate('/users/new')}>Regístrate</span></button>
                 <div id="login-options-container">
                     <button id="login-cancel" onClick={(e) => {
                         e.preventDefault()
                         if (currentLocation.pathname === '/') handledisplayingLogin()
                         handleDisplayLogin()
-                        // login({ username: loginData.username, password: loginData.password })
                     }}>Cancelar</button>
                     <button id="login-submit" onClick={(e) => handleSubmit(e)}>Enviar</button>
                 </div>

@@ -175,7 +175,7 @@ const SearchPage = () => {
                 } else {
                     setSearchResults(() => {
                         return (
-                            <p>No se encontraron resultados</p>
+                            <p id="search-results-label">No se encontraron resultados</p>
                         )
                     })
                 }
@@ -260,7 +260,7 @@ const SearchPage = () => {
                 } else {
                     setSearchResults(() => {
                         return (
-                            <p>No se encontraron resultados</p>
+                            <p id="search-results-label">No se encontraron resultados</p>
                         )
                     })
                 }

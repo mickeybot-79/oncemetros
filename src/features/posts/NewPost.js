@@ -493,41 +493,45 @@ const NewPost = () => {
                     <button id="add-tag-confirm" style={{display: addingTag ? 'block': 'none'}} onClick={async (e) => {
                         e.preventDefault()
                         const newTag = newTagRef.current.value
-                        const result = await addTag(newTag)
-                        if (result?.data?.allTags) {
-                            setPostData((prevState) => {
-                                const updatedTags = [...prevState.tags]
-                                if (!updatedTags.includes(newTag)) updatedTags.push(newTag)
-                                return {
-                                    ...prevState,
-                                    tags: updatedTags
-                                }
-                            })
-                            setTagOptions(() => {
-                                const tagElements = result.data.allTags.map(tag => {
-                                    return (
-                                        <option
-                                            key={tag}
-                                            value={tag}
-                                        >{tag}
-                                        </option>
-                                    )
+                        if (newTag !== '') {
+                            const result = await addTag(newTag)
+                            if (result?.data?.allTags) {
+                                setPostData((prevState) => {
+                                    const updatedTags = [...prevState.tags]
+                                    if (!updatedTags.includes(newTag)) updatedTags.push(newTag)
+                                    return {
+                                        ...prevState,
+                                        tags: updatedTags
+                                    }
                                 })
-                                return tagElements
-                            })
-                            console.log(result)
-                            newTagRef.current.value = ''
-                            setAddingTag(false)
+                                setTagOptions(() => {
+                                    const tagElements = result.data.allTags.map(tag => {
+                                        return (
+                                            <option
+                                                key={tag}
+                                                value={tag}
+                                            >{tag}
+                                            </option>
+                                        )
+                                    })
+                                    return tagElements
+                                })
+                                console.log(result)
+                                newTagRef.current.value = ''
+                                setAddingTag(false)
+                            } else {
+                                console.log(result)
+                                setResultMessage((prevState) => {
+                                    return {
+                                        ...prevState,
+                                        message: result.data.message,
+                                        display: 'grid',
+                                        confirmButton: 'block'
+                                    }
+                                })
+                            }
                         } else {
-                            console.log(result)
-                            setResultMessage((prevState) => {
-                                return {
-                                    ...prevState,
-                                    message: result.data.message,
-                                    display: 'grid',
-                                    confirmButton: 'block'
-                                }
-                            })
+                            setAddingTag(false)
                         }
                     }}>✓</button>
                 </div>
