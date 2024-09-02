@@ -3,6 +3,7 @@ import { useGetPostsQuery } from "../features/posts/postsApiSlice"
 import { useNavigate } from "react-router-dom"
 import Presentation from "./Presentation"
 import PageHeader from "./PageHeader"
+import LoadingIcon from "./LoadingIcon"
 
 const MainPage = () => {
 
@@ -10,7 +11,8 @@ const MainPage = () => {
 
     const {
         data: posts,
-        isSuccess
+        isSuccess,
+        isLoading
     } = useGetPostsQuery('postsList', {
         pollingInterval: 600000
     })
@@ -227,6 +229,12 @@ const MainPage = () => {
             })
         }
     }, [count, autoScroll])
+
+    if (isLoading) {
+        return (
+            <LoadingIcon />
+        )
+    }
 
     const handleScrollLeft = () => {
         setAutoScroll(false)

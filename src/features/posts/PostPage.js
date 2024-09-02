@@ -5,6 +5,7 @@ import Comments from "./Comments"
 import PageHeader from "../../components/PageHeader"
 import { useEffect, useRef } from "react"
 import { useShareTestMutation } from "./postsApiSlice"
+import LoadingIcon from "../../components/LoadingIcon"
 
 const PostPage = () => {
 
@@ -22,6 +23,12 @@ const PostPage = () => {
             post: data?.entities[id]
         }),
     })
+
+    if (!post) {
+        return (
+            <LoadingIcon />
+        )
+    }
 
     // const [shareTest] = useShareTestMutation()
 

@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom"
 import { useGetPostsQuery } from "../features/posts/postsApiSlice"
 import PageHeader from "./PageHeader"
+import LoadingIcon from "./LoadingIcon"
 
 const TagsPage = () => {
 
@@ -12,8 +13,15 @@ const TagsPage = () => {
 
     const {
         data: posts,
-        isSuccess
+        isSuccess,
+        isLoading
     } = useGetPostsQuery('postsList', {})
+
+    if (isLoading) {
+        return (
+            <LoadingIcon />
+        )
+    }
 
     if (isSuccess) {
 

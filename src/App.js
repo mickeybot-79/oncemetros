@@ -15,6 +15,7 @@ import UserPosts from './features/posts/UserPosts'
 import SearchPage from './components/SearchPage'
 import AllTagsPage from './components/AllTagsPage'
 import NewUser from './features/auth/NewUser'
+import LoadingIcon from './components/LoadingIcon'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -28,6 +29,7 @@ const router = createBrowserRouter(
       <Route path="posts/:user" index element={<UserPosts />} />
       <Route path="search" index element={<SearchPage />} />
       <Route path="users/new" index element={<NewUser />} />
+      <Route path="loading" index element={<LoadingIcon />} />
     </Route>
   )
 )

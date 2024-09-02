@@ -2,6 +2,7 @@ import { useRef, useState } from "react"
 import { useGetPostsQuery } from "../features/posts/postsApiSlice"
 import PageHeader from "./PageHeader"
 import { useNavigate } from "react-router-dom"
+import LoadingIcon from "./LoadingIcon"
 
 const SearchPage = () => {
 
@@ -13,12 +14,19 @@ const SearchPage = () => {
 
     const {
         data: posts,
-        isSuccess
+        isSuccess,
+        isLoading
     } = useGetPostsQuery('postsList', {
         pollingInterval: 600000
     })
 
     const filterRef = useRef()
+
+    if (isLoading) {
+        return (
+            <LoadingIcon />
+        )
+    }
 
     const handleSearch = async () => {
         if (searchTerm !== '') {

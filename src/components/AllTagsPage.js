@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom"
 import { useGetTagsQuery } from "../features/posts/postsApiSlice"
 import PageHeader from "./PageHeader"
-//import { useEffect } from "react"
+import LoadingIcon from "./LoadingIcon"
 
 const AllTagsPage = () => {
 
@@ -9,8 +9,15 @@ const AllTagsPage = () => {
 
     const {
         data: tags,
-        isSuccess
+        isSuccess,
+        isLoading
     } = useGetTagsQuery('tagsList', {})
+
+    if (isLoading) {
+        return (
+            <LoadingIcon />
+        )
+    }
 
     if (isSuccess) {
         console.log(tags)

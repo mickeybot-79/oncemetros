@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom"
 import { useGetPostsQuery } from "./postsApiSlice"
 import PageHeader from "../../components/PageHeader"
+import LoadingIcon from "../../components/LoadingIcon"
 
 const UserPosts = () => {
 
@@ -12,8 +13,15 @@ const UserPosts = () => {
 
     const {
         data: posts,
-        isSuccess
+        isSuccess,
+        isLoading
     } = useGetPostsQuery('postsList', {})
+
+    if (isLoading) {
+        return (
+            <LoadingIcon />
+        )
+    }
 
     if (isSuccess) {
 
