@@ -8,6 +8,8 @@ const Login = ({ handleDisplayLogin, loginAnimation, handledisplayingLogin }) =>
 
     const navigate = useNavigate()
 
+    const isTemp = window.localStorage.getItem('isTemp')
+
     const [login] = useLoginMutation()
 
     const [persist, setPersist] = useState(window.localStorage.getItem('persist') || 'true')
@@ -27,6 +29,7 @@ const Login = ({ handleDisplayLogin, loginAnimation, handledisplayingLogin }) =>
         if (currentLocation.pathname === '/') handledisplayingLogin()
         handleDisplayLogin()
         window.localStorage.setItem('persist', persist)
+        if (isTemp) window.localStorage.removeItem('isTemp')
     }
 
     return (
