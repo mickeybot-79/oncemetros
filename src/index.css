@@ -255,8 +255,11 @@ code {
   z-index: 1;
   color: rgb(36, 36, 36);
   font-weight: 700;
-  opacity: 0.5;
   scale: 0.9;
+}
+
+#search-option {
+  opacity: 0.5;
 }
 
 #search-option:hover,
@@ -1073,7 +1076,8 @@ textarea {
   color: rgba(245, 245, 245, 0.87);
 }
 
-#post-result-container {
+#post-result-container,
+#user-result-container {
   width: 100%;
   height: 100vh;
   position: fixed;
@@ -1083,7 +1087,7 @@ textarea {
   background-color: rgba(0, 0, 0, 0.514);
 }
 
-#result-container {
+.result-container {
   width: 500px;
   height: 300px;
   background-color: rgba(255, 255, 255, 0.932);
@@ -1093,21 +1097,23 @@ textarea {
   padding: 20px;
 }
 
-#post-result-message {
+#post-result-message,
+#user-result-message {
   text-align: center;
   font-size: 25px;
   margin-top: 0px;
   margin-bottom: -10px;
 }
 
-#post-result-image {
+#post-result-image,
+#user-result-image {
   width: 120px;
   height: auto;
   place-self: center;
   margin-bottom: 20px;
 }
 
-#result-confirm {
+.result-confirm {
   width: 100px;
   height: 40px;
   place-self: center;
@@ -2079,7 +2085,7 @@ svg {
   height: 50px;
   border-radius: 10px;
   border: 0;
-  font-size: 30px;
+  font-size: 25px;
   cursor: pointer;
   transition: 0.3s;
 }
@@ -2089,6 +2095,7 @@ svg {
   scale: 1.2;
   transition: 0.3s;
   opacity: 1;
+  font-size: 30px;
 }
 
 #new-user-cancel {

@@ -1,12 +1,27 @@
 import { useEffect, useState, useRef } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import Login from "../features/auth/Login"
+import { useSelector } from "react-redux"
+import { selectCurrentToken } from "../features/auth/authSlice"
+import { jwtDecode } from "jwt-decode"
+import { useGetUserDataQuery } from "../features/auth/authApiSlice"
 
 const PageHeader = ({ handledisplayingLogin }) => {
 
     const currentLocation = useLocation()
 
     const navigate = useNavigate()
+
+    const token = useSelector(selectCurrentToken)
+    var userId = token ? jwtDecode(token).UserInfo.id : ''
+
+    const {
+        data: user,
+        // isSuccess,
+        // isLoading
+    } = useGetUserDataQuery(userId, {
+        refetchOnMountOrArgChange: true
+    })
 
     const [displayHeader, setDisplayHeader] = useState('none')
 
@@ -30,6 +45,8 @@ const PageHeader = ({ handledisplayingLogin }) => {
     const [displayLogin, setDisplayLogin] = useState(false)
 
     const [loginAnimation, setLoginAnimation] = useState('')
+
+    const [loginOpacity, setLoginOpacity] = useState(token ? '0.7' : '0.5')
 
     const subMenu1 = useRef()
     const subMenu2 = useRef()
@@ -167,13 +184,14 @@ const PageHeader = ({ handledisplayingLogin }) => {
     }
 
     const handleDisplayLogin = () => {
+        if (currentLocation.pathname === '/') handledisplayingLogin()
         setLoginAnimation(() => {
-            return displayLogin === true ? 'login-form-out 0.7s cubic-bezier(.63,.12,.13,1.06) 1' : 'login-form-in 0.25s linear 1'
+            return displayLogin === true ? 'login-form-out 0.5s cubic-bezier(.63,.12,.13,1.06) 1' : 'login-form-in 0.25s linear 1'
         })
         if (displayLogin) {
             setTimeout(() => {
                 setDisplayLogin(false)
-            }, 600)
+            }, 450)
         } else {
             setDisplayLogin(true)
         }
@@ -211,21 +229,24 @@ const PageHeader = ({ handledisplayingLogin }) => {
                     >Inicio</p>
                     <div id="search-login-container">
                         <img
-                            src="../Images/user-icon.png"
+                            src={token ? user?.image || `../Images/user-placeholder.jpg` : '../Images/user-icon.png'}
                             alt="login"
                             id="login-option"
-                            // onClick={() => navigate('/login')}
-                            onClick={() => {
-                                if (currentLocation.pathname === '/') handledisplayingLogin()
-                                handleDisplayLogin()
+                            style={{opacity: loginOpacity}}
+                            onClick={token ? () => navigate(`/user/${userId}`) : handleDisplayLogin}
+                            onMouseOver={() => {
+                                setLoginOpacity('1')
+                                handleDisplayPrompt('login')
                             }}
-                            onMouseOver={() => handleDisplayPrompt('login')}
                             onMouseMove={(e) => handlePosition(e)}
-                            onMouseLeave={() => setDisplayPrompt('')} />
+                            onMouseLeave={() => {
+                                setLoginOpacity(token ? '0.7' : '0.5')
+                                setDisplayPrompt('')
+                            }} />
                         <p
                             id="login-icon-prompt"
                             style={{ display: displayPrompt === 'login' ? 'block' : 'none', top: promptPosition.top, left: promptPosition.left }}
-                        >Iniciar sesión</p>
+                        >{token ? 'Mi cuenta' : 'Iniciar sesión'}</p>
                         <img
                             src="../Images/search.png"
                             alt="search"

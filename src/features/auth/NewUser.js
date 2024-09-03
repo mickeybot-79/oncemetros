@@ -21,7 +21,17 @@ const NewUser = () => {
 
     const [pwdMismatch, setPwdMismatch] = useState(false)
 
-    const [createAccount] = useCreateAccountMutation()
+    const [resultMessage, setResultMessage] = useState({
+        message: '',
+        image: '../../Images/error-image.png',
+        display: 'none',
+        confirmButton: 'none',
+        animation: 'new-post-result 0.2s linear 1'
+    })
+
+    const [waiting, setWaiting] = useState('none')
+
+    const [createAccount, { isLoading } ] = useCreateAccountMutation()
 
     const confirmPwdRef = useRef()
 
@@ -69,8 +79,76 @@ const NewUser = () => {
     }
 
     const handleCreateUser = async () => {
-        const result = await createAccount(userData)
-        console.log(result)
+        setWaiting('grid')
+        const canSave = [userData.username, userData.password, userData.confirmPassword === userData.password].every(Boolean) && !isLoading
+        if (canSave) {
+            try {
+                const result = await createAccount(userData)
+                //console.log(result)
+                if (result?.data?.accessToken) {
+                    setResultMessage((prevState) => {
+                        return {
+                            ...prevState,
+                            message: 'Usuario creado correctamente.',
+                            display: 'grid',
+                            image: '../../Images/success.gif'
+                        }
+                    })
+                    setTimeout(() => {
+                        navigate('/')
+                    }, 2000)
+                } else {
+                    //console.log(result)
+                    setResultMessage((prevState) => {
+                        return {
+                            ...prevState,
+                            message: `${result?.error?.data?.message}`,
+                            display: 'grid',
+                            confirmButton: 'block',
+                        }
+                    })
+                }
+                setWaiting('none')
+            } catch (err) {
+                console.log(err)
+            }
+        } else {
+            setWaiting('none')
+            if (!userData.username) {
+                setTimeout(() => {
+                    setResultMessage((prevState) => {
+                        return {
+                            ...prevState,
+                            message: 'Por favor, ingresa un nombre de usuario.',
+                            display: 'grid',
+                            confirmButton: 'block',
+                        }
+                    })
+                }, 10)
+            } else if (!userData.password) {
+                setTimeout(() => {
+                    setResultMessage((prevState) => {
+                        return {
+                            ...prevState,
+                            message: 'Por favor, ingresa una contraseña.',
+                            display: 'grid',
+                            confirmButton: 'block',
+                        }
+                    })
+                }, 10)
+            } else if (userData.password !== userData.confirmPasswordassword) {
+                setTimeout(() => {
+                    setResultMessage((prevState) => {
+                        return {
+                            ...prevState,
+                            message: 'Las contraseñas no coinciden',
+                            display: 'grid',
+                            confirmButton: 'block',
+                        }
+                    })
+                }, 10)
+            }
+        }
     }
 
     const pictureElement = (
@@ -158,7 +236,15 @@ const NewUser = () => {
                     value={userData.confirmPassword}
                     onChange={handleChange}
                 />
-                {pwdMismatch && <p>Las contraseñas no coinciden</p>}
+                {pwdMismatch && <p
+                    style={{
+                        fontSize: '22px',
+                        color: 'red',
+                        fontWeight: '700',
+                        marginTop: '-5px',
+                        marginBottom: '-10px'
+                    }}
+                >Las contraseñas no coinciden</p>}
                 <div id="user-image-container">
                     <div id="image-label-input">
                         <label htmlFor="new-user-image" className="new-user-label">Imagen de perfil:</label>
@@ -206,6 +292,33 @@ const NewUser = () => {
                     }} id="new-user-submit">Crear Usuario</button>
                 </div>
             </form>
+            <div id="user-result-container" style={{display: resultMessage.display}}>
+                <div className="result-container" style={{animation: resultMessage.animation}}>
+                    <img src={resultMessage.image} alt="" id="user-result-image"/>
+                    <p id="user-result-message">{resultMessage.message}</p>
+                    <button className="result-confirm" style={{display: resultMessage.confirmButton}} onClick={() => {
+                        setResultMessage((prevState) => {
+                            return {
+                                ...prevState,
+                                display: 'none',
+                                confirmButton: 'none'
+                            }
+                        })
+                    }}>Aceptar</button>
+                </div>
+            </div>
+            <div style={{
+                display: waiting,
+                position: 'fixed',
+                top: '0',
+                width: '100%',
+                height: '100%',
+                placeContent: 'center',
+                placeItems: 'center',
+                backgroundColor: 'rgba(0, 0, 0, 0.6)'
+            }}>
+                <div className="loader"></div>
+            </div>
         </div>
     )
 

@@ -15,7 +15,7 @@ const TagsPage = () => {
         data: posts,
         isSuccess,
         isLoading
-    } = useGetPostsQuery('postsList', {})
+    } = useGetPostsQuery('postsList', {refetchOnMountOrArgChange: true})
 
     if (isLoading) {
         return (

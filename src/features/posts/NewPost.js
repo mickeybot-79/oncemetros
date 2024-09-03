@@ -544,10 +544,10 @@ const NewPost = () => {
                 <button id="new-post-submit" onClick={handleSubmit}>Guardar</button>
             </div>
             <div id="post-result-container" style={{display: resultMessage.display}}>
-                <div id="result-container" style={{animation: resultMessage.animation}}>
+                <div className="result-container" style={{animation: resultMessage.animation}}>
                     <img src={resultMessage.image} alt="" id="post-result-image"/>
                     <p id="post-result-message">{resultMessage.message}</p>
-                    <button id="result-confirm" style={{display: resultMessage.confirmButton}} onClick={() => {
+                    <button className="result-confirm" style={{display: resultMessage.confirmButton}} onClick={() => {
                         setResultMessage((prevState) => {
                             return {
                                 ...prevState,

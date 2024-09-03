@@ -17,7 +17,8 @@ const SearchPage = () => {
         isSuccess,
         isLoading
     } = useGetPostsQuery('postsList', {
-        pollingInterval: 600000
+        pollingInterval: 600000,
+        refetchOnMountOrArgChange: true
     })
 
     const filterRef = useRef()

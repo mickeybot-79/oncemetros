@@ -17,10 +17,16 @@ const Login = ({ handleDisplayLogin, loginAnimation, handledisplayingLogin }) =>
         password: ''
     })
 
-    const handleSubmit = (e) => {
+    const [waiting, setWaiting] = useState('none')
+
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        // login({ username: loginData.username, password: loginData.password })
-        // window.localStorage.setItem('persist', persist)
+        setWaiting('grid')
+        await login({ username: loginData.username, password: loginData.password })
+        setWaiting('none')
+        if (currentLocation.pathname === '/') handledisplayingLogin()
+        handleDisplayLogin()
+        window.localStorage.setItem('persist', persist)
     }
 
     return (
@@ -82,6 +88,18 @@ const Login = ({ handleDisplayLogin, loginAnimation, handledisplayingLogin }) =>
                     <button id="login-submit" onClick={(e) => handleSubmit(e)}>Enviar</button>
                 </div>
             </form>
+            <div style={{
+                display: waiting,
+                position: 'fixed',
+                top: '0',
+                width: '100%',
+                height: '100%',
+                placeContent: 'center',
+                placeItems: 'center',
+                backgroundColor: 'rgba(0, 0, 0, 0.6)'
+            }}>
+                <div className="loader"></div>
+            </div>
         </div>
     )
 }

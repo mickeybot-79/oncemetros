@@ -11,7 +11,7 @@ const AllTagsPage = () => {
         data: tags,
         isSuccess,
         isLoading
-    } = useGetTagsQuery('tagsList', {})
+    } = useGetTagsQuery('tagsList', {refetchOnMountOrArgChange: true})
 
     if (isLoading) {
         return (

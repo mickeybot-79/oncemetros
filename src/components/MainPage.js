@@ -14,7 +14,8 @@ const MainPage = () => {
         isSuccess,
         isLoading
     } = useGetPostsQuery('postsList', {
-        pollingInterval: 600000
+        pollingInterval: 600000,
+        refetchOnMountOrArgChange: true
     })
 
     const [presentationDisplay, setPresentationDisplay] = useState('grid')
@@ -54,52 +55,54 @@ const MainPage = () => {
 
     useEffect(() => {
         const backgroundAnimationMark = window.sessionStorage.getItem('backgroundAnimation')
-        if (!backgroundAnimationMark) {
-            setTimeout(() => {
-                setBackGroundAnimation((prevState) => {
-                    return {
-                        ...prevState,
-                        animation: 'background-animation 2s ease-out 1'
-                    }
-                })
-            }, 1200)
+        if (isSuccess) {
+            if (!backgroundAnimationMark) {
+                setTimeout(() => {
+                    setBackGroundAnimation((prevState) => {
+                        return {
+                            ...prevState,
+                            animation: 'background-animation 2s ease-out 1'
+                        }
+                    })
+                }, 1200)
 
-            setTimeout(() => {
-                setBackGroundAnimation((prevState) => {
+                setTimeout(() => {
+                    setBackGroundAnimation((prevState) => {
+                        return {
+                            ...prevState,
+                            display: 'none'
+                        }
+                    })
+                }, 3000)
+
+                setTimeout(() => {
+                    setPresentationDisplay('none')
+                }, 3800)
+
+                setTimeout(() => {
+                    setDownPromptDisplay({
+                        opacity: '1',
+                        animation: 'down-prompt-display 0.3s linear 1'
+                    })
+                }, 7000)
+
+            } else {
+                setCount(0)
+                setPresentationDisplay('none')
+                setMainStoriesContainerAnimation('')
+                setBackGroundAnimation(() => {
                     return {
-                        ...prevState,
+                        animation: '',
                         display: 'none'
                     }
                 })
-            }, 3000)
-
-            setTimeout(() => {
-                setPresentationDisplay('none')
-            }, 3800)
-
-            setTimeout(() => {
                 setDownPromptDisplay({
                     opacity: '1',
                     animation: 'down-prompt-display 0.3s linear 1'
                 })
-            }, 7000)
-
-        } else {
-            setCount(0)
-            setPresentationDisplay('none')
-            setMainStoriesContainerAnimation('')
-            setBackGroundAnimation(() => {
-                return {
-                    animation: '',
-                    display: 'none'
-                }
-            })
-            setDownPromptDisplay({
-                opacity: '1',
-                animation: 'down-prompt-display 0.3s linear 1'
-            })
+            }
         }
-    }, [])
+    }, [isSuccess])
 
     useEffect(() => {
         if (isSuccess) {
@@ -195,7 +198,7 @@ const MainPage = () => {
 
     useEffect(() => {
         const interval = setInterval(() => {
-            if (autoScroll) {
+            if (isSuccess && autoScroll) {
                 setCount(prevCount => {
                     return !document.hidden && !displayingLogin ? prevCount < 47 ? prevCount + 1 : 0 : prevCount
                     // return !document.hidden ? prevCount < 47 ? prevCount + 1 : 0 : prevCount
@@ -204,7 +207,7 @@ const MainPage = () => {
         }, 3000)
 
         return () => clearInterval(interval)
-    }, [autoScroll, displayingLogin])
+    }, [autoScroll, displayingLogin, isSuccess])
 
     useEffect(() => {
         const timeInterval = setInterval(() => {

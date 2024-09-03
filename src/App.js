@@ -16,20 +16,25 @@ import SearchPage from './components/SearchPage'
 import AllTagsPage from './components/AllTagsPage'
 import NewUser from './features/auth/NewUser'
 import LoadingIcon from './components/LoadingIcon'
+import UserPage from './features/auth/UserPage'
+import PersistLogin from './features/auth/PersistLogin'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<Layout />}>
-      <Route index element={<MainPage />} />
-      <Route path="login" index element={<Login />} />
-      <Route path="post/new" index element={<NewPost />} />
-      <Route path="post/:id" index element={<PostPage />} />
-      <Route path="tags" index element={<AllTagsPage />} />
-      <Route path="tags/:tag" index element={<TagsPage />} />
-      <Route path="posts/:user" index element={<UserPosts />} />
-      <Route path="search" index element={<SearchPage />} />
-      <Route path="users/new" index element={<NewUser />} />
-      <Route path="loading" index element={<LoadingIcon />} />
+    <Route element={<PersistLogin />}>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<MainPage />} />
+        <Route path="login" index element={<Login />} />
+        <Route path="post/new" index element={<NewPost />} />
+        <Route path="post/:id" index element={<PostPage />} />
+        <Route path="tags" index element={<AllTagsPage />} />
+        <Route path="tags/:tag" index element={<TagsPage />} />
+        <Route path="posts/:user" index element={<UserPosts />} />
+        <Route path="search" index element={<SearchPage />} />
+        <Route path="users/new" index element={<NewUser />} />
+        <Route path="user/:id" index element={<UserPage />} />
+        <Route path="loading" index element={<LoadingIcon />} />
+      </Route>
     </Route>
   )
 )

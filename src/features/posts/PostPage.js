@@ -17,18 +17,24 @@ const PostPage = () => {
         window.scrollTo(0, 0)
     }, [id])
 
-    const { post } = useGetPostsQuery("postsList", {
+    let currentPost
+
+    const {
+        data: posts,
+        isSuccess,
+        isLoading
+    } = useGetPostsQuery('postsList', {
         pollingInterval: 600000,
-        selectFromResult: ({ data }) => ({
-            post: data?.entities[id]
-        }),
+        refetchOnMountOrArgChange: true
     })
 
-    if (!post) {
+    if (isLoading) {
         return (
             <LoadingIcon />
         )
     }
+
+    if (isSuccess) currentPost = posts?.entities[id]
 
     // const [shareTest] = useShareTestMutation()
 
@@ -50,13 +56,13 @@ const PostPage = () => {
     //     return () => effectRan.current = true
     // }, [post, shareTest])
 
-    if (post) {
+    if (currentPost) {
         return (
             <>
                 <PageHeader />
                 <div id="post-page-container">
-                    <Post post={post} />
-                    <Comments post={post}/>
+                    <Post post={currentPost} />
+                    <Comments post={currentPost}/>
                 </div>
             </>
         )

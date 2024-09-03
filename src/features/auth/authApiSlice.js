@@ -86,6 +86,13 @@ export const authApiSlice = apiSlice.injectEndpoints({
                 }
             }
         }),
+        getUserData: builder.query({
+            query: (userId) => ({
+                url: `/auth/user/${userId}`,
+                method: 'GET'
+            }),
+            providesTags: (result, error, id) => [{ type: 'User', id }]
+        }),
         verifyUsername: builder.mutation({
             query: ({ username, tempId }) => ({
                 url: '/auth/verify',
@@ -105,5 +112,6 @@ export const {
     useCreateAccountMutation,
     useSendLogoutMutation,
     useRefreshMutation,
+    useGetUserDataQuery,
     useVerifyUsernameMutation
 } = authApiSlice 
