@@ -13,6 +13,7 @@ const UserPage = () => {
             {/*Logout */}
             <button onClick={async () => {
                 await sendLogout()
+                window.localStorage.setItem('persist', false)
                 navigate(-1)
             }}>Logout</button>
             {/*Edit account info (password, image, aboutme, delete account)*/}
