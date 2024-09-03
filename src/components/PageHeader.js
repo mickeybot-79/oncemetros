@@ -13,7 +13,7 @@ const PageHeader = ({ handledisplayingLogin }) => {
     const navigate = useNavigate()
 
     const token = useSelector(selectCurrentToken)
-    var userId = token ? jwtDecode(token).UserInfo.id : ''
+    var userId = token ? jwtDecode(token).UserInfo.id : 'noUser'
 
     const {
         data: user,

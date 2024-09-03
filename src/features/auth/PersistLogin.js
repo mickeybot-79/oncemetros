@@ -29,25 +29,23 @@ const PersistLogin = () => {
             const verifyRefreshToken = async () => {
                 try {
                     const result = await refresh()
-                    if (result?.error?.originalStatus === 403) {
+                    if (result?.error?.originalStatus === 403 || result?.error?.originalStatus === 401) {
                         if (!isTemp) window.localStorage.setItem('isTemp', 'y')
                     } else {
-                        window.sessionStorage.setItem('session', 'actv')
                         window.localStorage.removeItem('isTemp')
                     }
-                    setTrueSuccess(true)
                 }
                 catch (err) {
                     console.error(err)
                 }
             }
 
-            if (!token && persist) verifyRefreshToken()
-            if (!persist && session) verifyRefreshToken()
-        }
+            if (persist || (!isTemp && session)) verifyRefreshToken()
+            if (!session) window.sessionStorage.setItem('session', 'actv')
+            setTrueSuccess(true)
+        }   
 
         return () => effectRan.current = true
-
         //eslint-disable-next-line
     }, [])
 
