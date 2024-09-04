@@ -15,10 +15,10 @@ const UserPage = () => {
                 await sendLogout()
                 window.localStorage.setItem('persist', false)
                 navigate(-1)
-            }}>Logout</button>
+            }}>Cerrar sesión</button>
             {/*Edit account info (password, image, aboutme, delete account)*/}
             {/*If Editor Role - Edit posts */}
-            {/*If Admin Role - Manage teams, add/remove users to/from teams */}
+            {/*If Admin Role - Manage teams, add/remove users to/from teams, add/remove user roles*/}
         </div>
     )
 

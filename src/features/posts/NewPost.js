@@ -7,8 +7,8 @@ import { useBeforeUnload } from "react-router-dom"
 
 const NewPost = () => {
 
-    const date = new Date("2021-12-31")
-    console.log(date.getTime())
+    // const date = new Date("2021-12-31")
+    // console.log(date.getTime())
 
     const {
         data,
@@ -27,15 +27,19 @@ const NewPost = () => {
 
     const [tagOptions, setTagOptions] = useState([])
 
+    const currentPostTags = window.sessionStorage.getItem('postTags')
+    const currentPostContent = window.sessionStorage.getItem('postContent')
+    //console.log(currentPostTags)
+
     const [postData, setPostData] = useState({
-        title: '',
-        heading: '',
-        content: '',
-        thumbnail: '../../Images/placeholder.png',
-        imgDesc: '',
-        imgCred: '',
-        tags: [],
-        insPost: ''
+        title: window.sessionStorage.getItem('postTitle') || '',
+        heading: window.sessionStorage.getItem('postHeading') || '',
+        content: currentPostContent && currentPostContent !== '<p><br></p>' ? currentPostContent : '',
+        thumbnail: window.sessionStorage.getItem('postThumbnail') || '../../Images/placeholder.png',
+        imgDesc: window.sessionStorage.getItem('postImgDesc') || '',
+        imgCred: window.sessionStorage.getItem('postImgCred') || '',
+        tags: currentPostTags ? currentPostTags.split(',') : [],
+        insPost: window.sessionStorage.getItem('postInsPost') || ''
     })
 
     const [imageWidth, setImageWidth] = useState('')
@@ -56,10 +60,26 @@ const NewPost = () => {
 
     const [isBlocking, setIsBlocking] = useState(false)
 
+    useEffect(() => {
+        if (currentPostContent && currentPostContent !== '<p><br></p>') {
+            const editorElement = document.getElementsByClassName('ql-editor')[0]
+            editorElement.innerHTML = currentPostContent
+        }
+    }, [currentPostContent])
+
     useBeforeUnload(
         useCallback((e) => {
+            const editorElement = document.getElementsByClassName('ql-editor')[0]
+            window.sessionStorage.setItem('postTitle', postData.title)
+            window.sessionStorage.setItem('postHeading', postData.heading)
+            window.sessionStorage.setItem('postContent', editorElement.innerHTML.toString())
+            window.sessionStorage.setItem('postThumbnail', postData.thumbnail)
+            window.sessionStorage.setItem('postImgDesc', postData.imgDesc)
+            window.sessionStorage.setItem('postImgCred', postData.imgCred)
+            window.sessionStorage.setItem('postTags', postData.tags.join(','))
+            window.sessionStorage.setItem('postInsPost', postData.insPost)          
             if (isBlocking) e.preventDefault()
-        }, [isBlocking])
+        }, [isBlocking, postData])
     )
 
     const newTagRef = useRef()
@@ -399,7 +419,7 @@ const NewPost = () => {
                 </select>
                 {writingStyle === 'type' && <Editor
                     defaultValue={new Delta()
-                        .insert('[Escribe aquí...]')
+                        .insert(currentPostContent !== '' && currentPostContent !== '<p><br></p>' ? '' : '[Escribe aquí...]')
                     }
                     ref={quillRef}
                 />}

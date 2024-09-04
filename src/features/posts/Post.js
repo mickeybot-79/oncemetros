@@ -63,50 +63,8 @@ const Post = ({ post }) => {
             <p key={post.tags.indexOf(tag)} className="post-tag" onClick={() => navigate(`/tags/${tag}`)}>{tag}{endingComma}</p>
         )
     })
-
-    const convertedDate = new Date(parseInt(post.date)).toDateString(undefined, {})
-    const translatedDate = []
-
-    switch (convertedDate.split(' ')[1]) {
-        case 'Jan':
-            translatedDate.push('Enero')
-            break;
-        case 'Feb':
-            translatedDate.push('Febrero')
-            break;
-        case 'Mar':
-            translatedDate.push('Marzo')
-            break;
-        case 'Apr':
-            translatedDate.push('Abril')
-            break;
-        case 'May':
-            translatedDate.push('Mayo')
-            break;
-        case 'Jun':
-            translatedDate.push('Junio')
-            break;
-        case 'Jul':
-            translatedDate.push('Julio')
-            break;
-        case 'Aug':
-            translatedDate.push('Agosto')
-            break;
-        case 'Sep':
-            translatedDate.push('Septiembre')
-            break;
-        case 'Oct':
-            translatedDate.push('Octubre')
-            break;
-        case 'Nov':
-            translatedDate.push('Noviembre')
-            break;
-        default:
-            translatedDate.push('Diciembre')
-    }
-
-    translatedDate.push(convertedDate.split(' ')[2])
-    translatedDate.push(convertedDate.split(' ')[3])
+    const postDate = new Date(parseInt(post.date))
+    const convertedDate = postDate.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })
 
     const imageDescElement = (
         <div style={{ display: 'flex' }}>
@@ -125,7 +83,7 @@ const Post = ({ post }) => {
             <div id="post-content">{allParagraphElements}</div>
             <div style={{ display: 'inline', placeSelf: 'start' }}>
                 <p id="post-author" onClick={() => navigate(`/posts/${post.author}`)}>Por <span>{post.author}</span></p>
-                <p id="post-date">{`${translatedDate[0]} ${translatedDate[1]}, ${translatedDate[2]}`}</p>
+                <p id="post-date">{convertedDate}</p>
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'left', alignItems: 'center', placeSelf: 'start', lineHeight: '5px' }}>Etiquetas: {tagElements}</div>
             <div id="share-options-container">

@@ -35,15 +35,6 @@ const NewUser = () => {
 
     const confirmPwdRef = useRef()
 
-    useBeforeUnload(
-        useCallback((e) => {
-            console.log(userData)
-            console.log(isUserBlocking)
-            e.preventDefault()
-            if (isUserBlocking) e.preventDefault()
-        }, [isUserBlocking, userData])
-    )
-    
     useEffect(() => {
         if (userData.username !== '' || userData.password !== '' || userData.image !== '../../Images/user-placeholder.jpg' || userData.aboutme !== '') {
             setIsUserBlocking(true)
@@ -52,16 +43,25 @@ const NewUser = () => {
         }
     }, [userData])
 
-    useEffect(() => {
-        const imageElement = document.getElementById('uploaded-image')
-        setTimeout(() => {
-            if (userData.image !== '../../Images/user-placeholder.jpg') setImageWidth(imageElement.width.toString())
-        }, 10)
-    }, [userData.image])
+    useBeforeUnload(
+        useCallback((e) => {
+            console.log(userData)
+            console.log(isUserBlocking)
+            e.preventDefault()
+            if (isUserBlocking) e.preventDefault()
+        }, [isUserBlocking, userData])
+    )
+
+    // useEffect(() => {
+    //     const imageElement = document.getElementById('uploaded-image')
+    //     setTimeout(() => {
+    //         if (userData.image !== '../../Images/user-placeholder.jpg') setImageWidth(imageElement.width.toString())
+    //     }, 10)
+    // }, [userData.image])
 
     useEffect(() => {
         const confirmElement = document.getElementById('new-user-confirmPassword')
-        if (userData.password !== '' && userData.confirmPassword !== '' && userData.password !== userData.confirmPassword && document.activeElement !== confirmElement) {
+        if (userData.password !== '' && userData.confirmPassword !== '' && userData.password !== userData.confirmPassword && (document.activeElement !== confirmElement || userData.password.length === userData.confirmPassword.length)) {
             setPwdMismatch(true)
         } else {
             setPwdMismatch(false)
@@ -84,7 +84,6 @@ const NewUser = () => {
         if (canSave) {
             try {
                 const result = await createAccount(userData)
-                //console.log(result)
                 if (result?.data?.accessToken) {
                     setResultMessage((prevState) => {
                         return {
@@ -151,30 +150,103 @@ const NewUser = () => {
         }
     }
 
+    // const pictureElement = (
+    //     <div
+    //         style={{
+    //             maxWidth: '300px',
+    //             height: '150px',
+    //             marginTop: '0px',
+    //             marginLeft: '-30px'
+    //         }}>
+    //         <img
+    //             src={userData.image}
+    //             alt=""
+    //             id="uploaded-image"
+    //             style={{
+    //                 width: '150px',
+    //                 height: '150px',
+    //                 opacity: userData.image !== '../../Images/user-placeholder.jpg' ? '1' : '0.7',
+    //                 borderRadius: '100%',
+    //                 objectFit: 'cover'
+    //             }}
+    //         />
+    //         <div
+    //             style={{
+    //                 display: userData.image !== '../../Images/user-placeholder.jpg' ? 'grid' : 'none',
+    //                 width: `${imageWidth}px`,
+    //                 height: '20px',
+    //                 marginTop: '-24px',
+    //                 backgroundColor: 'rgba(255,255,255,0.8)',
+    //                 position: 'absolute',
+    //                 textAlign: 'right',
+    //                 fontSize: '25px'
+    //             }}>
+    //             <p
+    //                 onClick={() => {
+    //                     setUserData((prevState) => {
+    //                         return {
+    //                             ...prevState,
+    //                             image: '../../Images/user-placeholder.jpg'
+    //                         }
+    //                     })
+    //                 }}
+    //                 style={{
+    //                     marginTop: '-6px',
+    //                     marginRight: '10px',
+    //                     color: 'red',
+    //                     cursor: 'pointer',
+    //                     fontSize: '22px'
+    //                 }}
+    //             >✖</p>
+    //         </div>
+    //     </div >
+    // )
+
+    useEffect(() => {
+        setTimeout(() => {
+            const canvasElem = document.getElementById('uploaded-image')
+            const imageToHide = document.getElementById('image-to-hide')
+            console.log(canvasElem)
+            if (userData.image !== '../../Images/user-placeholder.jpg') {
+                const context = canvasElem.getContext("2d")
+
+                context.drawImage(
+                    imageToHide,
+                    0,
+                    0,
+                    canvasElem.width/2,
+                    canvasElem.height
+                )
+                console.log(canvasElem.toDataURL("image/jpeg"))
+                userData.image = canvasElem.toDataURL("image/jpeg")
+            }
+        })
+    }, [userData])
+
     const pictureElement = (
         <div
             style={{
-                maxWidth: '300px',
-                height: '150px',
+                maxWidth: '200px',
+                height: '200px',
                 marginTop: '0px',
                 marginLeft: '-30px'
             }}>
-            <img
-                src={userData.image}
-                alt=""
+            <img src={userData.image} alt="" id="image-to-hide" style={{display: 'none', width: '200px', height: '200px'}}/>
+            <canvas
                 id="uploaded-image"
                 style={{
-                    width: '150px',
-                    height: '150px',
-                    opacity: userData.image !== '../../Images/user-placeholder.jpg' ? '1' : '0.7',
-                    borderRadius: '100%',
-                    objectFit: 'cover'
+                    width: '200px',
+                    height: '200px',
+                    border: '1px solid',
+                    borderRadius: '100%'
                 }}
-            />
+            >
+            </canvas>
             <div
                 style={{
                     display: userData.image !== '../../Images/user-placeholder.jpg' ? 'grid' : 'none',
-                    width: `${imageWidth}px`,
+                    // width: `${imageWidth}px`,
+                    width: '200px',
                     height: '20px',
                     marginTop: '-24px',
                     backgroundColor: 'rgba(255,255,255,0.8)',

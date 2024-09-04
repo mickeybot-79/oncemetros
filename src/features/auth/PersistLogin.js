@@ -32,7 +32,7 @@ const PersistLogin = () => {
                     if (result?.error?.originalStatus === 403 || result?.error?.originalStatus === 401) {
                         if (!isTemp) window.localStorage.setItem('isTemp', 'y')
                     } else {
-                        window.localStorage.removeItem('isTemp')
+                        if (isTemp) window.localStorage.removeItem('isTemp')
                     }
                 }
                 catch (err) {

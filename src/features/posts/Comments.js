@@ -271,7 +271,7 @@ const Comments = ({ post }) => {
                     <button id="new-comment-submit" disabled={newComment.length > 0 ? false: true} onClick={handleSubmit}>Publicar</button>
                 </div>
             </div>
-            <h3 style={{marginLeft: '40px'}}>Comentarios: ({post.comments.length})</h3>
+            <h3 style={{marginLeft: '40px'}}>Comentarios: ({allComments.length})</h3>
             <div id="all-comments">
                 {commentsElements}
             </div>
