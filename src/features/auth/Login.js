@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useLoginMutation } from "./authApiSlice"
 import { useLocation, useNavigate } from "react-router-dom"
+import { jwtDecode } from "jwt-decode"
 
 const Login = ({ handleDisplayLogin, loginAnimation, handledisplayingLogin }) => {
 
@@ -21,15 +22,50 @@ const Login = ({ handleDisplayLogin, loginAnimation, handledisplayingLogin }) =>
 
     const [waiting, setWaiting] = useState('none')
 
+    const [resultMessage, setResultMessage] = useState({
+        message: '',
+        image: '../../Images/error-image.png',
+        display: 'none',
+        confirmButton: 'none',
+        animation: 'new-post-result 0.2s linear 1'
+    })
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         setWaiting('grid')
-        await login({ username: loginData.username, password: loginData.password })
-        setWaiting('none')
-        if (currentLocation.pathname === '/') handledisplayingLogin()
-        handleDisplayLogin()
-        window.localStorage.setItem('persist', persist)
-        if (isTemp) window.localStorage.removeItem('isTemp')
+        console.log(loginData)
+        const result = await login({ username: loginData.username, password: loginData.password })
+        console.log(result)
+        if (result?.error) {
+            setWaiting('none')
+            setResultMessage((prevState) => {
+                return {
+                    ...prevState,
+                    message: `${result?.error?.data?.error}`,
+                    display: 'grid',
+                    confirmButton: 'block',
+                }
+            })
+        } else {
+            setWaiting('none')
+            const userId = jwtDecode(result?.data?.accessToken).UserInfo.id
+            setResultMessage((prevState) => {
+                return {
+                    ...prevState,
+                    message: 'Éxito',
+                    display: 'grid',
+                    image: '../../Images/success.gif'
+                }
+            })
+            setTimeout(() => {
+                if (currentLocation.pathname === '/') handledisplayingLogin()
+                handleDisplayLogin()
+                window.localStorage.setItem('persist', persist)
+                if (isTemp) window.localStorage.removeItem('isTemp')
+                navigate(`/user/${userId}`)
+                //navigate('/')
+            }, 2000)
+        }
     }
 
     return (
@@ -102,6 +138,21 @@ const Login = ({ handleDisplayLogin, loginAnimation, handledisplayingLogin }) =>
                 backgroundColor: 'rgba(0, 0, 0, 0.6)'
             }}>
                 <div className="loader"></div>
+            </div>
+            <div id="post-result-container" style={{display: resultMessage.display}}>
+                <div className="result-container" style={{animation: resultMessage.animation}}>
+                    <img src={resultMessage.image} alt="" id="post-result-image"/>
+                    <p id="post-result-message">{resultMessage.message}</p>
+                    <button className="result-confirm" style={{display: resultMessage.confirmButton}} onClick={() => {
+                        setResultMessage((prevState) => {
+                            return {
+                                ...prevState,
+                                display: 'none',
+                                confirmButton: 'none'
+                            }
+                        })
+                    }}>Aceptar</button>
+                </div>
             </div>
         </div>
     )

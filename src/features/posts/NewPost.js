@@ -87,9 +87,11 @@ const NewPost = () => {
     const topRef = useRef()
 
     useEffect(() => {
-        const imageElement = document.getElementById('uploaded-image')
+        const canvasElem = document.getElementById('uploaded-image')
         setTimeout(() => {
-            if (postData.thumbnail !== '../../Images/placeholder.png') setImageWidth(imageElement.width.toString())
+            if (postData.thumbnail !== '../../Images/placeholder.png') {
+                setImageWidth(canvasElem.width.toString())
+            }
         }, 10)
     }, [postData.thumbnail])
 
@@ -323,28 +325,60 @@ const NewPost = () => {
         }
     }, [data, isSuccess])
 
+    useEffect(() => {
+        setTimeout(() => {
+            if (postData.thumbnail !== '../../Images/placeholder.png') {
+                const canvasElem = document.getElementById('uploaded-image')
+                const hiddenImage = document.getElementById('hidden-image')
+                const context = canvasElem.getContext("2d")
+                const imageRatio = hiddenImage.width / hiddenImage.height
+                canvasElem.width = 300 * imageRatio
+                canvasElem.height = 300
+                context.drawImage(
+                    hiddenImage,
+                    0,
+                    0,
+                    canvasElem.width,
+                    canvasElem.height
+                )
+                postData.thumbnail = canvasElem.toDataURL("image/jpeg", 0.5)
+            }
+        })
+    }, [postData])
+
     const pictureElement = (
         <div
             style={{
                 width: 'auto',
                 height: '300px',
-                marginTop: '40px'
+                marginBottom: '20px'
             }}>
             <img
                 src={postData.thumbnail}
                 alt=""
+                id="hidden-image"
+                style={{
+                    display: postData.thumbnail !== '../../Images/placeholder.png' ? 'none' : 'block',
+                    width: 'auto',
+                    height: '300px',
+                    opacity: '0.8'
+                }}
+            />
+            <canvas
                 id="uploaded-image"
                 style={{
+                    display: postData.thumbnail !== '../../Images/placeholder.png' ? 'block' : 'none',
                     width: 'auto',
                     height: '300px'
                 }}
-            />
+            >
+            </canvas>
             <div
                 style={{
                     display: postData.thumbnail !== '../../Images/placeholder.png' ? 'grid' : 'none',
                     width: `${imageWidth}px`,
                     height: '30px',
-                    marginTop: '-34px',
+                    marginTop: '-30px',
                     backgroundColor: 'rgba(255,255,255,0.8)',
                     position: 'absolute',
                     textAlign: 'right',
@@ -436,6 +470,7 @@ const NewPost = () => {
                         id="new-post-image"
                         name="new-post-image"
                         type="file"
+                        accept="image/*"
                         value={''}
                         onChange={(e) => {
                             var reader = new FileReader()

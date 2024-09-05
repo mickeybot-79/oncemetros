@@ -848,7 +848,8 @@ ul {
 }
 
 #new-post-back,
-#new-user-back {
+#new-user-back,
+#user-page-back {
   position: absolute;
   top: 50px;
   left: 100px;
@@ -872,13 +873,15 @@ ul {
 }
 
 #new-post-back:hover,
-#new-user-back:hover {
+#new-user-back:hover,
+#user-page-back:hover {
   transform: scale(1.08);
   transition: 0.3s;
 }
 
 #new-post-back div,
-#new-user-back div {
+#new-user-back div,
+#user-page-back div {
   transform: rotate(180deg);
   text-shadow: -1px -1px black;
 }
@@ -1260,7 +1263,8 @@ svg {
 }
 
 #post-thumbnail {
-  max-height: 350px;
+  max-width: 500px;
+  max-height: 400px;
 }
 
 #post-imgDesc,
