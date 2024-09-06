@@ -2111,3 +2111,28 @@ svg {
   background-color: rgba(53, 118, 192, 0.664);
   opacity: 0.8;
 }
+
+/*User Page*/
+#user-page-container {
+  display: grid;
+  place-content: center;
+  place-items: left;
+  padding-top: 100px;
+}
+
+#user-page-image {
+  width: 200px;
+  height: 200px;
+  border-radius: 100%;
+}
+
+#user-page-username {
+  font-size: 35px;
+  margin-top: 0;
+  color: white;
+  font-weight: 700;
+  -webkit-background-clip: text;
+  -webkit-text-stroke-width: 1.5px;
+  -webkit-text-stroke-color: black;
+}
+

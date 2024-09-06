@@ -33,9 +33,9 @@ const Login = ({ handleDisplayLogin, loginAnimation, handledisplayingLogin }) =>
     const handleSubmit = async (e) => {
         e.preventDefault()
         setWaiting('grid')
-        console.log(loginData)
+        //console.log(loginData)
         const result = await login({ username: loginData.username, password: loginData.password })
-        console.log(result)
+        //console.log(result)
         if (result?.error) {
             setWaiting('none')
             setResultMessage((prevState) => {

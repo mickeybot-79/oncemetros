@@ -40,7 +40,9 @@ const PersistLogin = () => {
                 }
             }
 
-            if (persist || (!isTemp && session)) verifyRefreshToken()
+            if (persist || (!isTemp && session)) {
+                verifyRefreshToken()
+            }
             if (!session) window.sessionStorage.setItem('session', 'actv')
             setTrueSuccess(true)
         }   

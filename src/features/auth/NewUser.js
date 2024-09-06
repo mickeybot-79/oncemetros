@@ -58,11 +58,8 @@ const NewUser = () => {
 
     useBeforeUnload(
         useCallback((e) => {
-            console.log(userData)
-            console.log(isUserBlocking)
-            //e.preventDefault()
             if (isUserBlocking) e.preventDefault()
-        }, [isUserBlocking, userData])
+        }, [isUserBlocking])
     )
 
     useEffect(() => {
@@ -94,87 +91,6 @@ const NewUser = () => {
         })
     }, [userData])
 
-    const handleChange = (e) => {
-        const { name, value } = e.target
-        setUserData((prevState) => {
-            return {
-                ...prevState,
-                [name]: value
-            }
-        })
-    }
-
-    const handleCreateUser = async () => {
-        setWaiting('grid')
-        const canSave = [userData.username, userData.password, userData.confirmPassword === userData.password].every(Boolean) && !isLoading
-        if (canSave) {
-            try {
-                const result = await createAccount(userData)
-                if (result?.data?.accessToken) {
-                    setResultMessage((prevState) => {
-                        return {
-                            ...prevState,
-                            message: 'Usuario creado correctamente.',
-                            display: 'grid',
-                            image: '../../Images/success.gif'
-                        }
-                    })
-                    setTimeout(() => {
-                        navigate('/')
-                    }, 2000)
-                } else {
-                    setResultMessage((prevState) => {
-                        return {
-                            ...prevState,
-                            message: `${result?.error?.data?.message}`,
-                            display: 'grid',
-                            confirmButton: 'block',
-                        }
-                    })
-                }
-                setWaiting('none')
-            } catch (err) {
-                console.log(err)
-            }
-        } else {
-            setWaiting('none')
-            if (!userData.username) {
-                setTimeout(() => {
-                    setResultMessage((prevState) => {
-                        return {
-                            ...prevState,
-                            message: 'Por favor, ingresa un nombre de usuario.',
-                            display: 'grid',
-                            confirmButton: 'block',
-                        }
-                    })
-                }, 10)
-            } else if (!userData.password) {
-                setTimeout(() => {
-                    setResultMessage((prevState) => {
-                        return {
-                            ...prevState,
-                            message: 'Por favor, ingresa una contraseña.',
-                            display: 'grid',
-                            confirmButton: 'block',
-                        }
-                    })
-                }, 10)
-            } else if (userData.password !== userData.confirmPasswordassword) {
-                setTimeout(() => {
-                    setResultMessage((prevState) => {
-                        return {
-                            ...prevState,
-                            message: 'Las contraseñas no coinciden',
-                            display: 'grid',
-                            confirmButton: 'block',
-                        }
-                    })
-                }, 10)
-            }
-        }
-    }
-
     if (gettingToken) {
         return (
             <>
@@ -184,6 +100,87 @@ const NewUser = () => {
     }
 
     if (!gettingToken) {
+
+        const handleChange = (e) => {
+            const { name, value } = e.target
+            setUserData((prevState) => {
+                return {
+                    ...prevState,
+                    [name]: value
+                }
+            })
+        }
+    
+        const handleCreateUser = async () => {
+            setWaiting('grid')
+            const canSave = [userData.username, userData.password, userData.confirmPassword === userData.password].every(Boolean) && !isLoading
+            if (canSave) {
+                try {
+                    const result = await createAccount(userData)
+                    if (result?.data?.accessToken) {
+                        setResultMessage((prevState) => {
+                            return {
+                                ...prevState,
+                                message: 'Usuario creado correctamente.',
+                                display: 'grid',
+                                image: '../../Images/success.gif'
+                            }
+                        })
+                        setTimeout(() => {
+                            navigate('/')
+                        }, 2000)
+                    } else {
+                        setResultMessage((prevState) => {
+                            return {
+                                ...prevState,
+                                message: `${result?.error?.data?.message}`,
+                                display: 'grid',
+                                confirmButton: 'block',
+                            }
+                        })
+                    }
+                    setWaiting('none')
+                } catch (err) {
+                    console.log(err)
+                }
+            } else {
+                setWaiting('none')
+                if (!userData.username) {
+                    setTimeout(() => {
+                        setResultMessage((prevState) => {
+                            return {
+                                ...prevState,
+                                message: 'Por favor, ingresa un nombre de usuario.',
+                                display: 'grid',
+                                confirmButton: 'block',
+                            }
+                        })
+                    }, 10)
+                } else if (!userData.password) {
+                    setTimeout(() => {
+                        setResultMessage((prevState) => {
+                            return {
+                                ...prevState,
+                                message: 'Por favor, ingresa una contraseña.',
+                                display: 'grid',
+                                confirmButton: 'block',
+                            }
+                        })
+                    }, 10)
+                } else if (userData.password !== userData.confirmPasswordassword) {
+                    setTimeout(() => {
+                        setResultMessage((prevState) => {
+                            return {
+                                ...prevState,
+                                message: 'Las contraseñas no coinciden',
+                                display: 'grid',
+                                confirmButton: 'block',
+                            }
+                        })
+                    }, 10)
+                }
+            }
+        }
 
         const pictureElement = (
             <div

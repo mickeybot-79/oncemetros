@@ -4,11 +4,17 @@ import { useNavigate } from "react-router-dom"
 import Quill from "quill"
 import Editor from "./EditorTest"
 import { useBeforeUnload } from "react-router-dom"
+import { useSelector } from "react-redux"
+import { selectCurrentToken } from "../auth/authSlice"
+import { jwtDecode } from "jwt-decode"
 
 const NewPost = () => {
 
-    // const date = new Date("2021-12-31")
+    // const date = new Date("2021-02-11")
     // console.log(date.getTime())
+
+    const token = useSelector(selectCurrentToken)
+    var userId = token ? jwtDecode(token).UserInfo.id : ''
 
     const {
         data,
@@ -198,7 +204,6 @@ const NewPost = () => {
 
     const handleSubmit = async () => {
         setWaiting('grid')
-        const author = ''
         let postContent = ''
         if (writingStyle === 'type') {
             const editorElement = document.getElementsByClassName('ql-editor')[0]
@@ -239,7 +244,7 @@ const NewPost = () => {
                 const result = await createPost({
                     ...postData,
                     content: postContent,
-                    author
+                    author: userId
                 })
                 console.log(result)
                 if (result?.data?.searchField) {
@@ -596,7 +601,7 @@ const NewPost = () => {
             </form>
             <div id="new-post-buttons">
                 <button id="new-post-cancel" onClick={() => navigate(-1)}>Cancelar</button>
-                <button id="new-post-submit" onClick={handleSubmit}>Guardar</button>
+                <button id="new-post-submit" onClick={handleSubmit}>Publicar</button>
             </div>
             <div id="post-result-container" style={{display: resultMessage.display}}>
                 <div className="result-container" style={{animation: resultMessage.animation}}>
