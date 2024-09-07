@@ -2117,7 +2117,16 @@ svg {
   display: grid;
   place-content: center;
   place-items: left;
-  padding-top: 100px;
+  padding: 100px 0px;
+  background: linear-gradient(90deg,
+  transparent,
+  rgba(128, 128, 128, 0.01),
+  rgba(255, 255, 255, 0.65),
+  rgba(255, 255, 255, 0.65),
+  rgba(255, 255, 255, 0.65),
+  rgba(255, 255, 255, 0.65),
+  rgba(128, 128, 128, 0.01),
+  transparent);
 }
 
 #user-page-image {
@@ -2134,5 +2143,39 @@ svg {
   -webkit-background-clip: text;
   -webkit-text-stroke-width: 1.5px;
   -webkit-text-stroke-color: black;
+  margin-bottom: 20px;
 }
 
+#user-page-logout {
+  width: 150px;
+  height: 50px;
+  font-size: 20px;
+  border: 0;
+  background-color: transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  padding-top: 15px;
+  color: rgb(121, 55, 18);
+  font-weight: 700;
+  margin-left: 90%;
+  margin-bottom: -50px;
+}
+
+.user-page-post {
+  width: 500px;
+  display: flex;
+  background-color: rgba(93, 196, 214, 0.884);
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  gap: 10px;
+}
+
+.user-page-post-image {
+  width: 200px;
+}
+
+.user-page-post-title {
+  font-size: 20px;
+  font-weight: 700;
+}

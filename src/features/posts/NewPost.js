@@ -67,11 +67,13 @@ const NewPost = () => {
     const [isBlocking, setIsBlocking] = useState(false)
 
     useEffect(() => {
-        if (currentPostContent && currentPostContent !== '<p><br></p>') {
-            const editorElement = document.getElementsByClassName('ql-editor')[0]
-            editorElement.innerHTML = currentPostContent
+        if (currentPostContent && currentPostContent !== '<p><br></p>' && writingStyle === 'type') {
+            setTimeout(() => {
+                const editorElement = document.getElementsByClassName('ql-editor')[0]
+                editorElement.innerHTML = currentPostContent  
+            })
         }
-    }, [currentPostContent])
+    }, [currentPostContent, writingStyle])
 
     useBeforeUnload(
         useCallback((e) => {
@@ -346,6 +348,7 @@ const NewPost = () => {
                     canvasElem.width,
                     canvasElem.height
                 )
+                //console.log(canvasElem.toDataURL("image/jpeg", 0.5))
                 postData.thumbnail = canvasElem.toDataURL("image/jpeg", 0.5)
             }
         })
@@ -428,6 +431,8 @@ const NewPost = () => {
         )
     })
 
+    const textToInsert = currentPostContent !== '' && currentPostContent !== '<p><br></p>' ? '' : '[Escribe aquí...]'
+
     return (
         <div id="new-post-container">
             <button id="new-post-back" onClick={() => navigate(-1)}><div>➜</div> Atrás</button>
@@ -458,7 +463,7 @@ const NewPost = () => {
                 </select>
                 {writingStyle === 'type' && <Editor
                     defaultValue={new Delta()
-                        .insert(currentPostContent !== '' && currentPostContent !== '<p><br></p>' ? '' : '[Escribe aquí...]')
+                        .insert(textToInsert)
                     }
                     ref={quillRef}
                 />}
@@ -491,6 +496,14 @@ const NewPost = () => {
                             }
                             reader.onerror = (error) => {
                                 console.log('Error: ', error)
+                                setResultMessage((prevState) => {
+                                    return {
+                                        ...prevState,
+                                        message: error,
+                                        display: 'grid',
+                                        confirmButton: 'block',
+                                    }
+                                })
                             }
                         }}
                     />
@@ -576,11 +589,9 @@ const NewPost = () => {
                                     })
                                     return tagElements
                                 })
-                                console.log(result)
                                 newTagRef.current.value = ''
                                 setAddingTag(false)
                             } else {
-                                console.log(result)
                                 setResultMessage((prevState) => {
                                     return {
                                         ...prevState,

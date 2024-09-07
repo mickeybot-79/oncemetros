@@ -82,7 +82,7 @@ const Post = ({ post }) => {
             {post.heading && <div id="post-heading">{headingContentElement}</div>}
             <div id="post-content">{allParagraphElements}</div>
             <div style={{ display: 'inline', placeSelf: 'start' }}>
-                <p id="post-author" onClick={() => navigate(`/posts/${post.author}`)}>Por <span>{post.author}</span></p>
+                <p id="post-author" onClick={() => navigate(`/posts/${post.authorName}`)}>Por <span>{post.authorName}</span></p>
                 <p id="post-date">{convertedDate}</p>
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'left', alignItems: 'center', placeSelf: 'start', lineHeight: '5px' }}>Etiquetas: {tagElements}</div>

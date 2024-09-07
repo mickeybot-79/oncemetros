@@ -25,7 +25,7 @@ const UserPosts = () => {
 
     if (isSuccess) {
 
-        const allUserPosts = posts?.ids.filter(id => posts?.entities[id].author === user)
+        const allUserPosts = posts?.ids.filter(id => posts?.entities[id].authorName === user)
 
         const sortedPosts = allUserPosts.sort((a, b) => posts?.entities[b].date - posts?.entities[a].date)
     

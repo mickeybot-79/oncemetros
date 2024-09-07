@@ -3,7 +3,7 @@ import { useLoginMutation } from "./authApiSlice"
 import { useLocation, useNavigate } from "react-router-dom"
 import { jwtDecode } from "jwt-decode"
 
-const Login = ({ handleDisplayLogin, loginAnimation, handledisplayingLogin }) => {
+const Login = ({ handleDisplayLogin, loginAnimation, handleDisplayingLogin }) => {
 
     const currentLocation = useLocation()
 
@@ -33,9 +33,7 @@ const Login = ({ handleDisplayLogin, loginAnimation, handledisplayingLogin }) =>
     const handleSubmit = async (e) => {
         e.preventDefault()
         setWaiting('grid')
-        //console.log(loginData)
         const result = await login({ username: loginData.username, password: loginData.password })
-        //console.log(result)
         if (result?.error) {
             setWaiting('none')
             setResultMessage((prevState) => {
@@ -58,12 +56,11 @@ const Login = ({ handleDisplayLogin, loginAnimation, handledisplayingLogin }) =>
                 }
             })
             setTimeout(() => {
-                if (currentLocation.pathname === '/') handledisplayingLogin()
+                if (currentLocation.pathname === '/') handleDisplayingLogin()
                 handleDisplayLogin()
                 window.localStorage.setItem('persist', persist)
                 if (isTemp) window.localStorage.removeItem('isTemp')
                 navigate(`/user/${userId}`)
-                //navigate('/')
             }, 2000)
         }
     }
@@ -121,7 +118,7 @@ const Login = ({ handleDisplayLogin, loginAnimation, handledisplayingLogin }) =>
                 <div id="login-options-container">
                     <button id="login-cancel" onClick={(e) => {
                         e.preventDefault()
-                        if (currentLocation.pathname === '/') handledisplayingLogin()
+                        if (currentLocation.pathname === '/') handleDisplayingLogin()
                         handleDisplayLogin()
                     }}>Cancelar</button>
                     <button id="login-submit" onClick={(e) => handleSubmit(e)}>Enviar</button>

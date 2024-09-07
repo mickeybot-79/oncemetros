@@ -6,7 +6,7 @@ import { selectCurrentToken } from "../features/auth/authSlice"
 import { jwtDecode } from "jwt-decode"
 import { useGetUserDataQuery } from "../features/auth/authApiSlice"
 
-const PageHeader = ({ handledisplayingLogin }) => {
+const PageHeader = ({ handleDisplayingLogin }) => {
 
     const currentLocation = useLocation()
 
@@ -184,7 +184,7 @@ const PageHeader = ({ handledisplayingLogin }) => {
     }
 
     const handleDisplayLogin = () => {
-        if (currentLocation.pathname === '/') handledisplayingLogin()
+        if (currentLocation.pathname === '/') handleDisplayingLogin()
         setLoginAnimation(() => {
             return displayLogin === true ? 'login-form-out 0.5s cubic-bezier(.63,.12,.13,1.06) 1' : 'login-form-in 0.25s linear 1'
         })
@@ -199,7 +199,7 @@ const PageHeader = ({ handledisplayingLogin }) => {
 
     return (
         <>
-        {displayLogin && <Login handleDisplayLogin={handleDisplayLogin} loginAnimation={loginAnimation} handledisplayingLogin={handledisplayingLogin}/>}
+        {displayLogin && <Login handleDisplayLogin={handleDisplayLogin} loginAnimation={loginAnimation} handleDisplayingLogin={handleDisplayingLogin}/>}
             <header id="header-container" style={{ display: displayHeader }}>
                 <div id="options-image-container">
                     <img
@@ -276,7 +276,6 @@ const PageHeader = ({ handledisplayingLogin }) => {
                 <li className="submenu-option" onClick={() => navigate('/tags/Segunda RFEF')}>Segunda RFEF</li>
                 <li className="submenu-option" onClick={() => navigate('/tags/Tercera RFEF')}>Tercera RFEF</li>   
                 <li className="submenu-option" onClick={() => navigate('/tags/Copa del rey')}>Copa del rey</li>
-                <li className="submenu-option" onClick={() => navigate('/tags/Supercopa de España')}>Supercopa de España</li>
             </ul>
             <ul id="futbot-internacional-options" onMouseOver={displaySubmenu2} onMouseLeave={handleDisplaySubMenu2} style={{display: displaySubMenu.submenu2, left: subMenuLeft}}>
                 <li className="submenu-option" onClick={() => navigate('/tags/Premier League')}>Premier League</li>

@@ -265,15 +265,15 @@ const MainPage = () => {
         setCount(scrollFactor)
     }
 
-    const handledisplayingLogin = () => {
+    const handleDisplayingLogin = () => {
         setDisplayingLogin(prevState => !prevState)
     }
 
     return (
         <>
             <div id="background-div" style={{display: backgroundAnimation.display, animation: backgroundAnimation.animation}}></div>
-            <Presentation presentationDisplay={presentationDisplay}/>
-            <PageHeader handledisplayingLogin={handledisplayingLogin}/>
+            <Presentation presentationDisplay={presentationDisplay} isSuccess={isSuccess}/>
+            <PageHeader handleDisplayingLogin={handleDisplayingLogin}/>
             <div id="main-page-container" style={{overflow: 'hidden'}}>
                 <main style={{ display: presentationDisplay === 'none' ? 'grid' : 'none' }}>
                     <section id="main-stories">

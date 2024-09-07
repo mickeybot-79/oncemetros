@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-const Presentation = ({ presentationDisplay }) => {
+const Presentation = ({ presentationDisplay, isSuccess }) => {
 
     const [presentationHeight, setPresentationHeight] = useState('')
 
@@ -10,7 +10,7 @@ const Presentation = ({ presentationDisplay }) => {
 
     useEffect(() => {
         const backgroundAnimationMark = window.sessionStorage.getItem('backgroundAnimation')
-        if (!backgroundAnimationMark) {
+        if (!backgroundAnimationMark && isSuccess) {
             setPresentationHeight('100%')
             setLogoPresentation('presentation-animation 1.2s cubic-bezier(0.5, 0.4, 0.35, 1.15) 1')
             setTimeout(() => {
