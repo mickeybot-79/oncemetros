@@ -5,7 +5,7 @@
 
 const baseUrl = {
     backend: 'https://one1mbackend.onrender.com',
-    frontend: 'hhttps://oncemetros.onrender.com'
+    frontend: 'https://oncemetros.onrender.com'
 }
 
 export default baseUrl
