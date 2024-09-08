@@ -200,8 +200,7 @@ const MainPage = () => {
         const interval = setInterval(() => {
             if (isSuccess && autoScroll) {
                 setCount(prevCount => {
-                    return !document.hidden && !displayingLogin ? prevCount < 47 ? prevCount + 1 : 0 : prevCount
-                    // return !document.hidden ? prevCount < 47 ? prevCount + 1 : 0 : prevCount
+                    return !document.hidden && !displayingLogin ? prevCount < 40 ? prevCount + 1 : 0 : prevCount
                 })
             }
         }, 3000)
@@ -225,8 +224,9 @@ const MainPage = () => {
     useEffect(() => {
         if (autoScroll) {
             setMainStoriesAnimation(() => {
+                const transitionValue = count !== 0 ? '1.5s' : '0s'
                 return {
-                    transition: '1.5s',
+                    transition: transitionValue,
                     transform: `translateX(-${count * 321}px)`
                 }
             })

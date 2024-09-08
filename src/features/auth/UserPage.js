@@ -58,24 +58,32 @@ const UserPage = () => {
 
         return (
             <div id="user-page-container">
+                <button id="user-page-back" onClick={() => navigate('/')}><div>➜</div> Inicio</button>
                 <button id="user-page-logout" onClick={async () => {
                     await sendLogout()
                     window.localStorage.setItem('persist', false)
-                    navigate(-1)
+                    navigate('/')
                 }}>Cerrar sesión</button>
-                <button id="user-page-back" onClick={() => navigate('/')}><div>➜</div> Inicio</button>
-                <img src={user.image} alt="" id="user-page-image" />
-                <p id="user-page-username">{user.username}</p>
-                <h3>Acerca de {user.username}:</h3>
-                <p id="user-page-about">{user.aboutme}</p>
-                {/*Logout */}
+                <div style={{display: 'flex', gap: '30px', alignContent: 'center', marginBottom: '20px', marginTop: '150px'}}>
+                    <img src={user.image} alt="" id="user-page-image" />
+                    <p id="user-page-username">{user.username}</p>
+                </div>
+
+                {/* <h3>Acerca de {user.username}:</h3>
+                <p id="user-page-about">{user.aboutme}</p> */}
+
                 {/* ADD LOGOUT CONFIRMATION*/}
+
                 {/*Edit account info (password, image, aboutme, delete account)*/}
-                {/* <button>Editar información de la cuenta</button> */}
-                <button>Ver perfil público</button>
-                <button onClick={() => navigate('/post/new')}>Agregar nueva publicación</button>
+                <div id="user-page-options">
+                    <button id="user-info-edit">Editar información de la cuenta</button>
+                    <button id="user-public-profile">Ver perfil público</button>
+                    {user.roles.includes('Editor') && <button id="user-add-post" onClick={() => navigate('/post/new')}>Agregar nueva publicación</button>}
+                </div>
+
                 {/*If Editor Role - Edit own posts */}
                 {user.roles.includes('Editor') && userPostsElement}
+                
                 {/*If Admin Role - View all posts*/}
                 {user.roles.includes('Admin') && <h3>Ver todas las publicaciones</h3>}
             </div>

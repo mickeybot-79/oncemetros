@@ -51,7 +51,7 @@ const SearchPage = () => {
                                     <div key={post} className="search-result-container" onClick={() => navigate(`/post/${post}`)}>
                                         <img src={posts?.entities[post].thumbnail} alt="post-image" className="search-result-image" />
                                         <p className="search-result-title">{titleEnd}</p>
-                                        <p className="search-result-author">Por {posts?.entities[post].author}</p>
+                                        <p className="search-result-author">Por {posts?.entities[post].authorName}</p>
                                         <p className="search-result-date">{convertedDate}</p>
                                     </div>
                                 )
@@ -71,7 +71,7 @@ const SearchPage = () => {
                         })
                     }
                 } else if (searchCategory === 'author') {
-                    const resultPosts = posts?.ids.filter(post => posts?.entities[post].author.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").search(textToSearch.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")) !== -1)
+                    const resultPosts = posts?.ids.filter(post => posts?.entities[post].authorName.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").search(textToSearch.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")) !== -1)
                     if (resultPosts.length > 0) {
                         setSearchResults(() => {
                             const postElements = resultPosts.sort((a, b) => posts?.entities[b].date - posts?.entities[a].date).map(post => {
@@ -88,7 +88,7 @@ const SearchPage = () => {
                                     <div key={post} className="search-result-container" onClick={() => navigate(`/post/${post}`)}>
                                         <img src={posts?.entities[post].thumbnail} alt="post-image" className="search-result-image" />
                                         <p className="search-result-title">{titleEnd}</p>
-                                        <p className="search-result-author">Por {posts?.entities[post].author}</p>
+                                        <p className="search-result-author">Por {posts?.entities[post].authorName}</p>
                                         <p className="search-result-date">{convertedDate}</p>
                                     </div>
                                 )
@@ -132,7 +132,7 @@ const SearchPage = () => {
                                     <div key={post} className="search-result-container" onClick={() => navigate(`/post/${post}`)}>
                                         <img src={posts?.entities[post].thumbnail} alt="post-image" className="search-result-image" />
                                         <p className="search-result-title">{titleEnd}</p>
-                                        <p className="search-result-author">Por {posts?.entities[post].author}</p>
+                                        <p className="search-result-author">Por {posts?.entities[post].authorName}</p>
                                         <p className="search-result-date">{convertedDate}</p>
                                     </div>
                                 )

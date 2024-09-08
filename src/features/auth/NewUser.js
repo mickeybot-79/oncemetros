@@ -6,6 +6,7 @@ import { useSelector } from "react-redux"
 import { selectCurrentToken } from "./authSlice"
 import { jwtDecode } from "jwt-decode"
 import LoadingIcon from "../../components/LoadingIcon"
+import baseUrl from "../../baseurl"
 
 const NewUser = () => {
 
@@ -142,6 +143,14 @@ const NewUser = () => {
                     setWaiting('none')
                 } catch (err) {
                     console.log(err)
+                    setResultMessage((prevState) => {
+                        return {
+                            ...prevState,
+                            message: 'Ocurrió un error.',
+                            display: 'grid',
+                            confirmButton: 'block',
+                        }
+                    })
                 }
             } else {
                 setWaiting('none')
@@ -246,7 +255,7 @@ const NewUser = () => {
 
         return (
             <div id="new-user-page-container">
-                <button id="new-user-back" onClick={() => navigate(-1)}><div>➜</div> Volver</button>
+                <a href={baseUrl.frontend} id="new-user-back"><div>➜</div> Volver</a>
                 <h2 id="new-user-title">Registro de Usuario</h2>
                 <form id="new-user-form">
                     <label htmlFor="new-user-username" className="new-user-label">Nombre de usuario:</label>
@@ -323,10 +332,7 @@ const NewUser = () => {
                         onChange={handleChange}
                     ></textarea>
                     <div id="new-user-options">
-                        <button onClick={(e) => {
-                            e.preventDefault()
-                            navigate(-1)
-                        }} id="new-user-cancel">Cancelar</button>
+                        <a href={baseUrl.frontend} id="new-user-cancel">Cancelar</a>
                         <button onClick={(e) => {
                             e.preventDefault()
                             handleCreateUser()
