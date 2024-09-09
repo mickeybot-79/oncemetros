@@ -917,7 +917,7 @@ ul {
 }
 
 .new-post-input {
-  width: 1000%;
+  width: 100%;
   max-width: 100%;
   height: 1.5rem;
   font-size: 20px;
@@ -970,6 +970,26 @@ ul {
 
 .format-option {
   cursor: pointer;
+}
+
+#image-method-select {
+  position: absolute;
+  top: 980px;
+  left: 600px;
+  width: 240px;
+  height: 30px;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 5px;
+  opacity: 0.85;
+}
+
+#image-link-input {
+  height: 30px;
+  width: 100%;
+  max-width: 100%;
+  height: 1.5rem;
+  font-size: 20px;
 }
 
 #new-post-image {
@@ -2145,6 +2165,8 @@ svg {
   background: linear-gradient(90deg,
       transparent,
       transparent,
+      transparent,
+      transparent,
       rgba(128, 128, 128, 0.01),
       rgba(135, 189, 139, 0.95),
       rgba(135, 189, 139, 0.95),
@@ -2152,7 +2174,11 @@ svg {
       rgba(135, 189, 139, 0.95),
       rgba(135, 189, 139, 0.95),
       rgba(135, 189, 139, 0.95),
+      rgba(135, 189, 139, 0.95),
+      rgba(135, 189, 139, 0.95),
       rgba(128, 128, 128, 0.01),
+      transparent,
+      transparent,
       transparent,
       transparent);
   min-height: 100vh;

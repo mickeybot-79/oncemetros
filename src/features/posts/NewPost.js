@@ -17,8 +17,8 @@ const NewPost = () => {
 
     useEffect(() => {
         const userRoles = token ? jwtDecode(token).UserInfo.roles : []
-        if (userRoles.length < 2 || !userRoles.includes('Editor')) navigate('/')
-    }, [token,navigate])
+        if (token && (userRoles.length < 2 || !userRoles.includes('Editor'))) navigate('/')
+    }, [token, navigate])
 
     var userId = token ? jwtDecode(token).UserInfo.id : ''
 
@@ -39,7 +39,6 @@ const NewPost = () => {
 
     const currentPostTags = window.sessionStorage.getItem('postTags')
     const currentPostContent = window.sessionStorage.getItem('postContent')
-    //console.log(currentPostTags)
 
     const [postData, setPostData] = useState({
         title: window.sessionStorage.getItem('postTitle') || '',
@@ -70,6 +69,11 @@ const NewPost = () => {
 
     const [isBlocking, setIsBlocking] = useState(false)
 
+    const [imageMethod, setImageMethod] = useState({
+        selectedOption: window.sessionStorage.getItem('imageMethod') || 'link',
+        selectedValue: window.sessionStorage.getItem('imageMethod') === 'link' && window.sessionStorage.getItem('postImage') !== 'null' ? window.sessionStorage.getItem('postImage') : ''
+    })
+
     useEffect(() => {
         if (currentPostContent && currentPostContent !== '<p><br></p>' && writingStyle === 'type') {
             setTimeout(() => {
@@ -85,13 +89,18 @@ const NewPost = () => {
             window.sessionStorage.setItem('postTitle', postData.title)
             window.sessionStorage.setItem('postHeading', postData.heading)
             window.sessionStorage.setItem('postContent', editorElement.innerHTML.toString())
-            window.sessionStorage.setItem('postThumbnail', postData.thumbnail)
             window.sessionStorage.setItem('postImgDesc', postData.imgDesc)
             window.sessionStorage.setItem('postImgCred', postData.imgCred)
             window.sessionStorage.setItem('postTags', postData.tags.join(','))
-            window.sessionStorage.setItem('postInsPost', postData.insPost)          
+            window.sessionStorage.setItem('postInsPost', postData.insPost)
+            if (imageMethod.selectedOption === 'upload') {
+                window.sessionStorage.setItem('postThumbnail', postData.thumbnail)
+            } else {
+                window.sessionStorage.setItem('postImage', imageMethod.selectedValue)
+            }
+            window.sessionStorage.setItem('imageMethod', imageMethod.selectedOption)
             if (isBlocking) e.preventDefault()
-        }, [isBlocking, postData])
+        }, [isBlocking, postData, imageMethod])
     )
 
     const newTagRef = useRef()
@@ -99,13 +108,18 @@ const NewPost = () => {
     const topRef = useRef()
 
     useEffect(() => {
-        const canvasElem = document.getElementById('uploaded-image')
         setTimeout(() => {
-            if (postData.thumbnail !== '../../Images/placeholder.png') {
+            if (imageMethod.selectedOption === 'upload' && postData.thumbnail !== '../../Images/placeholder.png') {
+                const canvasElem = document.getElementById('uploaded-image')
                 setImageWidth(canvasElem.width.toString())
+            } else if (imageMethod.selectedOption === 'link' && imageMethod.selectedValue !== '') {
+                const imageElement = document.getElementById('image-from-link')
+                setTimeout(() => {
+                    setImageWidth(imageElement.width.toString())
+                })
             }
         }, 10)
-    }, [postData.thumbnail])
+    }, [postData.thumbnail, imageMethod])
 
     useEffect(() => {
         if (writingStyle === 'type') {
@@ -191,12 +205,12 @@ const NewPost = () => {
     }, [writingStyle])
 
     useEffect(() => {
-        if (postData.title !== '' || postData.heading !== '' || postData.thumbnail !== '../../Images/placeholder.png' || postData.tags.length > 0) {
+        if (postData.title !== '' || postData.heading !== '' || postData.thumbnail !== '../../Images/placeholder.png' || postData.tags.length > 0 || imageMethod.selectedValue !== '') {
             setIsBlocking(true)
         } else {
             setIsBlocking(false)
         }
-    }, [postData])
+    }, [postData, imageMethod])
 
     const handleChange = (e) => {
         const { name, value } = e.target
@@ -250,10 +264,21 @@ const NewPost = () => {
                 const result = await createPost({
                     ...postData,
                     content: postContent,
-                    author: userId
+                    authorId: userId,
+                    authorName: token ? jwtDecode(token).UserInfo.username : ''
                 })
                 console.log(result)
                 if (result?.data?.searchField) {
+                    window.sessionStorage.removeItem('postTitle')
+                    window.sessionStorage.removeItem('postHeading')
+                    window.sessionStorage.removeItem('postContent')
+                    window.sessionStorage.removeItem('postImgDesc')
+                    window.sessionStorage.removeItem('postImgCred')
+                    window.sessionStorage.removeItem('postTags')
+                    window.sessionStorage.removeItem('postInsPost')
+                    window.sessionStorage.removeItem('postThumbnail')
+                    window.sessionStorage.removeItem('postImage')
+                    window.sessionStorage.removeItem('imageMethod')
                     setResultMessage((prevState) => {
                         return {
                             ...prevState,
@@ -338,34 +363,37 @@ const NewPost = () => {
 
     useEffect(() => {
         setTimeout(() => {
-            if (postData.thumbnail !== '../../Images/placeholder.png') {
+            if (postData.thumbnail !== '../../Images/placeholder.png' && imageMethod.selectedOption === 'upload') {
                 const canvasElem = document.getElementById('uploaded-image')
                 const hiddenImage = document.getElementById('hidden-image')
                 const context = canvasElem.getContext("2d")
                 const imageRatio = hiddenImage.width / hiddenImage.height
                 canvasElem.width = 300 * imageRatio
                 canvasElem.height = 300
-                context.drawImage(
-                    hiddenImage,
-                    0,
-                    0,
-                    canvasElem.width,
-                    canvasElem.height
-                )
-                //console.log(canvasElem.toDataURL("image/jpeg", 0.5))
-                postData.thumbnail = canvasElem.toDataURL("image/jpeg", 0.5)
+                setTimeout(() => {
+                    context.drawImage(
+                        hiddenImage,
+                        0,
+                        0,
+                        canvasElem.width,
+                        canvasElem.height
+                    )
+                    //console.log(canvasElem.toDataURL("image/jpeg", 0.5))
+                    postData.thumbnail = canvasElem.toDataURL("image/jpeg", 0.5)
+                }, 10)
             }
         })
-    }, [postData])
+    }, [postData, imageMethod])
 
     const pictureElement = (
         <div
             style={{
                 width: 'auto',
                 height: '300px',
-                marginBottom: '20px'
+                marginBottom: '20px',
+                display: 'grid'
             }}>
-            <img
+            {imageMethod.selectedOption === 'upload' && <img
                 src={postData.thumbnail}
                 alt=""
                 id="hidden-image"
@@ -373,37 +401,60 @@ const NewPost = () => {
                     display: postData.thumbnail !== '../../Images/placeholder.png' ? 'none' : 'block',
                     width: 'auto',
                     height: '300px',
-                    opacity: '0.8'
+                    opacity: '0.8',
+                    justifySelf: 'center'
                 }}
-            />
-            <canvas
+            />}
+            {imageMethod.selectedOption === 'upload' && <canvas
                 id="uploaded-image"
                 style={{
                     display: postData.thumbnail !== '../../Images/placeholder.png' ? 'block' : 'none',
                     width: 'auto',
-                    height: '300px'
+                    height: '300px',
+                    justifySelf: 'center'
                 }}
-            >
-            </canvas>
+            ></canvas>}
+            {imageMethod.selectedOption === 'link' && <img
+                src={imageMethod.selectedValue !== '' ? imageMethod.selectedValue :  '../../Images/placeholder.png'}
+                alt=""
+                id="image-from-link"
+                style={{
+                    display: 'block',
+                    width: 'auto',
+                    height: '300px',
+                    opacity: imageMethod.selectedValue === '' ? '0.8' : '1',
+                    justifySelf: 'center'
+                }}
+            />}
             <div
                 style={{
-                    display: postData.thumbnail !== '../../Images/placeholder.png' ? 'grid' : 'none',
+                    display: (imageMethod.selectedOption === 'upload' && postData.thumbnail !== '../../Images/placeholder.png') || (imageMethod.selectedOption === 'link' && imageMethod.selectedValue !== '') ? 'grid' : 'none',
                     width: `${imageWidth}px`,
                     height: '30px',
-                    marginTop: '-30px',
                     backgroundColor: 'rgba(255,255,255,0.8)',
                     position: 'absolute',
                     textAlign: 'right',
-                    fontSize: '25px'
+                    fontSize: '25px',
+                    justifySelf: 'center',
+                    alignSelf: 'end'
                 }}>
                 <p
                     onClick={() => {
-                        setPostData((prevState) => {
-                            return {
-                                ...prevState,
-                                thumbnail: '../../Images/placeholder.png'
-                            }
-                        })
+                        if (imageMethod.selectedOption === 'upload') {
+                            setPostData((prevState) => {
+                                return {
+                                    ...prevState,
+                                    thumbnail: '../../Images/placeholder.png'
+                                }
+                            })
+                        } else {
+                            setImageMethod((prevState) => {
+                                return {
+                                    ...prevState,
+                                    selectedValue: ''
+                                }
+                            })
+                        }
                     }}
                     style={{
                         marginTop: '-2px',
@@ -479,40 +530,59 @@ const NewPost = () => {
                     onChange={handleChange}
                 ></textarea>}
                 <label htmlFor="new-post-image" className="new-post-label">Imagen:</label>
-                <div style={{ display: 'flex', width: '100%' }}>
-                    <input
-                        id="new-post-image"
-                        name="new-post-image"
-                        type="file"
-                        accept="image/*"
-                        value={''}
-                        onChange={(e) => {
-                            var reader = new FileReader()
-                            reader.readAsDataURL(e.target.files[0])
-                            reader.onload = () => {
-                                setPostData((prevState) => {
-                                    const newState = {
-                                        ...prevState,
-                                        thumbnail: reader.result
-                                    }
-                                    return newState
-                                })
-                            }
-                            reader.onerror = (error) => {
-                                console.log('Error: ', error)
-                                setResultMessage((prevState) => {
-                                    return {
-                                        ...prevState,
-                                        message: error,
-                                        display: 'grid',
-                                        confirmButton: 'block',
-                                    }
-                                })
-                            }
-                        }}
-                    />
-                    {pictureElement}
-                </div>
+                <select onChange={(e) => setImageMethod((prevState) => {
+                    return {
+                        ...prevState,
+                        selectedOption: e.target.value
+                    }
+                })} defaultValue="link" id="image-method-select">
+                    <option value="link">Agregar enlace de imagen</option>
+                    <option value="upload">Subir archivo de imagen</option>
+                </select>
+                {imageMethod.selectedOption === 'upload' && <input
+                    id="new-post-image"
+                    name="new-post-image"
+                    type="file"
+                    accept="image/*"
+                    value={''}
+                    onChange={(e) => {
+                        var reader = new FileReader()
+                        reader.readAsDataURL(e.target.files[0])
+                        reader.onload = () => {
+                            setPostData((prevState) => {
+                                const newState = {
+                                    ...prevState,
+                                    thumbnail: reader.result
+                                }
+                                return newState
+                            })
+                        }
+                        reader.onerror = (error) => {
+                            console.log('Error: ', error)
+                            setResultMessage((prevState) => {
+                                return {
+                                    ...prevState,
+                                    message: error,
+                                    display: 'grid',
+                                    confirmButton: 'block',
+                                }
+                            })
+                        }
+                    }}
+                />}
+                {imageMethod.selectedOption === 'link' && <input
+                    id="image-link-input"
+                    type="text"
+                    value={imageMethod.selectedValue}
+                    onChange={(e) => setImageMethod((prevState) => {
+                        return {
+                            ...prevState,
+                            selectedValue: e.target.value
+                        }
+                    })}
+                    placeholder="Enlace de imagen"
+                />}
+                {pictureElement}
                 <label htmlFor="new-post-imageDesc" className="new-post-label">Descripción de la imagen:</label>
                 <input
                     id="new-post-imageDesc"

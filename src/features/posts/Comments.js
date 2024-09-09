@@ -81,10 +81,6 @@ const Comments = ({ post }) => {
             setReplying('')
             setAllComments([...result.data.comments])
             setDisplayReplyLoader('none')
-            //window.scrollTo({top: allCommentsRef.current.offsetTop + 100, behavior: 'smooth'})
-            // setTimeout(() => {
-            //     window.scrollTo({top: allCommentsRef.current.offsetTop - 100, behavior: 'smooth'})  
-            // })
         }
     }
 
@@ -92,95 +88,13 @@ const Comments = ({ post }) => {
 
     if (allComments.length > 0) {
         commentsElements = [...allComments].sort((a, b) => b.date - a.date).map(comment => {
-            const convertedDate = new Date(parseInt(comment.date)).toDateString()
-            const translatedDate = []
-        
-            switch (convertedDate.split(' ')[1]) {
-                case 'Jan':
-                    translatedDate.push('Enero')
-                    break;
-                case 'Feb':
-                    translatedDate.push('Febrero')
-                    break;
-                case 'Mar':
-                    translatedDate.push('Marzo')
-                    break;
-                case 'Apr':
-                    translatedDate.push('Abril')
-                    break;
-                case 'May':
-                    translatedDate.push('Mayo')
-                    break;
-                case 'Jun':
-                    translatedDate.push('Junio')
-                    break;
-                case 'Jul':
-                    translatedDate.push('Julio')
-                    break;
-                case 'Aug':
-                    translatedDate.push('Agosto')
-                    break;
-                case 'Sep':
-                    translatedDate.push('Septiembre')
-                    break;
-                case 'Oct':
-                    translatedDate.push('Octubre')
-                    break;
-                case 'Nov':
-                    translatedDate.push('Noviembre')
-                    break;
-                default:
-                    translatedDate.push('Diciembre')
-            }
-        
-            translatedDate.push(convertedDate.split(' ')[2])
-            translatedDate.push(convertedDate.split(' ')[3])
+            const postDate = new Date(parseInt(comment.date))
+            const convertedDate = postDate.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })
 
             const commentReplies = comment.replies.map(reply => {
 
-                const convertedReplyDate = new Date(parseInt(reply.date)).toDateString()
-                const translatedReplyDate = []
-            
-                switch (convertedReplyDate.split(' ')[1]) {
-                    case 'Jan':
-                        translatedReplyDate.push('Enero')
-                        break;
-                    case 'Feb':
-                        translatedReplyDate.push('Febrero')
-                        break;
-                    case 'Mar':
-                        translatedReplyDate.push('Marzo')
-                        break;
-                    case 'Apr':
-                        translatedReplyDate.push('Abril')
-                        break;
-                    case 'May':
-                        translatedReplyDate.push('Mayo')
-                        break;
-                    case 'Jun':
-                        translatedReplyDate.push('Junio')
-                        break;
-                    case 'Jul':
-                        translatedReplyDate.push('Julio')
-                        break;
-                    case 'Aug':
-                        translatedReplyDate.push('Agosto')
-                        break;
-                    case 'Sep':
-                        translatedReplyDate.push('Septiembre')
-                        break;
-                    case 'Oct':
-                        translatedReplyDate.push('Octubre')
-                        break;
-                    case 'Nov':
-                        translatedReplyDate.push('Noviembre')
-                        break;
-                    default:
-                        translatedReplyDate.push('Diciembre')
-                }
-            
-                translatedReplyDate.push(convertedDate.split(' ')[2])
-                translatedReplyDate.push(convertedDate.split(' ')[3])
+                const replyDate = new Date(parseInt(reply.date))
+                const convertedReplyDate = replyDate.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })
 
                 return (
                     <div className="comment-reply-container" key={reply.date}>
@@ -189,7 +103,7 @@ const Comments = ({ post }) => {
                             <p className="comment-reply-content"><a href='...'>{reply.replyTo}</a>{reply.content}</p>
                         </div>
                         <div>
-                            <p className="comment-reply-date">{`${translatedReplyDate[0]} ${translatedReplyDate[1]}, ${translatedReplyDate[2]}`}</p>
+                            <p className="comment-reply-date">{convertedReplyDate}</p>
                             <button className="comment-reply-option" onClick={(e) => handleStartReply(e, comment.searchField, reply.user)}>Responder</button>
                         </div>
                     </div>
@@ -204,7 +118,7 @@ const Comments = ({ post }) => {
                             <p className="comment-content">{comment.content}</p>
                         </div>
                         <div className="comment-date-options">
-                            <p className="comment-date">{`${translatedDate[0]} ${translatedDate[1]}, ${translatedDate[2]}`}</p>
+                            <p className="comment-date">{convertedDate}</p>
                             <div className="comment-options-container">
                                 <button className="comment-reply" onClick={(e) => handleStartReply(e, comment.searchField, comment.user)}>Responder</button>
                             </div>

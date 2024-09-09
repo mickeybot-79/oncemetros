@@ -1,15 +1,6 @@
-import { useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 
 const Layout = () => {
-
-    useEffect(() => {
-        setTimeout(() => {
-            window.sessionStorage.setItem('backgroundAnimation', 'y')
-        }, 2000)
-
-        //return () => window.sessionStorage.removeItem('backgroundAnimation')
-    }, [])
 
     return (
         <>

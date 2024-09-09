@@ -16,11 +16,12 @@ const Presentation = ({ presentationDisplay, isSuccess }) => {
             setTimeout(() => {
                 setHidePresentation('hide-presentation 2.2s cubic-bezier(.58,.46,.65,1) 1')
                 setPresentationHeight('20vh')
+                window.sessionStorage.setItem('backgroundAnimation', 'y')
             }, 1600)
         } else {
             setPresentationHeight('0px')
         }
-    }, [])
+    }, [isSuccess])
 
     return (
         <section id="presentation-content" style={{ height: presentationHeight, animation: hidePresentation, display: presentationDisplay }}>
