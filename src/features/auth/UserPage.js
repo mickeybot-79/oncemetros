@@ -39,13 +39,16 @@ const UserPage = () => {
 
         const userPosts = allUserPosts.map(currentPost => {
             return (
-                <div key={posts?.entities[currentPost].searchField} className="user-page-post" onClick={() => navigate(`/post/${posts?.entities[currentPost].searchField}`)}>
-                    <img src={posts?.entities[currentPost].thumbnail} alt="post-thumbnail" className="user-page-post-image"/>
-                    <div>
-                        <p className="user-page-post-title">{posts?.entities[currentPost].title}</p>
-                        <p>{posts?.entities[currentPost].views} vistas</p>
+                <>
+                    <p>Editar</p>
+                    <div key={posts?.entities[currentPost].searchField} className="user-page-post" onClick={() => navigate(`/post/${posts?.entities[currentPost].searchField}`)}>
+                        <img src={posts?.entities[currentPost].thumbnail} alt="post-thumbnail" className="user-page-post-image" />
+                        <div>
+                            <p className="user-page-post-title">{posts?.entities[currentPost].title}</p>
+                            <p>{posts?.entities[currentPost].views} vistas</p>
+                        </div>
                     </div>
-                </div>
+                </>
             )
         })
 

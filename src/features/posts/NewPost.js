@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState, useCallback } from "react"
 import { useCreatePostMutation, useGetTagsQuery, useAddTagMutation } from "./postsApiSlice"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useBeforeUnload } from "react-router-dom"
 import Quill from "quill"
 import Editor from "./EditorTest"
-import { useBeforeUnload } from "react-router-dom"
 import { useSelector } from "react-redux"
 import { selectCurrentToken } from "../auth/authSlice"
 import { jwtDecode } from "jwt-decode"
@@ -17,14 +16,18 @@ const NewPost = () => {
 
     useEffect(() => {
         const userRoles = token ? jwtDecode(token).UserInfo.roles : []
-        if (token && (userRoles.length < 2 || !userRoles.includes('Editor'))) navigate('/')
+        setTimeout(() => {
+            if (userRoles.length < 2 || !userRoles.includes('Editor')) {
+                navigate('/')
+            }
+        }, 500)
     }, [token, navigate])
 
     var userId = token ? jwtDecode(token).UserInfo.id : ''
 
     const {
-        data,
-        isSuccess
+        data: tags,
+        isTagsSuccess
     } = useGetTagsQuery('tagsList', {})
 
     const [addTag] = useAddTagMutation()
@@ -74,14 +77,9 @@ const NewPost = () => {
         selectedValue: window.sessionStorage.getItem('imageMethod') === 'link' && window.sessionStorage.getItem('postImage') !== 'null' ? window.sessionStorage.getItem('postImage') : ''
     })
 
-    useEffect(() => {
-        if (currentPostContent && currentPostContent !== '<p><br></p>' && writingStyle === 'type') {
-            setTimeout(() => {
-                const editorElement = document.getElementsByClassName('ql-editor')[0]
-                if (editorElement) editorElement.innerHTML = currentPostContent
-            })
-        }
-    }, [currentPostContent, writingStyle])
+    const [editorPromptDisplay, setEditorPromptDisplay] = useState('block')
+
+    const [editorLeft, setEditorLeft] = useState()
 
     useBeforeUnload(
         useCallback((e) => {
@@ -107,20 +105,7 @@ const NewPost = () => {
     const quillRef = useRef()
     const topRef = useRef()
 
-    useEffect(() => {
-        setTimeout(() => {
-            if (imageMethod.selectedOption === 'upload' && postData.thumbnail !== '../../Images/placeholder.png') {
-                const canvasElem = document.getElementById('uploaded-image')
-                setImageWidth(canvasElem.width.toString())
-            } else if (imageMethod.selectedOption === 'link' && imageMethod.selectedValue !== '') {
-                const imageElement = document.getElementById('image-from-link')
-                setTimeout(() => {
-                    setImageWidth(imageElement.width.toString())
-                })
-            }
-        }, 10)
-    }, [postData.thumbnail, imageMethod])
-
+    //Editor format buttons and prompt effect
     useEffect(() => {
         if (writingStyle === 'type') {
             setTimeout(() => {
@@ -201,17 +186,89 @@ const NewPost = () => {
 	V38.5z"/>
                 </svg>`
             }, 100)
+            const editorElement = document.getElementsByClassName('ql-editor')[0]
+            if (editorElement) {
+                if (currentPostContent && currentPostContent !== '<p><br></p>') {
+                    setTimeout(() => {
+                        editorElement.innerHTML = currentPostContent
+                        setEditorLeft(editorElement.offsetLeft)
+                        setEditorPromptDisplay('none')
+                    })
+                } else {
+                    editorElement.addEventListener('keydown', () => {
+                        if (editorElement.innerHTML === '<p><br></p>') {
+                            setEditorPromptDisplay('block')
+                        } else {
+                            setEditorPromptDisplay('none')
+                        }
+                    })
+                }
+            }
+        } else {
+            setEditorPromptDisplay('none')
         }
-    }, [writingStyle])
+    }, [currentPostContent, writingStyle])
 
+    //Set all Tags effect
+    useEffect(() => {
+        if (isTagsSuccess) {
+            setTagOptions(() => {
+                const tagElements = [...tags[0].allTags].sort().map(tag => {
+                    return (
+                        <option
+                            key={tag}
+                            value={tag}
+                        >{tag}
+                        </option>
+                    )
+                })
+                return tagElements
+            })
+        }
+    }, [tags, isTagsSuccess])
+
+    //Adjust uploaded image and isBlocking effect
     useEffect(() => {
         if (postData.title !== '' || postData.heading !== '' || postData.thumbnail !== '../../Images/placeholder.png' || postData.tags.length > 0 || imageMethod.selectedValue !== '') {
             setIsBlocking(true)
         } else {
             setIsBlocking(false)
         }
+        setTimeout(() => {
+            if (imageMethod.selectedOption === 'upload' && postData.thumbnail !== '../../Images/placeholder.png') {
+                const canvasElem = document.getElementById('uploaded-image')
+                setImageWidth(canvasElem.width.toString())
+            } else if (imageMethod.selectedOption === 'link' && imageMethod.selectedValue !== '') {
+                const imageElement = document.getElementById('image-from-link')
+                setTimeout(() => {
+                    setImageWidth(imageElement.width.toString())
+                }, 100)
+            }
+        }, 10)
+        setTimeout(() => {
+            if (postData.thumbnail !== '../../Images/placeholder.png' && imageMethod.selectedOption === 'upload') {
+                const canvasElem = document.getElementById('uploaded-image')
+                const hiddenImage = document.getElementById('hidden-image')
+                const context = canvasElem.getContext("2d")
+                const imageRatio = hiddenImage.width / hiddenImage.height
+                canvasElem.width = 300 * imageRatio
+                canvasElem.height = 300
+                setTimeout(() => {
+                    context.drawImage(
+                        hiddenImage,
+                        0,
+                        0,
+                        canvasElem.width,
+                        canvasElem.height
+                    )
+                    //console.log(canvasElem.toDataURL("image/jpeg", 0.5))
+                    postData.thumbnail = canvasElem.toDataURL("image/jpeg", 0.5)
+                }, 10)
+            }
+        })
     }, [postData, imageMethod])
 
+    //Change handler
     const handleChange = (e) => {
         const { name, value } = e.target
         setPostData((prevState) => {
@@ -222,6 +279,7 @@ const NewPost = () => {
         })
     }
 
+    //Submit handler
     const handleSubmit = async () => {
         setWaiting('grid')
         let postContent = ''
@@ -231,6 +289,7 @@ const NewPost = () => {
         } else {
             postContent = postData.content
         }
+        //remove 'background-color' from HTML input text
         const getIndicesOf = (searchStr, str) => {
             var startIndex = 0, 
                 index,
@@ -265,7 +324,8 @@ const NewPost = () => {
                     ...postData,
                     content: postContent,
                     authorId: userId,
-                    authorName: token ? jwtDecode(token).UserInfo.username : ''
+                    authorName: token ? jwtDecode(token).UserInfo.username : '',
+                    thumbnail: imageMethod.selectedOption === 'upload' ? postData.thumbnail : imageMethod.selectedValue
                 })
                 console.log(result)
                 if (result?.data?.searchField) {
@@ -343,47 +403,6 @@ const NewPost = () => {
             }
         }
     }
-
-    useEffect(() => {
-        if (isSuccess) {
-            setTagOptions(() => {
-                const tagElements = [...data[0].allTags].sort().map(tag => {
-                    return (
-                        <option
-                            key={tag}
-                            value={tag}
-                        >{tag}
-                        </option>
-                    )
-                })
-                return tagElements
-            })
-        }
-    }, [data, isSuccess])
-
-    useEffect(() => {
-        setTimeout(() => {
-            if (postData.thumbnail !== '../../Images/placeholder.png' && imageMethod.selectedOption === 'upload') {
-                const canvasElem = document.getElementById('uploaded-image')
-                const hiddenImage = document.getElementById('hidden-image')
-                const context = canvasElem.getContext("2d")
-                const imageRatio = hiddenImage.width / hiddenImage.height
-                canvasElem.width = 300 * imageRatio
-                canvasElem.height = 300
-                setTimeout(() => {
-                    context.drawImage(
-                        hiddenImage,
-                        0,
-                        0,
-                        canvasElem.width,
-                        canvasElem.height
-                    )
-                    //console.log(canvasElem.toDataURL("image/jpeg", 0.5))
-                    postData.thumbnail = canvasElem.toDataURL("image/jpeg", 0.5)
-                }, 10)
-            }
-        })
-    }, [postData, imageMethod])
 
     const pictureElement = (
         <div
@@ -486,8 +505,6 @@ const NewPost = () => {
         )
     })
 
-    const textToInsert = currentPostContent !== '' && currentPostContent !== '<p><br></p>' ? '' : '[Escribe aquí...]'
-
     return (
         <div id="new-post-container">
             <a href={`${baseUrl.frontend}/user/${userId}`} id="new-post-back"><div>➜</div> Atrás</a>
@@ -516,10 +533,9 @@ const NewPost = () => {
                     <option value="type">Edición libre</option>
                     <option value="html-input">HTML</option>
                 </select>
+                <p style={{position: 'absolute', left: `${editorLeft}px`, top: '560px', fontSize: '20px', opacity: '0.5', display: editorPromptDisplay}}>Escribe aquí</p>
                 {writingStyle === 'type' && <Editor
-                    defaultValue={new Delta()
-                        .insert(textToInsert)
-                    }
+                    defaultValue={new Delta()}
                     ref={quillRef}
                 />}
                 {writingStyle === 'html-input' && <textarea
@@ -603,13 +619,13 @@ const NewPost = () => {
                     value={postData.imgCred}
                     onChange={handleChange}
                 />
-                <label htmlFor="new-post-insPost" className="new-post-label">Enlace de Instagram:</label>
+                <label htmlFor="new-post-insPost" className="new-post-label">Publicación en Instagram:</label>
                 <input
                     id="new-post-insPost"
                     name="insPost"
                     type="text"
                     className="new-post-input"
-                    placeholder="Escribe aquí"
+                    placeholder="Enlace a Instagram"
                     value={postData.insPost}
                     onChange={handleChange}
                 />
@@ -681,7 +697,7 @@ const NewPost = () => {
                     }}>✓</button>
                 </div>
                 <div id="tag-elements-container">
-                    {selectedTagsElements}
+                    {postData.tags.length === 0 ? (<span style={{opacity: '0.5', fontSize: '20px'}}>Las etiquetas se mostrarán aquí</span>) : selectedTagsElements}
                 </div>
             </form>
             <div id="new-post-buttons">

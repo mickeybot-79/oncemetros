@@ -1,8 +1,6 @@
 
 const ProfilePage = () => {
 
-    /* Path: '/profile' */
-
     return (
         <></>
     )

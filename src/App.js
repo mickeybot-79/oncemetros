@@ -18,6 +18,7 @@ import NewUser from './features/auth/NewUser'
 import LoadingIcon from './components/LoadingIcon'
 import UserPage from './features/auth/UserPage'
 import PersistLogin from './features/auth/PersistLogin'
+import ProfilePage from './features/auth/ProfilePage'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -33,6 +34,7 @@ const router = createBrowserRouter(
         <Route path="search" index element={<SearchPage />} />
         <Route path="users/new" index element={<NewUser />} />
         <Route path="user/:id" index element={<UserPage />} />
+        <Route path="profile/:id" index element={<ProfilePage />} />
         <Route path="loading" index element={<LoadingIcon />} />
       </Route>
     </Route>
