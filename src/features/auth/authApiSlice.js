@@ -1,3 +1,4 @@
+import { jwtDecode } from "jwt-decode"
 import { apiSlice } from "../../app/api/apiSlice"
 import { logOut, setCredentials } from "./authSlice"
 
@@ -14,6 +15,8 @@ export const authApiSlice = apiSlice.injectEndpoints({
                     const { data } = await queryFulfilled
                     const { accessToken } = data
                     dispatch(setCredentials({ accessToken }))
+                    const userRoles = jwtDecode(accessToken).UserInfo.roles
+                    window.sessionStorage.setItem('userRoles', userRoles.join(','))
                 } catch (err) {
                     console.log(err)
                 }
@@ -64,6 +67,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
                     await queryFulfilled
                     //console.log(data)
                     dispatch(logOut())
+                    window.sessionStorage.removeItem('userRoles')
                     setTimeout(() => {
                         dispatch(apiSlice.util.resetApiState())
                     }, 1000)
@@ -94,6 +98,13 @@ export const authApiSlice = apiSlice.injectEndpoints({
             }),
             providesTags: (result, error, id) => [{ type: 'User', id }]
         }),
+        getUserProfile: builder.query({
+            query: (userId) => ({
+                url: `/auth/profile/${userId}`,
+                method: 'GET'
+            }),
+            providesTags: (result, error, id) => [{ type: 'User', id }]
+        }),
         verifyUsername: builder.mutation({
             query: ({ username, tempId }) => ({
                 url: '/auth/verify',
@@ -114,5 +125,6 @@ export const {
     useSendLogoutMutation,
     useRefreshMutation,
     useGetUserDataQuery,
-    useVerifyUsernameMutation
+    useVerifyUsernameMutation,
+    useGetUserProfileQuery,
 } = authApiSlice 

@@ -19,6 +19,7 @@ import LoadingIcon from './components/LoadingIcon'
 import UserPage from './features/auth/UserPage'
 import PersistLogin from './features/auth/PersistLogin'
 import ProfilePage from './features/auth/ProfilePage'
+import EditPost from './features/posts/EditPost'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -28,6 +29,7 @@ const router = createBrowserRouter(
         <Route path="login" index element={<Login />} />
         <Route path="post/new" index element={<NewPost />} />
         <Route path="post/:id" index element={<PostPage />} />
+        <Route path="post/edit/:id" index element={<EditPost />} />
         <Route path="tags" index element={<AllTagsPage />} />
         <Route path="tags/:tag" index element={<TagsPage />} />
         <Route path="posts/:user" index element={<UserPosts />} />

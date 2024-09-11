@@ -80,7 +80,7 @@ const UserPage = () => {
                 {/*Edit account info (password, image, aboutme, delete account)*/}
                 <div id="user-page-options">
                     <button id="user-info-edit">Editar información de la cuenta</button>
-                    <button id="user-public-profile">Ver perfil público</button>
+                    <button id="user-public-profile" onClick={() => navigate(`/profile/${id}`)}>Ver perfil público</button>
                     {user.roles.includes('Editor') && <button id="user-add-post" onClick={() => navigate('/post/new')}>Agregar nueva publicación</button>}
                 </div>
 

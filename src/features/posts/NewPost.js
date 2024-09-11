@@ -12,23 +12,27 @@ const NewPost = () => {
 
     const navigate = useNavigate()
 
-    const token = useSelector(selectCurrentToken)
-
     useEffect(() => {
-        const userRoles = token ? jwtDecode(token).UserInfo.roles : []
+        const userRoles = window.sessionStorage.getItem('userRoles').split(',')
         setTimeout(() => {
             if (userRoles.length < 2 || !userRoles.includes('Editor')) {
                 navigate('/')
             }
         }, 500)
-    }, [token, navigate])
+        //eslint-disable-next-line
+    }, [])
 
+    const token = useSelector(selectCurrentToken)
     var userId = token ? jwtDecode(token).UserInfo.id : ''
+
+    /* ADD HANDLER FOR WHEN LOGIN EXPIRES!! */
 
     const {
         data: tags,
-        isTagsSuccess
-    } = useGetTagsQuery('tagsList', {})
+        isSuccess: isTagsSuccess
+    } = useGetTagsQuery('tagsList', {
+        refetchOnMountOrArgChange: true
+    })
 
     const [addTag] = useAddTagMutation()
 
@@ -212,6 +216,7 @@ const NewPost = () => {
     //Set all Tags effect
     useEffect(() => {
         if (isTagsSuccess) {
+            console.log(tags)
             setTagOptions(() => {
                 const tagElements = [...tags[0].allTags].sort().map(tag => {
                     return (
@@ -225,6 +230,7 @@ const NewPost = () => {
                 return tagElements
             })
         }
+        //eslint-disable-next-line
     }, [tags, isTagsSuccess])
 
     //Adjust uploaded image and isBlocking effect
