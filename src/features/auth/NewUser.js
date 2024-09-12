@@ -134,7 +134,7 @@ const NewUser = () => {
                         setResultMessage((prevState) => {
                             return {
                                 ...prevState,
-                                message: `${result?.error?.data?.message}`,
+                                message: `${result?.error?.data?.error}`,
                                 display: 'grid',
                                 confirmButton: 'block',
                             }
@@ -296,7 +296,7 @@ const NewUser = () => {
                     >Las contraseñas no coinciden</p>}
                     <div id="user-image-container">
                         <div id="image-label-input">
-                            <label htmlFor="new-user-image" className="new-user-label">Imagen de perfil:</label>
+                            <label htmlFor="new-user-image" className="new-user-label">Imagen de perfil (opcional):</label>
                             <input
                                 id="new-user-image"
                                 type="file"
@@ -323,7 +323,7 @@ const NewUser = () => {
                         </div>
                         {pictureElement}
                     </div>
-                    <label htmlFor="new-user-aboutme" className="new-user-label">Acerca de mí:</label>
+                    <label htmlFor="new-user-aboutme" className="new-user-label">Acerca de mí (opcional):</label>
                     <textarea
                         id="new-user-aboutme"
                         name="aboutme"

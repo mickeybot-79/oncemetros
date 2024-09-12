@@ -456,6 +456,7 @@ ul {
   align-self: center;
   height: 300px;
   object-fit: cover;
+  object-position: top;
 }
 
 #title-heading-container {
@@ -617,6 +618,7 @@ ul {
   width: 400px;
   height: 300px;
   object-fit: cover;
+  object-position: top;
   justify-self: center;
   aspect-ratio: 16/9;
 }
@@ -1147,7 +1149,7 @@ textarea {
 #post-result-image,
 #user-result-image {
   width: 120px;
-  height: auto;
+  height: 120px;
   place-self: center;
   margin-bottom: 20px;
 }
@@ -1746,6 +1748,7 @@ svg {
   width: 300px;
   height: 200px;
   object-fit: cover;
+  object-position: top;
 }
 
 .post-tag-title {
@@ -1822,6 +1825,7 @@ svg {
   width: 300px;
   height: 200px;
   object-fit: cover;
+  object-position: top;
 }
 
 .user-posts-title {
@@ -1961,6 +1965,7 @@ svg {
   width: 200px;
   height: 200px;
   object-fit: cover;
+  object-position: top;
   aspect-ratio: 16/9;
 }
 
@@ -2242,6 +2247,7 @@ svg {
   width: 180px;
   height: 180px;
   object-fit: cover;
+  object-position: top;
 }
 
 .user-page-post-title {
@@ -2277,4 +2283,82 @@ svg {
   scale: 1.15;
   transition: 0.2s;
   color: rgb(104, 69, 133);
+}
+
+/* Profile Page */
+#user-profile-container {
+  width: 100%;
+  display: grid;
+  place-content: center;
+  background: linear-gradient(90deg,
+      transparent,
+      transparent,
+      rgb(68, 199, 166, 0.01),
+      rgb(68, 199, 166, 0.85),
+      rgb(68, 199, 166, 0.85),
+      rgb(68, 199, 166, 0.85),
+      rgb(68, 199, 166, 0.85),
+      rgb(68, 199, 166, 0.85),
+      rgb(68, 199, 166, 0.85),
+      rgb(68, 199, 166, 0.85),
+      rgb(68, 199, 166, 0.01),
+      transparent,
+      transparent);
+  padding: 50px 0px;
+}
+
+#user-profile-image {
+  width: 200px;
+  height: 200px;
+  border-radius: 100%;
+}
+
+#user-profile-username {
+  font-size: 40px;
+  margin-top: 0px;
+  color: white;
+  text-shadow: 5px 5px 5px rgb(65, 65, 65);
+}
+
+#user-profile-membersince {
+  font-size: 15px;
+  margin-top: 30px;
+  margin-left: 30px;
+  color: rgb(63, 63, 63);
+}
+
+#profile-aboutme-title {
+  font-size: 20px;
+  color: rgb(39, 39, 39);
+  margin-bottom: 0px;
+}
+
+#user-profile-aboutme {
+  font-size: 22px;
+  margin-bottom: 50px;
+}
+
+#profile-posts-button {
+  width: 350px;
+  font-size: 18px;
+  border: 1px solid rgb(66, 66, 66);
+  border-radius: 5px;
+  display: flex;
+  place-content: center;
+  padding: 3px;
+  cursor: pointer;
+  transition: 0.2s;
+  box-shadow: 5px 5px 5px rgba(65, 65, 65, 0.753);
+  background-color: rgba(238, 123, 123, 0.767);
+}
+
+#profile-posts-button span {
+  font-size: 20px;
+  margin-top: -3px;
+  margin-left: 5px;
+}
+
+#profile-posts-button:hover {
+  scale: 1.02;
+  transition: 0.2s;
 }
