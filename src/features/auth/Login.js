@@ -9,8 +9,6 @@ const Login = ({ handleDisplayLogin, loginAnimation, handleDisplayingLogin }) =>
 
     const navigate = useNavigate()
 
-    const isTemp = window.localStorage.getItem('isTemp')
-
     const [login] = useLoginMutation()
 
     const [persist, setPersist] = useState(window.localStorage.getItem('persist') || 'true')
@@ -46,7 +44,10 @@ const Login = ({ handleDisplayLogin, loginAnimation, handleDisplayingLogin }) =>
             })
         } else {
             setWaiting('none')
-            const userId = jwtDecode(result?.data?.accessToken).UserInfo.id
+            const decodedToken = jwtDecode(result?.data?.accessToken).UserInfo
+            window.sessionStorage.setItem('userId', decodedToken.id)
+            window.sessionStorage.setItem('username', decodedToken.username)
+            window.sessionStorage.setItem('userRoles', decodedToken.roles.join(','))
             setResultMessage((prevState) => {
                 return {
                     ...prevState,
@@ -59,8 +60,8 @@ const Login = ({ handleDisplayLogin, loginAnimation, handleDisplayingLogin }) =>
                 if (currentLocation.pathname === '/') handleDisplayingLogin()
                 handleDisplayLogin()
                 window.localStorage.setItem('persist', persist)
-                if (isTemp) window.localStorage.removeItem('isTemp')
-                navigate(`/user/${userId}`)
+                window.localStorage.setItem('isTemp', 'n')
+                navigate(`/user/${decodedToken.id}`)
             }, 2000)
         }
     }

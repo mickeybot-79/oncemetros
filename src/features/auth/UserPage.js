@@ -2,17 +2,21 @@ import { useNavigate, useParams } from "react-router-dom"
 import { useGetUserDataQuery, useSendLogoutMutation } from "./authApiSlice"
 import LoadingIcon from "../../components/LoadingIcon"
 import { useGetPostsQuery } from "../posts/postsApiSlice"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import EditUser from "./EditUser"
 
 const UserPage = () => {
 
     const navigate = useNavigate()
 
-    const [sendLogout] = useSendLogoutMutation()
-
     const { id } = useParams()
 
-    const [waiting, setWaiting] = useState('none')
+    useEffect(() => {
+        const userId = window.sessionStorage.getItem('userId')
+        if (userId !== id) {
+            navigate('/')
+        }
+    }, [id, navigate])
 
     const [resultMessage, setResultMessage] = useState({
         message: 'Sesión cerrada',
@@ -20,6 +24,12 @@ const UserPage = () => {
         display: 'none',
         animation: 'new-post-result 0.2s linear 1'
     })
+
+    const [sendLogout] = useSendLogoutMutation()
+
+    const [waiting, setWaiting] = useState('none')
+
+    const [displayEditOptions, setDisplayEditOptions] = useState(false)
 
     const {
         data: posts,
@@ -84,6 +94,9 @@ const UserPage = () => {
                     setWaiting('none')
                     setTimeout(() => {
                         window.localStorage.setItem('persist', false)
+                        window.sessionStorage.removeItem('userId')
+                        window.sessionStorage.removeItem('username')
+                        window.sessionStorage.removeItem('userRoles')
                         setResultMessage((prevState) => {
                             return {
                                 ...prevState,
@@ -98,9 +111,8 @@ const UserPage = () => {
                     <p id="user-page-username">{user.username}</p>
                 </div>
 
-                {/*Edit account info (password, image, aboutme, delete account)*/}
                 <div id="user-page-options">
-                    <button id="user-info-edit">Editar información de la cuenta</button>
+                    <button id="user-info-edit" onClick={() => setDisplayEditOptions(true)}>Editar información de la cuenta</button>
                     <button id="user-public-profile" onClick={() => navigate(`/profile/${id}`)}>Ver perfil público</button>
                     {user.roles.includes('Editor') && <button id="user-add-post" onClick={() => navigate('/post/new')}>Agregar nueva publicación</button>}
                 </div>
@@ -130,6 +142,8 @@ const UserPage = () => {
                         <p id="post-result-message">{resultMessage.message}</p>
                     </div>
                 </div>
+
+                <EditUser displayEditOptions={displayEditOptions} handleCloseEdit={() => setDisplayEditOptions(false)}/>
 
             </div>
         )

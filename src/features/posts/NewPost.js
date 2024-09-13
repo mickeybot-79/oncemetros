@@ -3,29 +3,43 @@ import { useCreatePostMutation, useGetTagsQuery, useAddTagMutation } from "./pos
 import { useNavigate, useBeforeUnload } from "react-router-dom"
 import Quill from "quill"
 import Editor from "./EditorTest"
-import { useSelector } from "react-redux"
-import { selectCurrentToken } from "../auth/authSlice"
-import { jwtDecode } from "jwt-decode"
 import baseUrl from "../../baseurl"
 
 const NewPost = () => {
 
     const navigate = useNavigate()
 
+    const [resultMessage, setResultMessage] = useState({
+        message: '',
+        image: '../../Images/error-image.png',
+        display: 'none',
+        confirmButton: 'none',
+        animation: 'new-post-result 0.2s linear 1'
+    })
+
+    const userId = window.sessionStorage.getItem('userId')
+
     useEffect(() => {
-        const userRoles = window.sessionStorage.getItem('userRoles').split(',')
-        setTimeout(() => {
-            if (userRoles.length < 2 || !userRoles.includes('Editor')) {
+        const userRoles = window.sessionStorage.getItem('userRoles')
+        const userRolesArray = userRoles ? userRoles.split(',') : []
+        if (userRolesArray.length < 2 || !userRolesArray.includes('Editor')) {
+            navigate('/')
+        } else if (!userId) {
+            setResultMessage((prevState) => {
+                return {
+                    ...prevState,
+                    message: 'Sesión expirada, por favor vuelve a iniciar sesión.',
+                    display: 'grid',
+                }
+            })
+            setTimeout(() => {
+                if (userRoles) window.sessionStorage.removeItem('userRoles')
                 navigate('/')
-            }
-        }, 500)
-        //eslint-disable-next-line
-    }, [])
+            }, 3000)
+        }
+    }, [userId, navigate])
 
-    const token = useSelector(selectCurrentToken)
-    var userId = token ? jwtDecode(token).UserInfo.id : ''
-
-    /* ADD HANDLER FOR WHEN LOGIN EXPIRES!! */
+    const username = window.sessionStorage.getItem('username')
 
     const {
         data: tags,
@@ -61,14 +75,6 @@ const NewPost = () => {
     const [imageWidth, setImageWidth] = useState('')
 
     const [addingTag, setAddingTag] = useState(false)
-
-    const [resultMessage, setResultMessage] = useState({
-        message: '',
-        image: '../../Images/error-image.png',
-        display: 'none',
-        confirmButton: 'none',
-        animation: 'new-post-result 0.2s linear 1'
-    })
 
     const [writingStyle, setWritingStyle] = useState('type')
 
@@ -330,7 +336,7 @@ const NewPost = () => {
                     ...postData,
                     content: postContent,
                     authorId: userId,
-                    authorName: token ? jwtDecode(token).UserInfo.username : '',
+                    authorName: username,
                     thumbnail: imageMethod.selectedOption === 'upload' ? postData.thumbnail : imageMethod.selectedValue
                 })
                 console.log(result)
@@ -522,7 +528,7 @@ const NewPost = () => {
                     name="title"
                     type="text"
                     className="new-post-input"
-                    placeholder="Escribe aquí"
+                    placeholder="Escribe un título"
                     value={postData.title}
                     onChange={handleChange}
                 />
@@ -530,7 +536,7 @@ const NewPost = () => {
                 <textarea
                     id="new-post-heading"
                     name="heading"
-                    placeholder="Escribe aquí"
+                    placeholder="Agrega un encabezado"
                     value={postData.heading}
                     onChange={handleChange}
                 ></textarea>
@@ -539,7 +545,7 @@ const NewPost = () => {
                     <option value="type">Edición libre</option>
                     <option value="html-input">HTML</option>
                 </select>
-                <p style={{position: 'absolute', left: `${editorLeft}px`, top: '560px', fontSize: '20px', opacity: '0.5', display: editorPromptDisplay}}>Escribe aquí</p>
+                <p style={{position: 'absolute', left: `${editorLeft}px`, top: '560px', fontSize: '20px', opacity: '0.5', display: editorPromptDisplay}}>Escribe el contenido aquí</p>
                 {writingStyle === 'type' && <Editor
                     defaultValue={new Delta()}
                     ref={quillRef}
@@ -611,7 +617,7 @@ const NewPost = () => {
                     name="imgDesc"
                     type="text"
                     className="new-post-input"
-                    placeholder="Escribe aquí"
+                    placeholder="Describe la imagen"
                     value={postData.imgDesc}
                     onChange={handleChange}
                 />
@@ -621,7 +627,7 @@ const NewPost = () => {
                     name="imgCred"
                     type="text"
                     className="new-post-input"
-                    placeholder="Escribe aquí"
+                    placeholder="Fuente de la imagen"
                     value={postData.imgCred}
                     onChange={handleChange}
                 />

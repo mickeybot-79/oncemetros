@@ -1,4 +1,3 @@
-import { jwtDecode } from "jwt-decode"
 import { apiSlice } from "../../app/api/apiSlice"
 import { logOut, setCredentials } from "./authSlice"
 
@@ -15,8 +14,6 @@ export const authApiSlice = apiSlice.injectEndpoints({
                     const { data } = await queryFulfilled
                     const { accessToken } = data
                     dispatch(setCredentials({ accessToken }))
-                    const userRoles = jwtDecode(accessToken).UserInfo.roles
-                    window.sessionStorage.setItem('userRoles', userRoles.join(','))
                 } catch (err) {
                     console.log(err)
                 }
