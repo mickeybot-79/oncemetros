@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { WhatsappShareButton } from "react-share"
+import baseUrl from "../../baseurl"
 
 const Post = ({ post }) => {
 
@@ -88,10 +89,10 @@ const Post = ({ post }) => {
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'left', alignItems: 'center', placeSelf: 'start', lineHeight: '5px' }}>Etiquetas: {tagElements}</div>
             <div id="share-options-container">
-                <img src="../../Images/fb-icon.png" alt="fb" className="share-image" onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=https://one1mbackend.onrender.com/share/${post.searchField}`, 'popup','width=600,height=400')}/>
+                <img src="../../Images/fb-icon.png" alt="fb" className="share-image" onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${baseUrl}/share/${post.searchField}`, 'popup','width=600,height=400')}/>
                 <img src="../../Images/ins-icon.png" alt="ins" className="share-image" onClick={() => window.open(post.insPost || 'https://www.instagram.com/los11metros_/')}/>
-                <img src="../../Images/x-icon.png" alt="x" className="share-image" onClick={() => window.open(`https://twitter.com/share?url=https://one1mbackend.onrender.com/share/${post.searchField}`, 'popup', 'width=600,height=400')} />
-                <WhatsappShareButton children={''} url={`https://one1mbackend.onrender.com/share/${post.searchField}`} title={post.title}>
+                <img src="../../Images/x-icon.png" alt="x" className="share-image" onClick={() => window.open(`https://twitter.com/share?url=${baseUrl}/share/${post.searchField}`, 'popup', 'width=600,height=400')} />
+                <WhatsappShareButton children={''} url={`${baseUrl}/share/${post.searchField}`} title={post.title}>
                     <img src="../../Images/wp-icon.png" alt="wp" className="share-image" />
                 </WhatsappShareButton>
             </div>
