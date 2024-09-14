@@ -188,6 +188,47 @@ code {
   }
 }
 
+@keyframes edit-form-in {
+  from {
+    transform: translateX(-300px);
+  }
+
+  to {
+    transform: translateX(0px);
+  }
+
+}
+
+@keyframes edit-form-out {
+  from {
+    transform: translateX(0px);
+  }
+
+  to {
+    transform: translateX(-500px);
+  }
+}
+
+@keyframes selected-option-in {
+  from {
+    transform: translateX(300px);
+  }
+
+  to {
+    transform: translateX(0px);
+  }
+}
+
+@keyframes selected-option-out {
+  from {
+    transform: translateX(0px);
+  }
+
+  to {
+    transform: translateX(300px);
+  }
+}
+
 /*Header*/
 #header-container {
   width: 100%;
@@ -2327,11 +2368,11 @@ svg {
   color: rgb(63, 63, 63);
 }
 
-#profile-aboutme-title {
+/* #profile-aboutme-title {
   font-size: 20px;
   color: rgb(39, 39, 39);
   margin-bottom: 0px;
-}
+} */
 
 #user-profile-aboutme {
   font-size: 22px;
@@ -2380,15 +2421,104 @@ svg {
   left: 0;
   width: 25%;
   height: 100vh;
-  background-color: rgba(63, 147, 180, 0.521);
+  background-color: rgba(42, 218, 165, 0.884);
+  background: linear-gradient(90deg, 
+  rgba(42, 218, 165, 0.884),
+  rgba(42, 218, 165, 0.884),
+  rgba(42, 218, 165, 0.884),
+  rgba(42, 218, 165, 0.884),
+  rgba(42, 218, 165, 0.884),
+  rgba(42, 218, 165, 0.884),
+  rgba(42, 218, 165, 0.884),
+  rgba(42, 218, 165, 0.01));
+  display: grid;
+  place-content: center;
+  gap: 30px;
+  padding-right: 50px;
+}
+
+.edit-account-option {
+  font-size: 30px;
+  cursor: pointer;
+  color: rgb(233, 231, 144);
+  font-weight: 500;
+  font-family: 'Patua One', sans-serif;
+  text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.596);
+}
+
+.edit-account-option:hover {
+  scale: 1.05;
+  color: rgb(224, 222, 68);
+}
+
+.edit-account-option span:hover {
+  color: rgba(221, 61, 61, 0.836);
+  font-weight: 900;
+}
+
+#close-edit-button {
+  border: 1px solid black;
+  border-radius: 5px;
+  width: 200px;
+  height: 40px;
+  text-align: center;
+  font-size: 25px;
+  background-color: rgba(240, 154, 73, 0.767);
+  cursor: pointer;
+  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.582);
+  transition: 0.1s;
+  margin-top: 50px;
+}
+
+#close-edit-button:hover {
+  scale: 1.05;
+  transition: 0.1s;
 }
 
 #selected-edit-option {
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   width: 100%;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.521);
   place-content: end;
+}
+
+#user-edit-image {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.user-edit-button-cancel, 
+.user-edit-button-submit {
+  width: 140px;
+  height: 40px;
+  border-radius: 5px;
+  border: 0;
+  cursor: pointer;
+  font-size: 18px;
+  transition: 0.2s;
+}
+
+.user-edit-button-cancel {
+  background-color: rgba(230, 104, 104, 0.438);
+}
+
+.user-edit-button-submit {
+  background-color: rgba(23, 138, 23, 0.418);
+}
+
+.user-edit-button-cancel:hover, 
+.user-edit-button-submit:hover {
+  scale: 1.1;
+  transition: 0.2s;
+}
+
+.user-edit-button-cancel:hover { 
+  background-color: rgba(230, 104, 104, 0.74);
+}
+
+.user-edit-button-submit:hover {
+  background-color: rgba(23, 138, 23, 0.747);
 }

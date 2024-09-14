@@ -31,6 +31,8 @@ const UserPage = () => {
 
     const [displayEditOptions, setDisplayEditOptions] = useState(false)
 
+    const [editOptionsAnimation, setEditOptionsAnimation] = useState('')
+
     const {
         data: posts,
         isSuccess: isPostSuccess,
@@ -112,7 +114,10 @@ const UserPage = () => {
                 </div>
 
                 <div id="user-page-options">
-                    <button id="user-info-edit" onClick={() => setDisplayEditOptions(true)}>Editar información de la cuenta</button>
+                    <button id="user-info-edit" onClick={() => {
+                        setDisplayEditOptions(true)
+                        setEditOptionsAnimation('edit-form-in 0.2s linear 1')
+                    }}>Editar información de la cuenta</button>
                     <button id="user-public-profile" onClick={() => navigate(`/profile/${id}`)}>Ver perfil público</button>
                     {user.roles.includes('Editor') && <button id="user-add-post" onClick={() => navigate('/post/new')}>Agregar nueva publicación</button>}
                 </div>
@@ -143,7 +148,13 @@ const UserPage = () => {
                     </div>
                 </div>
 
-                <EditUser displayEditOptions={displayEditOptions} handleCloseEdit={() => setDisplayEditOptions(false)}/>
+                <EditUser
+                user={user}
+                displayEditOptions={displayEditOptions} 
+                handleCloseEdit={() => setDisplayEditOptions(false)}
+                editOptionsAnimation={editOptionsAnimation}
+                handleEditOptionsAnimation={(animation) => setEditOptionsAnimation(animation)}
+                />
 
             </div>
         )
