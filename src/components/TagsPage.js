@@ -5,8 +5,6 @@ import LoadingIcon from "./LoadingIcon"
 
 const TagsPage = () => {
 
-    window.scrollTo(0, 0)
-
     const { tag } = useParams()
 
     const navigate = useNavigate()

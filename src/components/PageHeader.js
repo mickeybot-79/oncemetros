@@ -1,9 +1,6 @@
 import { useEffect, useState, useRef } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import Login from "../features/auth/Login"
-import { useSelector } from "react-redux"
-import { selectCurrentToken } from "../features/auth/authSlice"
-import { jwtDecode } from "jwt-decode"
 import { useGetUserDataQuery } from "../features/auth/authApiSlice"
 
 const PageHeader = ({ handleDisplayingLogin }) => {
@@ -12,8 +9,7 @@ const PageHeader = ({ handleDisplayingLogin }) => {
 
     const navigate = useNavigate()
 
-    const token = useSelector(selectCurrentToken)
-    var userId = token ? jwtDecode(token).UserInfo.id : 'noUser'
+    var userId = window.sessionStorage.getItem('userId') ?? ''
 
     const {
         data: user,
@@ -46,7 +42,7 @@ const PageHeader = ({ handleDisplayingLogin }) => {
 
     const [loginAnimation, setLoginAnimation] = useState('')
 
-    const [loginOpacity, setLoginOpacity] = useState(token ? '0.7' : '0.5')
+    const [loginOpacity, setLoginOpacity] = useState(userId ? '0.7' : '0.5')
 
     const subMenu1 = useRef()
     const subMenu2 = useRef()
@@ -229,24 +225,24 @@ const PageHeader = ({ handleDisplayingLogin }) => {
                     >Inicio</p>
                     <div id="search-login-container">
                         <img
-                            src={token ? user?.image || `../Images/user-placeholder.jpg` : '../Images/user-icon.png'}
+                            src={userId ? user?.image || `../Images/user-placeholder.jpg` : '../Images/user-icon.png'}
                             alt="login"
                             id="login-option"
                             style={{opacity: loginOpacity}}
-                            onClick={token ? () => navigate(`/user/${userId}`) : handleDisplayLogin}
+                            onClick={userId ? () => navigate(`/user/${userId}`) : handleDisplayLogin}
                             onMouseOver={() => {
                                 setLoginOpacity('1')
                                 handleDisplayPrompt('login')
                             }}
                             onMouseMove={(e) => handlePosition(e)}
                             onMouseLeave={() => {
-                                setLoginOpacity(token ? '0.7' : '0.5')
+                                setLoginOpacity(userId ? '0.7' : '0.5')
                                 setDisplayPrompt('')
                             }} />
                         <p
                             id="login-icon-prompt"
                             style={{ display: displayPrompt === 'login' ? 'block' : 'none', top: promptPosition.top, left: promptPosition.left }}
-                        >{token ? 'Mi cuenta' : 'Iniciar sesión'}</p>
+                        >{userId ? 'Mi cuenta' : 'Iniciar sesión'}</p>
                         <img
                             src="../Images/search.png"
                             alt="search"

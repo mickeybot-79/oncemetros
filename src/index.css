@@ -2368,12 +2368,6 @@ svg {
   color: rgb(63, 63, 63);
 }
 
-/* #profile-aboutme-title {
-  font-size: 20px;
-  color: rgb(39, 39, 39);
-  margin-bottom: 0px;
-} */
-
 #user-profile-aboutme {
   font-size: 22px;
   margin-bottom: 50px;
@@ -2452,7 +2446,7 @@ svg {
 }
 
 .edit-account-option span:hover {
-  color: rgba(221, 61, 61, 0.836);
+  color: rgba(226, 114, 114, 0.836);
   font-weight: 900;
 }
 
@@ -2521,4 +2515,35 @@ svg {
 
 .user-edit-button-submit:hover {
   background-color: rgba(23, 138, 23, 0.747);
+}
+
+.new-password-input {
+  height: 30px;
+  border-radius: 5px;
+  font-size: 18px;
+}
+
+#delete-account-cancel,
+#delete-account-submit {
+  width: 150px;
+  height: 40px;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+#delete-account-cancel {
+  background-color: rgba(230, 104, 104, 0.5);
+}
+
+#delete-account-submit {
+  background-color: rgba(23, 138, 23, 0.5);
+}
+
+#delete-account-cancel:hover {
+  background-color: rgba(230, 104, 104, 0.8);
+}
+
+#delete-account-submit:hover {
+  background-color: rgba(23, 138, 23, 0.87);
 }

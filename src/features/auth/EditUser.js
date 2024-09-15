@@ -1,13 +1,14 @@
-import { getSuggestedQuery } from "@testing-library/react"
 import { useEffect, useState } from "react"
+import { useUpdateUserDataMutation } from "./authApiSlice"
 
 const EditUser = ({ user, displayEditOptions, handleCloseEdit, editOptionsAnimation, handleEditOptionsAnimation }) => {
 
     const [selectedOption, setSelectedOption] = useState('')
 
-    const currentImage = user.image
+    const [currentImage, setCurrentImage] = useState(user.image)
 
     const [userData, setUserData] = useState({
+        userId: window.sessionStorage.getItem('userId'),
         password: '',
         confirmPassword: '',
         image: currentImage,
@@ -15,6 +16,20 @@ const EditUser = ({ user, displayEditOptions, handleCloseEdit, editOptionsAnimat
     })
 
     const [selectedOptionAnimation, setSelectedOptionAnimation] = useState('')
+
+    const [deleteAccountDisplay, setDeleteAccountDisplay] = useState('none')
+
+    const [resultMessage, setResultMessage] = useState({
+        message: '',
+        image: '../../Images/error-image.png',
+        display: 'none',
+        confirmButton: 'none',
+        animation: 'new-post-result 0.2s linear 1'
+    })
+
+    const [waiting, setWaiting] = useState('none')
+
+    const [updateUserData] = useUpdateUserDataMutation()
 
     useEffect(() => {
         setTimeout(() => {
@@ -36,25 +51,15 @@ const EditUser = ({ user, displayEditOptions, handleCloseEdit, editOptionsAnimat
         })
     }, [userData])
 
-    console.log(user)
-
-    const editButtons = (
-        <div style={{display: 'flex', gap: '20px'}}>
-        <button className="user-edit-button-cancel" onClick={() => {
-            setSelectedOptionAnimation('selected-option-out 0.2s linear 1')
-            setTimeout(() => {
-                setSelectedOption('')
-                setUserData({
-                    password: '',
-                    confirmPassword: '',
-                    image: currentImage,
-                    aboutme: user.aboutme
-                })
-            }, 180)
-        }}>Cancelar</button>
-        <button className="user-edit-button-submit">Guardar</button>
-    </div>
-    )
+    const handleChange = (e) => {
+        const { name, value } = e.target
+        setUserData((prevState) => {
+            return {
+                ...prevState,
+                [name]: value
+            }
+        })
+    }
 
     const editImage = (
         <div style={{ 
@@ -83,7 +88,7 @@ const EditUser = ({ user, displayEditOptions, handleCloseEdit, editOptionsAnimat
                     display: 'grid',
                     placeContent: 'center'
                 }}>
-                <p style={{fontSize: '18px', textShadow: '1px 1px'}}>{userData.image !== currentImage ? 'Nueva imagen:' : 'Imagen actual:'}</p>
+                <p style={{fontSize: '22px', textShadow: '1px 1px'}}>{userData.image !== currentImage ? 'Nueva imagen:' : 'Imagen actual:'}</p>
                 <img
                     src={userData.image}
                     alt=""
@@ -110,7 +115,7 @@ const EditUser = ({ user, displayEditOptions, handleCloseEdit, editOptionsAnimat
                         display: userData.image !== currentImage ? 'grid' : 'none',
                         width: '200px',
                         height: '20px',
-                        marginTop: '240px',
+                        marginTop: '255px',
                         marginLeft: '65px',
                         backgroundColor: 'rgba(255,255,255,0.8)',
                         position: 'absolute',
@@ -158,7 +163,61 @@ const EditUser = ({ user, displayEditOptions, handleCloseEdit, editOptionsAnimat
                     }
                 }}
             />
-            {editButtons}
+            <div style={{ display: 'flex', gap: '20px' }}>
+                <button className="user-edit-button-cancel" onClick={() => {
+                    setSelectedOptionAnimation('selected-option-out 0.2s linear 1')
+                    setTimeout(() => {
+                        setSelectedOption('')
+                        setUserData({
+                            password: '',
+                            confirmPassword: '',
+                            image: currentImage,
+                            aboutme: user.aboutme
+                        })
+                    }, 180)
+                }}>Cancelar</button>
+                <button className="user-edit-button-submit" onClick={async () => {
+                    if (userData.image !== currentImage) {
+                        setWaiting('grid')
+                        try {
+                            const result = await updateUserData({userData})
+                            console.log(result)
+                            setCurrentImage(result.data.image)
+                            setWaiting('none')
+                            //SHOW RESULT MESSAGE
+                            setResultMessage((prevState) => {
+                                return {
+                                    ...prevState,
+                                    message: 'Imagen actualizada correctamente.',
+                                    display: 'grid',
+                                    image: '../../Images/success.gif'
+                                }
+                            })
+                            setTimeout(() => {
+                                setResultMessage((prevState) => {
+                                    return {
+                                        ...prevState,
+                                        display: 'none'
+                                    }
+                                })
+                            }, 2000)
+                        } catch (err) {
+                            console.log(err)
+                        }
+                    } else {
+                        setSelectedOptionAnimation('selected-option-out 0.2s linear 1')
+                        setTimeout(() => {
+                            setSelectedOption('')
+                            setUserData({
+                                password: '',
+                                confirmPassword: '',
+                                image: currentImage,
+                                aboutme: user.aboutme
+                            })
+                        }, 180)
+                    }
+                }}>Guardar</button>
+            </div>
         </div>
     )
 
@@ -181,17 +240,49 @@ const EditUser = ({ user, displayEditOptions, handleCloseEdit, editOptionsAnimat
                 rgba(77, 214, 207, 0.884),
                 rgba(77, 214, 207, 0.884),
                 rgba(77, 214, 207, 0.884))`}}>
-            <p style={{ fontSize: '18px', textShadow: '1px 1px' }}>Tu descripción:</p>
+            <p style={{ fontSize: '22px', textShadow: '1px 1px' }}>Tu descripción:</p>
             <textarea
                 style={{ width: '300px', height: '350px', fontSize: '18px' }}
+                placeholder="Escribe una descripción"
+                name="aboutme"
                 value={userData.aboutme}
-                onChange={(e) => setUserData((prevState) => {
-                    return {
-                        ...prevState,
-                        aboutme: e.target.value
+                onChange={(e) => handleChange(e)}></textarea>
+            <div style={{ display: 'flex', gap: '20px' }}>
+                <button className="user-edit-button-cancel" onClick={() => {
+                    setSelectedOptionAnimation('selected-option-out 0.2s linear 1')
+                    setTimeout(() => {
+                        setSelectedOption('')
+                        setUserData({
+                            password: '',
+                            confirmPassword: '',
+                            image: currentImage,
+                            aboutme: user.aboutme
+                        })
+                    }, 180)
+                }}>Cancelar</button>
+                <button className="user-edit-button-submit" onClick={async () => {
+                    if (userData.aboutme !== '' && userData.aboutme !== user.aboutme) {
+                        try {
+                            const result = await updateUserData({userData})
+                            console.log(result)
+                            //SHOW RESULT MESSAGE
+                        } catch (err) {
+                            console.log(err)
+                        }
+                    } else {
+                        setSelectedOptionAnimation('selected-option-out 0.2s linear 1')
+                        setTimeout(() => {
+                            setSelectedOption('')
+                            setUserData({
+                                password: '',
+                                confirmPassword: '',
+                                image: currentImage,
+                                aboutme: user.aboutme
+                            })
+                        }, 180)
                     }
-                })}></textarea>
-            {editButtons}
+                }}>Guardar</button>
+            </div>
         </div>
     )
 
@@ -214,11 +305,57 @@ const EditUser = ({ user, displayEditOptions, handleCloseEdit, editOptionsAnimat
                 rgba(77, 214, 207, 0.884),
                 rgba(77, 214, 207, 0.884),
                 rgba(77, 214, 207, 0.884))`}}>
-            <p style={{ fontSize: '18px', textShadow: '1px 1px' }}>Nueva contraseña:</p>
-            <input />
-            <p style={{ fontSize: '18px', textShadow: '1px 1px' }}>Confirmar contraseña:</p>
-            <input />
-            {editButtons}
+            <p style={{ fontSize: '22px', textShadow: '1px 1px', marginBottom: '-30px' }}>Nueva contraseña:</p>
+            <input
+                className="new-password-input"
+                placeholder="Nueva contraseña"
+                name="password"
+                type="password" 
+                onChange={(e) => handleChange(e)}/>
+            <p style={{ fontSize: '22px', textShadow: '1px 1px', marginBottom: '-30px' }}>Confirmar contraseña:</p>
+            <input
+                className="new-password-input"
+                placeholder="Reintroducir contraseña"
+                name="confirmPassword"
+                type="password"
+                onChange={(e) => handleChange(e)}/>
+            <p>Las contraseñas no coinciden</p>
+            <div style={{ display: 'flex', gap: '20px' }}>
+                <button className="user-edit-button-cancel" onClick={() => {
+                    setSelectedOptionAnimation('selected-option-out 0.2s linear 1')
+                    setTimeout(() => {
+                        setSelectedOption('')
+                        setUserData({
+                            password: '',
+                            confirmPassword: '',
+                            image: currentImage,
+                            aboutme: user.aboutme
+                        })
+                    }, 180)
+                }}>Cancelar</button>
+                <button className="user-edit-button-submit" onClick={async() => {
+                    if (userData.password !== '' && userData.confirmPassword !== '') {
+                        try {
+                            const result = await updateUserData({userData})
+                            console.log(result)
+                            //SHOW RESULT MESSAGE
+                        } catch (err) {
+                            console.log(err)
+                        }
+                    } else {
+                        setSelectedOptionAnimation('selected-option-out 0.2s linear 1')
+                        setTimeout(() => {
+                            setSelectedOption('')
+                            setUserData({
+                                password: '',
+                                confirmPassword: '',
+                                image: currentImage,
+                                aboutme: user.aboutme
+                            })
+                        }, 180)
+                    }
+                }}>Guardar</button>
+            </div>
         </div>
     )
 
@@ -241,8 +378,7 @@ const EditUser = ({ user, displayEditOptions, handleCloseEdit, editOptionsAnimat
                 rgba(77, 214, 207, 0.884),
                 rgba(77, 214, 207, 0.884),
                 rgba(77, 214, 207, 0.884))`}}>
-            <p style={{ fontSize: '18px', textShadow: '1px 1px' }}>¿Seguro que deseas eliminar tu cuenta?</p>
-            <p style={{ fontSize: '18px', textShadow: '1px 1px' }}>Recuerda que esta acción no puede revertirse</p>
+            <p style={{ fontSize: '22px', textShadow: '1px 1px' }}>¿Seguro que deseas eliminar tu cuenta?</p>
             <div style={{display: 'flex', gap: '20px'}}>
         <button className="user-edit-button-cancel" onClick={() => {
             setSelectedOptionAnimation('selected-option-out 0.2s linear 1')
@@ -256,7 +392,7 @@ const EditUser = ({ user, displayEditOptions, handleCloseEdit, editOptionsAnimat
                 })
             }, 180)
         }}>Cancelar</button>
-        <button className="user-edit-button-submit">Eliminar cuenta</button>
+        <button className="user-edit-button-submit" onClick={() => setDeleteAccountDisplay('grid')}>Eliminar cuenta</button>
     </div>
         </div>
     )
@@ -293,6 +429,42 @@ const EditUser = ({ user, displayEditOptions, handleCloseEdit, editOptionsAnimat
                 {editAboutMe}
                 {editPassword}
                 {deleteAccount}
+            </div>
+            <div style={{display: deleteAccountDisplay, position: 'fixed', width: '100%', height: '100%', placeContent: 'center', backgroundColor: 'rgba(0,0,0,0.5)'}}>
+                <div style={{ backgroundColor: 'rgba(255,255,255,0.9)', padding: '40px', borderRadius: '10px', display: 'grid', placeContent: 'center' }}>
+                    <p style={{fontSize: '25px'}}>Recuerda que esta acción no puede revertirse</p>
+                    <div style={{display: 'flex', placeContent: 'center', gap: '20px', marginTop: '20px'}}>
+                        <button id="delete-account-cancel" onClick={() => setDeleteAccountDisplay('none')}>Cancelar</button>
+                        <button id="delete-account-submit" >Eliminar cuenta</button>
+                    </div>
+                </div>
+            </div>
+            <div id="post-result-container" style={{display: resultMessage.display}}>
+                <div className="result-container" style={{animation: resultMessage.animation}}>
+                    <img src={resultMessage.image} alt="" id="post-result-image"/>
+                    <p id="post-result-message">{resultMessage.message}</p>
+                    <button className="result-confirm" style={{display: resultMessage.confirmButton}} onClick={() => {
+                        setResultMessage((prevState) => {
+                            return {
+                                ...prevState,
+                                display: 'none',
+                                confirmButton: 'none'
+                            }
+                        })
+                    }}>Aceptar</button>
+                </div>
+            </div>
+            <div style={{
+                display: waiting,
+                position: 'fixed',
+                top: '0',
+                width: '100%',
+                height: '100%',
+                placeContent: 'center',
+                placeItems: 'center',
+                backgroundColor: 'rgba(0, 0, 0, 0.6)'
+            }}>
+                <div className="loader"></div>
             </div>
         </div>
     )

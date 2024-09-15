@@ -37,7 +37,6 @@ const ProfilePage = () => {
                             <p id="user-profile-username">{user.username}</p>
                             <p id="user-profile-membersince">Miembro desde {convertedDate}</p>
                         </div>
-                        {/* <p id="profile-aboutme-title">Acerca de {user.username}:</p> */}
                         <p id="user-profile-aboutme">{user.aboutme}</p>
                         {user.posts.length > 0 && (<p id="profile-posts-button" onClick={() => navigate(`/posts/${user.username}`)}>Ver publicaciones de {user.username}<span>↗</span></p>)}
                     </div>
