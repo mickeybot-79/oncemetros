@@ -64,7 +64,6 @@ export const authApiSlice = apiSlice.injectEndpoints({
                     await queryFulfilled
                     //console.log(data)
                     dispatch(logOut())
-                    window.sessionStorage.removeItem('userRoles')
                     setTimeout(() => {
                         dispatch(apiSlice.util.resetApiState())
                     }, 1000)
@@ -111,6 +110,26 @@ export const authApiSlice = apiSlice.injectEndpoints({
                 }
             })
         }),
+        deleteUser: builder.mutation({
+            query: (userId) => ({
+                url: '/auth/delete',
+                method: 'DELETE',
+                body: {
+                    userId
+                }
+            }),
+            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+                try {
+                    await queryFulfilled
+                    dispatch(logOut())
+                    setTimeout(() => {
+                        dispatch(apiSlice.util.resetApiState())
+                    }, 1000)
+                } catch (err) {
+                    console.log(err)
+                }
+            }
+        }),
         verifyUsername: builder.mutation({
             query: ({ username, tempId }) => ({
                 url: '/auth/verify',
@@ -133,5 +152,6 @@ export const {
     useGetUserDataQuery,
     useVerifyUsernameMutation,
     useGetUserProfileQuery,
-    useUpdateUserDataMutation
+    useUpdateUserDataMutation,
+    useDeleteUserMutation
 } = authApiSlice 

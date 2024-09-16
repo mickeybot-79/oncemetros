@@ -9,15 +9,21 @@ const PageHeader = ({ handleDisplayingLogin }) => {
 
     const navigate = useNavigate()
 
-    var userId = window.sessionStorage.getItem('userId') ?? ''
+    const [currentUser, setCurrentUser] = useState({
+        userId: window.sessionStorage.getItem('userId') || '',
+        image: ''
+    })
 
     const {
         data: user,
-        // isSuccess,
-        // isLoading
-    } = useGetUserDataQuery(userId, {
+        isSuccess
+    } = useGetUserDataQuery(currentUser.userId, {
         refetchOnMountOrArgChange: true
     })
+
+    useEffect(() => {
+        if (isSuccess) setCurrentUser(user)
+    }, [isSuccess, user])
 
     const [displayHeader, setDisplayHeader] = useState('none')
 
@@ -42,7 +48,7 @@ const PageHeader = ({ handleDisplayingLogin }) => {
 
     const [loginAnimation, setLoginAnimation] = useState('')
 
-    const [loginOpacity, setLoginOpacity] = useState(userId ? '0.7' : '0.5')
+    const [loginOpacity, setLoginOpacity] = useState(currentUser.userId ? '0.7' : '0.5')
 
     const subMenu1 = useRef()
     const subMenu2 = useRef()
@@ -225,24 +231,24 @@ const PageHeader = ({ handleDisplayingLogin }) => {
                     >Inicio</p>
                     <div id="search-login-container">
                         <img
-                            src={userId ? user?.image || `../Images/user-placeholder.jpg` : '../Images/user-icon.png'}
+                            src={currentUser.userId ? currentUser?.image || `../Images/user-placeholder.jpg` : '../Images/user-icon.png'}
                             alt="login"
                             id="login-option"
                             style={{opacity: loginOpacity}}
-                            onClick={userId ? () => navigate(`/user/${userId}`) : handleDisplayLogin}
+                            onClick={currentUser.userId ? () => navigate(`/user/${currentUser.userId}`) : handleDisplayLogin}
                             onMouseOver={() => {
                                 setLoginOpacity('1')
                                 handleDisplayPrompt('login')
                             }}
                             onMouseMove={(e) => handlePosition(e)}
                             onMouseLeave={() => {
-                                setLoginOpacity(userId ? '0.7' : '0.5')
+                                setLoginOpacity(currentUser.userId ? '0.7' : '0.5')
                                 setDisplayPrompt('')
                             }} />
                         <p
                             id="login-icon-prompt"
                             style={{ display: displayPrompt === 'login' ? 'block' : 'none', top: promptPosition.top, left: promptPosition.left }}
-                        >{userId ? 'Mi cuenta' : 'Iniciar sesión'}</p>
+                        >{currentUser.userId ? 'Mi cuenta' : 'Iniciar sesión'}</p>
                         <img
                             src="../Images/search.png"
                             alt="search"

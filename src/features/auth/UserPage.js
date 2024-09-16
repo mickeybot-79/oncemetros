@@ -49,6 +49,20 @@ const UserPage = () => {
         refetchOnMountOrArgChange: true
     })
 
+    const [currentUser, setCurrentUser] = useState({
+        username: window.sessionStorage.getItem('username') || '',
+        roles: window.sessionStorage.getItem('userRoles') || [],
+        userId: window.sessionStorage.getItem('userId') || '',
+        password: '',
+        confirmPassword: '',
+        image: '',
+        aboutme: ''
+    })
+
+    useEffect(() => {
+        if (isSuccess) setCurrentUser(user)
+    }, [isSuccess, user])
+
     if (isLoading || isPostLoading) {
         return (
             <LoadingIcon />
@@ -109,8 +123,8 @@ const UserPage = () => {
                     }, 2000)
                 }}>Cerrar sesión</button>
                 <div style={{display: 'flex', gap: '30px', alignContent: 'center', marginBottom: '20px', marginTop: '150px'}}>
-                    <img src={user.image} alt="" id="user-page-image" />
-                    <p id="user-page-username">{user.username}</p>
+                    <img src={currentUser.image} alt="" id="user-page-image" />
+                    <p id="user-page-username">{currentUser.username}</p>
                 </div>
 
                 <div id="user-page-options">
@@ -119,14 +133,14 @@ const UserPage = () => {
                         setEditOptionsAnimation('edit-form-in 0.2s linear 1')
                     }}>Editar información de la cuenta</button>
                     <button id="user-public-profile" onClick={() => navigate(`/profile/${id}`)}>Ver perfil público</button>
-                    {user.roles.includes('Editor') && <button id="user-add-post" onClick={() => navigate('/post/new')}>Agregar nueva publicación</button>}
+                    {currentUser.roles.includes('Editor') && <button id="user-add-post" onClick={() => navigate('/post/new')}>Agregar nueva publicación</button>}
                 </div>
 
                 {/*If Editor Role - Edit own posts */}
-                {user.roles.includes('Editor') && userPostsElement}
+                {currentUser.roles.includes('Editor') && userPostsElement}
 
                 {/*If Admin Role - View all posts*/}
-                {user.roles.includes('Admin') && <h3>Ver todas las publicaciones</h3>}
+                {currentUser.roles.includes('Admin') && <h3>Ver todas las publicaciones</h3>}
 
                 <div style={{
                     display: waiting,
@@ -149,7 +163,8 @@ const UserPage = () => {
                 </div>
 
                 <EditUser
-                user={user}
+                user={currentUser}
+                handleUpdateUserData={(userData) => setCurrentUser(userData)}
                 displayEditOptions={displayEditOptions} 
                 handleCloseEdit={() => setDisplayEditOptions(false)}
                 editOptionsAnimation={editOptionsAnimation}

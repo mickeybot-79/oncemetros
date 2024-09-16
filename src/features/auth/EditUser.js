@@ -1,17 +1,22 @@
 import { useEffect, useState } from "react"
-import { useUpdateUserDataMutation } from "./authApiSlice"
+import { useDeleteUserMutation, useUpdateUserDataMutation } from "./authApiSlice"
+import { useNavigate } from "react-router-dom"
 
-const EditUser = ({ user, displayEditOptions, handleCloseEdit, editOptionsAnimation, handleEditOptionsAnimation }) => {
+const EditUser = ({ user, displayEditOptions, handleUpdateUserData, handleCloseEdit, editOptionsAnimation, handleEditOptionsAnimation }) => {
+
+    const navigate = useNavigate()
 
     const [selectedOption, setSelectedOption] = useState('')
 
-    const [currentImage, setCurrentImage] = useState(user.image)
+    const [imageChanged, setImageChanged] = useState(false)
 
     const [userData, setUserData] = useState({
-        userId: window.sessionStorage.getItem('userId'),
+        username: user.username,
+        roles: user.roles,
+        userId: window.sessionStorage.getItem('userId') || '',
         password: '',
         confirmPassword: '',
-        image: currentImage,
+        image: user.image,
         aboutme: user.aboutme
     })
 
@@ -31,9 +36,12 @@ const EditUser = ({ user, displayEditOptions, handleCloseEdit, editOptionsAnimat
 
     const [updateUserData] = useUpdateUserDataMutation()
 
+    const [deleteUser] = useDeleteUserMutation()
+
     useEffect(() => {
+        if (user.image && !userData.image) setUserData(user)
         setTimeout(() => {
-            if (userData.image !== '../../Images/user-placeholder.jpg') {
+            if (imageChanged) {
                 const canvasElem = document.getElementById('uploaded-image')
                 const hiddenImage = document.getElementById('hidden-image')
                 const context = canvasElem.getContext("2d")
@@ -46,10 +54,15 @@ const EditUser = ({ user, displayEditOptions, handleCloseEdit, editOptionsAnimat
                     canvasElem.width,
                     canvasElem.height
                 )
-                userData.image = canvasElem.toDataURL("image/jpeg", 0.5)
+                setUserData((prevState) => {
+                    return {
+                        ...prevState,
+                        image: canvasElem.toDataURL("image/jpeg", 0.5)
+                    }
+                })
             }
         })
-    }, [userData])
+    }, [user, userData, imageChanged])
 
     const handleChange = (e) => {
         const { name, value } = e.target
@@ -88,13 +101,13 @@ const EditUser = ({ user, displayEditOptions, handleCloseEdit, editOptionsAnimat
                     display: 'grid',
                     placeContent: 'center'
                 }}>
-                <p style={{fontSize: '22px', textShadow: '1px 1px'}}>{userData.image !== currentImage ? 'Nueva imagen:' : 'Imagen actual:'}</p>
+                <p style={{fontSize: '22px', textShadow: '1px 1px'}}>{imageChanged ? 'Nueva imagen:' : 'Imagen actual:'}</p>
                 <img
                     src={userData.image}
                     alt=""
                     id="hidden-image"
                     style={{
-                        display: userData.image !== currentImage ? 'none' : 'block',
+                        display: imageChanged ? 'none' : 'block',
                         width: '200px',
                         height: '200px',
                         borderRadius: '100%'
@@ -103,7 +116,7 @@ const EditUser = ({ user, displayEditOptions, handleCloseEdit, editOptionsAnimat
                 <canvas
                     id="uploaded-image"
                     style={{
-                        display: userData.image !== currentImage ? 'block' : 'none',
+                        display: imageChanged ? 'block' : 'none',
                         width: '200px',
                         height: '200px',
                         borderRadius: '100%'
@@ -112,7 +125,7 @@ const EditUser = ({ user, displayEditOptions, handleCloseEdit, editOptionsAnimat
                 </canvas>
                 <div
                     style={{
-                        display: userData.image !== currentImage ? 'grid' : 'none',
+                        display: imageChanged ? 'grid' : 'none',
                         width: '200px',
                         height: '20px',
                         marginTop: '255px',
@@ -124,10 +137,11 @@ const EditUser = ({ user, displayEditOptions, handleCloseEdit, editOptionsAnimat
                     }}>
                     <p
                         onClick={() => {
+                            setImageChanged(false)
                             setUserData((prevState) => {
                                 return {
                                     ...prevState,
-                                    image: currentImage
+                                    image: user.image
                                 }
                             })
                         }}
@@ -150,6 +164,7 @@ const EditUser = ({ user, displayEditOptions, handleCloseEdit, editOptionsAnimat
                     var reader = new FileReader()
                     reader.readAsDataURL(e.target.files[0])
                     reader.onload = () => {
+                        setImageChanged(true)
                         setUserData((prevState) => {
                             const newState = {
                                 ...prevState,
@@ -169,49 +184,56 @@ const EditUser = ({ user, displayEditOptions, handleCloseEdit, editOptionsAnimat
                     setTimeout(() => {
                         setSelectedOption('')
                         setUserData({
+                            username: user.username,
+                            roles: user.roles,
+                            userId: window.sessionStorage.getItem('userId') || '',
                             password: '',
                             confirmPassword: '',
-                            image: currentImage,
+                            image: user.image,
                             aboutme: user.aboutme
                         })
                     }, 180)
                 }}>Cancelar</button>
                 <button className="user-edit-button-submit" onClick={async () => {
-                    if (userData.image !== currentImage) {
+                    if (imageChanged) {
                         setWaiting('grid')
                         try {
                             const result = await updateUserData({userData})
                             console.log(result)
-                            setCurrentImage(result.data.image)
                             setWaiting('none')
-                            //SHOW RESULT MESSAGE
+                            handleUpdateUserData(userData)
                             setResultMessage((prevState) => {
                                 return {
                                     ...prevState,
                                     message: 'Imagen actualizada correctamente.',
                                     display: 'grid',
+                                    confirmButton: 'block',
                                     image: '../../Images/success.gif'
                                 }
                             })
-                            setTimeout(() => {
-                                setResultMessage((prevState) => {
-                                    return {
-                                        ...prevState,
-                                        display: 'none'
-                                    }
-                                })
-                            }, 2000)
+                            setImageChanged(false)
                         } catch (err) {
                             console.log(err)
+                            setResultMessage((prevState) => {
+                                return {
+                                    ...prevState,
+                                    message: err,
+                                    display: 'grid',
+                                    confirmButton: 'block',
+                                }
+                            })
                         }
                     } else {
                         setSelectedOptionAnimation('selected-option-out 0.2s linear 1')
                         setTimeout(() => {
                             setSelectedOption('')
                             setUserData({
+                                username: user.username,
+                                roles: user.roles,
+                                userId: window.sessionStorage.getItem('userId') || '',
                                 password: '',
                                 confirmPassword: '',
-                                image: currentImage,
+                                image: user.image,
                                 aboutme: user.aboutme
                             })
                         }, 180)
@@ -253,30 +275,55 @@ const EditUser = ({ user, displayEditOptions, handleCloseEdit, editOptionsAnimat
                     setTimeout(() => {
                         setSelectedOption('')
                         setUserData({
+                            username: user.username,
+                            roles: user.roles,
+                            userId: window.sessionStorage.getItem('userId') || '',
                             password: '',
                             confirmPassword: '',
-                            image: currentImage,
+                            image: user.image,
                             aboutme: user.aboutme
                         })
                     }, 180)
                 }}>Cancelar</button>
                 <button className="user-edit-button-submit" onClick={async () => {
                     if (userData.aboutme !== '' && userData.aboutme !== user.aboutme) {
+                        setWaiting('grid')
                         try {
                             const result = await updateUserData({userData})
                             console.log(result)
-                            //SHOW RESULT MESSAGE
+                            setWaiting('none')
+                            handleUpdateUserData(userData)
+                            setResultMessage((prevState) => {
+                                return {
+                                    ...prevState,
+                                    message: 'Descripción actualizada correctamente.',
+                                    display: 'grid',
+                                    confirmButton: 'block',
+                                    image: '../../Images/success.gif'
+                                }
+                            })
                         } catch (err) {
                             console.log(err)
+                            setResultMessage((prevState) => {
+                                return {
+                                    ...prevState,
+                                    message: err,
+                                    display: 'grid',
+                                    confirmButton: 'block',
+                                }
+                            })
                         }
                     } else {
                         setSelectedOptionAnimation('selected-option-out 0.2s linear 1')
                         setTimeout(() => {
                             setSelectedOption('')
                             setUserData({
+                                username: user.username,
+                                roles: user.roles,
+                                userId: window.sessionStorage.getItem('userId') || '',
                                 password: '',
                                 confirmPassword: '',
-                                image: currentImage,
+                                image: user.image,
                                 aboutme: user.aboutme
                             })
                         }, 180)
@@ -310,7 +357,8 @@ const EditUser = ({ user, displayEditOptions, handleCloseEdit, editOptionsAnimat
                 className="new-password-input"
                 placeholder="Nueva contraseña"
                 name="password"
-                type="password" 
+                type="password"
+                value={userData.password}
                 onChange={(e) => handleChange(e)}/>
             <p style={{ fontSize: '22px', textShadow: '1px 1px', marginBottom: '-30px' }}>Confirmar contraseña:</p>
             <input
@@ -318,41 +366,76 @@ const EditUser = ({ user, displayEditOptions, handleCloseEdit, editOptionsAnimat
                 placeholder="Reintroducir contraseña"
                 name="confirmPassword"
                 type="password"
+                value={userData.confirmPassword}
                 onChange={(e) => handleChange(e)}/>
-            <p>Las contraseñas no coinciden</p>
+            <p style={{opacity: userData.password !== '' && userData.confirmPassword !== '' && userData.password?.length === userData.confirmPassword?.length && userData.password !== userData.confirmPassword ? '1' : '0', color: 'red', fontSize: '22px', margin: '0px'}}>Las contraseñas no coinciden</p>
             <div style={{ display: 'flex', gap: '20px' }}>
                 <button className="user-edit-button-cancel" onClick={() => {
                     setSelectedOptionAnimation('selected-option-out 0.2s linear 1')
                     setTimeout(() => {
                         setSelectedOption('')
                         setUserData({
+                            username: user.username,
+                            roles: user.roles,
+                            userId: window.sessionStorage.getItem('userId') || '',
                             password: '',
                             confirmPassword: '',
-                            image: currentImage,
+                            image: user.image,
                             aboutme: user.aboutme
                         })
                     }, 180)
                 }}>Cancelar</button>
                 <button className="user-edit-button-submit" onClick={async() => {
-                    if (userData.password !== '' && userData.confirmPassword !== '') {
+                    if (userData.password !== '' && userData.confirmPassword !== '' && userData.password === userData.confirmPassword) {
+                        setWaiting('grid')
                         try {
                             const result = await updateUserData({userData})
                             console.log(result)
-                            //SHOW RESULT MESSAGE
+                            setWaiting('none')
+                            handleUpdateUserData(userData)
+                            setResultMessage((prevState) => {
+                                return {
+                                    ...prevState,
+                                    message: 'Contraseña actualizada correctamente.',
+                                    display: 'grid',
+                                    confirmButton: 'block',
+                                    image: '../../Images/success.gif'
+                                }
+                            })
                         } catch (err) {
                             console.log(err)
+                            setResultMessage((prevState) => {
+                                return {
+                                    ...prevState,
+                                    message: err,
+                                    display: 'grid',
+                                    confirmButton: 'block',
+                                }
+                            })
                         }
-                    } else {
+                    } else  if (userData.password === '' && userData.confirmPassword === '') {
                         setSelectedOptionAnimation('selected-option-out 0.2s linear 1')
                         setTimeout(() => {
                             setSelectedOption('')
                             setUserData({
+                                username: user.username,
+                                roles: user.roles,
+                                userId: window.sessionStorage.getItem('userId') || '',
                                 password: '',
                                 confirmPassword: '',
-                                image: currentImage,
+                                image: user.image,
                                 aboutme: user.aboutme
                             })
                         }, 180)
+                    } else {
+                        setResultMessage((prevState) => {
+                            return {
+                                ...prevState,
+                                message: 'Las contraseñas no coinciden',
+                                display: 'grid',
+                                confirmButton: 'block',
+                            }
+                        })
                     }
                 }}>Guardar</button>
             </div>
@@ -387,7 +470,7 @@ const EditUser = ({ user, displayEditOptions, handleCloseEdit, editOptionsAnimat
                 setUserData({
                     password: '',
                     confirmPassword: '',
-                    image: currentImage,
+                    image: user.image,
                     aboutme: user.aboutme
                 })
             }, 180)
@@ -435,7 +518,24 @@ const EditUser = ({ user, displayEditOptions, handleCloseEdit, editOptionsAnimat
                     <p style={{fontSize: '25px'}}>Recuerda que esta acción no puede revertirse</p>
                     <div style={{display: 'flex', placeContent: 'center', gap: '20px', marginTop: '20px'}}>
                         <button id="delete-account-cancel" onClick={() => setDeleteAccountDisplay('none')}>Cancelar</button>
-                        <button id="delete-account-submit" >Eliminar cuenta</button>
+                        <button id="delete-account-submit" onClick={async () => {
+                            const result = await deleteUser(window.sessionStorage.getItem('userId'))
+                            console.log(result)
+                            window.sessionStorage.removeItem('userId')
+                            window.sessionStorage.removeItem('userRoles')
+                            window.sessionStorage.removeItem('username')
+                            setResultMessage((prevState) => {
+                                return {
+                                    ...prevState,
+                                    message: 'Tu cuenta ha sido eliminada',
+                                    display: 'grid',
+                                    image: '../../Images/success.gif'
+                                }
+                            })
+                            setTimeout(() => {
+                                navigate('/')
+                            }, 1000)
+                        }}>Eliminar cuenta</button>
                     </div>
                 </div>
             </div>
@@ -444,6 +544,7 @@ const EditUser = ({ user, displayEditOptions, handleCloseEdit, editOptionsAnimat
                     <img src={resultMessage.image} alt="" id="post-result-image"/>
                     <p id="post-result-message">{resultMessage.message}</p>
                     <button className="result-confirm" style={{display: resultMessage.confirmButton}} onClick={() => {
+                        //setSelectedOption('')
                         setResultMessage((prevState) => {
                             return {
                                 ...prevState,

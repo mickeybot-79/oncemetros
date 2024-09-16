@@ -4,6 +4,8 @@ import PageHeader from "../../components/PageHeader"
 import LoadingIcon from "../../components/LoadingIcon"
 
 const UserPosts = () => {
+
+    window.scrollTo(0, 0)
     
     const { user } = useParams()
 

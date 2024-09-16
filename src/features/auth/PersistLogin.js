@@ -12,7 +12,6 @@ const PersistLogin = () => {
     const session = window.sessionStorage.getItem('session')
     const isTemp = window.localStorage.getItem('isTemp')
     const effectRan = useRef(false)
-    const userRoles = window.sessionStorage.getItem('userRoles')
 
     const [trueSuccess, setTrueSuccess] = useState(false)
 
@@ -32,7 +31,9 @@ const PersistLogin = () => {
                     const result = await refresh()
                     if (result?.error?.originalStatus === 403 || result?.error?.originalStatus === 401) {
                         if (!isTemp) window.localStorage.setItem('isTemp', 'y')
-                        if (userRoles) window.sessionStorage.removeItem('userRoles')
+                        window.sessionStorage.removeItem('userRoles')
+                        window.sessionStorage.removeItem('userId')
+                        window.sessionStorage.removeItem('username')
                     } else {
                         window.localStorage.setItem('isTemp', 'n')
                     }

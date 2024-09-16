@@ -2,28 +2,25 @@ import { useCallback, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useBeforeUnload } from "react-router-dom"
 import { useCreateAccountMutation } from "./authApiSlice"
-import { useSelector } from "react-redux"
-import { selectCurrentToken } from "./authSlice"
+// import { useSelector } from "react-redux"
+// import { selectCurrentToken } from "./authSlice"
 import { jwtDecode } from "jwt-decode"
-import LoadingIcon from "../../components/LoadingIcon"
+// import LoadingIcon from "../../components/LoadingIcon"
 import baseUrl from "../../baseurl"
 
 const NewUser = () => {
 
     const navigate = useNavigate()
 
-    const [gettingToken, setGettingToken] = useState(true)
+    //const [gettingToken, setGettingToken] = useState(true)
 
-    const token = useSelector(selectCurrentToken)
+    //const token = useSelector(selectCurrentToken)
 
     useEffect(() => {
-        if (token) {
-            const userId = jwtDecode(token).UserInfo.id
-            navigate(`/user/${userId}`)
-        } else {
-            setGettingToken(false)
-        }
-    }, [token, navigate])
+        const userId = window.sessionStorage.getItem('userId') || ''
+        if (userId) navigate(`/user/${userId}`)
+        //eslint-disable-next-line
+    }, [])
 
     const [userData, setUserData] = useState({
         username: '',
@@ -92,15 +89,15 @@ const NewUser = () => {
         })
     }, [userData])
 
-    if (gettingToken) {
-        return (
-            <>
-                <LoadingIcon/>
-            </>
-        )
-    }
+    // if (gettingToken) {
+    //     return (
+    //         <>
+    //             <LoadingIcon/>
+    //         </>
+    //     )
+    // }
 
-    if (!gettingToken) {
+    //if (!gettingToken) {
 
         const handleChange = (e) => {
             const { name, value } = e.target
@@ -119,6 +116,10 @@ const NewUser = () => {
                 try {
                     const result = await createAccount(userData)
                     if (result?.data?.accessToken) {
+                        const decodedToken = jwtDecode(result?.data?.accessToken).UserInfo
+                        window.sessionStorage.setItem('userId', decodedToken.id)
+                        window.sessionStorage.setItem('username', decodedToken.username)
+                        window.sessionStorage.setItem('userRoles', decodedToken.roles.join(','))
                         setResultMessage((prevState) => {
                             return {
                                 ...prevState,
@@ -127,8 +128,9 @@ const NewUser = () => {
                                 image: '../../Images/success.gif'
                             }
                         })
+
                         setTimeout(() => {
-                            navigate('/')
+                            navigate(`/user/${decodedToken.id}`)
                         }, 2000)
                     } else {
                         setResultMessage((prevState) => {
@@ -368,7 +370,7 @@ const NewUser = () => {
                 </div>
             </div>
         )
-    }
+    //}
 
 }
 
