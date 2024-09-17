@@ -4,6 +4,7 @@ import { useNavigate, useBeforeUnload } from "react-router-dom"
 import Quill from "quill"
 import Editor from "./EditorTest"
 import baseUrl from "../../baseurl"
+import { jwtDecode } from "jwt-decode"
 
 const NewPost = () => {
 
@@ -17,14 +18,13 @@ const NewPost = () => {
         animation: 'new-post-result 0.2s linear 1'
     })
 
-    const userId = window.sessionStorage.getItem('userId')
+    const token = window.localStorage.getItem('token')
+    const userId = token ? jwtDecode(token).UserInfo.id : ''
 
     useEffect(() => {
-        const userRoles = window.sessionStorage.getItem('userRoles')
-        const userRolesArray = userRoles ? userRoles.split(',') : []
-        if (userRolesArray.length < 2 || !userRolesArray.includes('Editor')) {
-            navigate('/')
-        } else if (!userId) {
+        const userRoles = token ? jwtDecode(token).UserInfo.roles : []
+        const refreshExpired = window.sessionStorage.getItem('refreshExpired') || ''
+        if (refreshExpired) {
             setResultMessage((prevState) => {
                 return {
                     ...prevState,
@@ -33,13 +33,14 @@ const NewPost = () => {
                 }
             })
             setTimeout(() => {
-                if (userRoles) window.sessionStorage.removeItem('userRoles')
                 navigate('/')
             }, 3000)
+        } else if (!token || !userRoles.includes('Editor')) {
+            navigate('/')
         }
-    }, [userId, navigate])
+    }, [token, navigate])
 
-    const username = window.sessionStorage.getItem('username')
+    const username = token ? jwtDecode(token).UserInfo.username : ''
 
     const {
         data: tags,

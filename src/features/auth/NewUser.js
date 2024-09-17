@@ -2,22 +2,17 @@ import { useCallback, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useBeforeUnload } from "react-router-dom"
 import { useCreateAccountMutation } from "./authApiSlice"
-// import { useSelector } from "react-redux"
-// import { selectCurrentToken } from "./authSlice"
 import { jwtDecode } from "jwt-decode"
-// import LoadingIcon from "../../components/LoadingIcon"
 import baseUrl from "../../baseurl"
 
 const NewUser = () => {
 
     const navigate = useNavigate()
 
-    //const [gettingToken, setGettingToken] = useState(true)
-
-    //const token = useSelector(selectCurrentToken)
+    const token =window.localStorage.getItem('token')
 
     useEffect(() => {
-        const userId = window.sessionStorage.getItem('userId') || ''
+        const userId = token ? jwtDecode(token).UserInfo.id : ''
         if (userId) navigate(`/user/${userId}`)
         //eslint-disable-next-line
     }, [])

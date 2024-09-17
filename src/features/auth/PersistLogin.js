@@ -31,9 +31,8 @@ const PersistLogin = () => {
                     const result = await refresh()
                     if (result?.error?.originalStatus === 403 || result?.error?.originalStatus === 401) {
                         if (!isTemp) window.localStorage.setItem('isTemp', 'y')
-                        window.sessionStorage.removeItem('userRoles')
-                        window.sessionStorage.removeItem('userId')
-                        window.sessionStorage.removeItem('username')
+                        window.localStorage.removeItem('token')
+                        window.sessionStorage.setItem('refreshExpired')
                     } else {
                         window.localStorage.setItem('isTemp', 'n')
                     }

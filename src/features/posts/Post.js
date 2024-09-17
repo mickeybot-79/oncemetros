@@ -84,12 +84,12 @@ const Post = ({ post }) => {
             <div id="post-content">{allParagraphElements}</div>
             <div style={{ display: 'inline', placeSelf: 'start' }}>
                 {/* REDIRECT USERS TO AUTHOR PROFILE INSTEAD OF TAGS PAGE*/}
-                <p id="post-author" onClick={() => navigate(`/posts/${post.authorName}`)}>Por <span>{post.authorName}</span></p> 
+                <p id="post-author" onClick={() => navigate(`/profile/${post.authorId}`)}>Por <span>{post.authorName}</span></p> 
                 <p id="post-date">{convertedDate}</p>
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'left', alignItems: 'center', placeSelf: 'start', lineHeight: '5px' }}>Etiquetas: {tagElements}</div>
             <div id="share-options-container">
-                <img src="../../Images/fb-icon.png" alt="fb" className="share-image" onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${baseUrl.backend}/share/${post.searchField}`, 'popup','width=600,height=400')}/>
+                <img src="../../Images/fb-icon.png" alt="fb" className="share-image" onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=https://los-11-metros.onrender.com/share/${post.searchField}`, 'popup','width=600,height=400')}/>
                 <img src="../../Images/ins-icon.png" alt="ins" className="share-image" onClick={() => window.open(post.insPost || 'https://www.instagram.com/los11metros_/')}/>
                 <img src="../../Images/x-icon.png" alt="x" className="share-image" onClick={() => window.open(`https://twitter.com/share?url=${baseUrl.backend}/share/${post.searchField}`, 'popup', 'width=600,height=400')} />
                 <WhatsappShareButton children={''} url={`${baseUrl.backend}/share/${post.searchField}`} title={post.title}>

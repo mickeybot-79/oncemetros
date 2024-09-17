@@ -4,6 +4,7 @@ import LoadingIcon from "../../components/LoadingIcon"
 import { useGetPostsQuery } from "../posts/postsApiSlice"
 import { useEffect, useState } from "react"
 import EditUser from "./EditUser"
+import { jwtDecode } from "jwt-decode"
 
 const UserPage = () => {
 
@@ -11,12 +12,7 @@ const UserPage = () => {
 
     const { id } = useParams()
 
-    useEffect(() => {
-        const userId = window.sessionStorage.getItem('userId')
-        if (userId !== id) {
-            navigate('/')
-        }
-    }, [id, navigate])
+    const token = window.localStorage.getItem('token')
 
     const [resultMessage, setResultMessage] = useState({
         message: 'Sesión cerrada',
@@ -24,6 +20,25 @@ const UserPage = () => {
         display: 'none',
         animation: 'new-post-result 0.2s linear 1'
     })
+
+    useEffect(() => {
+        const userId = token ? jwtDecode(token).UserInfo.id : ''
+        const refreshExpired = window.sessionStorage.getItem('refreshExpired') || ''
+        if (refreshExpired) {
+            setResultMessage((prevState) => {
+                return {
+                    ...prevState,
+                    message: 'Sesión expirada, por favor vuelve a iniciar sesión.',
+                    display: 'grid',
+                }
+            })
+            setTimeout(() => {
+                navigate('/')
+            }, 3000)
+        } else if (!token || userId !== id) {
+            navigate('/')
+        }
+    }, [token, id, navigate])
 
     const [sendLogout] = useSendLogoutMutation()
 
@@ -50,9 +65,9 @@ const UserPage = () => {
     })
 
     const [currentUser, setCurrentUser] = useState({
-        username: window.sessionStorage.getItem('username') || '',
-        roles: window.sessionStorage.getItem('userRoles') || [],
-        userId: window.sessionStorage.getItem('userId') || '',
+        username: jwtDecode(token).UserInfo.username || '',
+        roles: jwtDecode(token).UserInfo.roles || [],
+        userId: jwtDecode(token).UserInfo.id|| '',
         password: '',
         confirmPassword: '',
         image: '',
@@ -60,7 +75,17 @@ const UserPage = () => {
     })
 
     useEffect(() => {
-        if (isSuccess) setCurrentUser(user)
+        if (isSuccess) setCurrentUser(() => {
+            return {
+                username: user.username,
+                roles: user.roles,
+                userId: user.userId,
+                password: '',
+                confirmPassword: '',
+                image: user.image,
+                aboutme: user.aboutme
+            }
+        })
     }, [isSuccess, user])
 
     if (isLoading || isPostLoading) {
@@ -110,9 +135,7 @@ const UserPage = () => {
                     setWaiting('none')
                     setTimeout(() => {
                         window.localStorage.setItem('persist', false)
-                        window.sessionStorage.removeItem('userId')
-                        window.sessionStorage.removeItem('username')
-                        window.sessionStorage.removeItem('userRoles')
+                        window.localStorage.removeItem('token')
                         setResultMessage((prevState) => {
                             return {
                                 ...prevState,

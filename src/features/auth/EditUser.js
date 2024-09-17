@@ -544,7 +544,6 @@ const EditUser = ({ user, displayEditOptions, handleUpdateUserData, handleCloseE
                     <img src={resultMessage.image} alt="" id="post-result-image"/>
                     <p id="post-result-message">{resultMessage.message}</p>
                     <button className="result-confirm" style={{display: resultMessage.confirmButton}} onClick={() => {
-                        //setSelectedOption('')
                         setResultMessage((prevState) => {
                             return {
                                 ...prevState,
