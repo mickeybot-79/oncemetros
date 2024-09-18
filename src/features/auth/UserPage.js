@@ -65,9 +65,9 @@ const UserPage = () => {
     })
 
     const [currentUser, setCurrentUser] = useState({
-        username: jwtDecode(token).UserInfo.username || '',
-        roles: jwtDecode(token).UserInfo.roles || [],
-        userId: jwtDecode(token).UserInfo.id|| '',
+        username: token ? jwtDecode(token).UserInfo.username : '',
+        roles: token ? jwtDecode(token).UserInfo.roles : [],
+        userId: token ? jwtDecode(token).UserInfo.id : '',
         password: '',
         confirmPassword: '',
         image: '',
@@ -101,7 +101,7 @@ const UserPage = () => {
         const userPosts = allUserPosts.map(currentPost => {
             return (
                 <div key={posts?.entities[currentPost].searchField}>
-                    <p>Editar</p>
+                    <p className="user-page-edit" onClick={() => navigate(`/post/edit/${posts?.entities[currentPost].searchField}`)}>Editar</p>
                     <div className="user-page-post" onClick={() => navigate(`/post/${posts?.entities[currentPost].searchField}`)}>
                         <img src={posts?.entities[currentPost].thumbnail} alt="post-thumbnail" className="user-page-post-image" />
                         <div>
@@ -115,7 +115,7 @@ const UserPage = () => {
 
         const userPostsElement = (
             <div>
-                <h3>Tus publicaciones</h3>
+                <h3 style={{marginBottom: '30px'}}>Tus publicaciones</h3>
                 {userPosts}
             </div>
         )
@@ -156,14 +156,14 @@ const UserPage = () => {
                         setEditOptionsAnimation('edit-form-in 0.2s linear 1')
                     }}>Editar información de la cuenta</button>
                     <button id="user-public-profile" onClick={() => navigate(`/profile/${id}`)}>Ver perfil público</button>
-                    {currentUser.roles.includes('Editor') && <button id="user-add-post" onClick={() => navigate('/post/new')}>Agregar nueva publicación</button>}
+                    {currentUser?.roles.includes('Editor') && <button id="user-add-post" onClick={() => navigate('/post/new')}>Agregar nueva publicación</button>}
                 </div>
 
                 {/*If Editor Role - Edit own posts */}
-                {currentUser.roles.includes('Editor') && userPostsElement}
+                {currentUser?.roles.includes('Editor') && userPostsElement}
 
                 {/*If Admin Role - View all posts*/}
-                {currentUser.roles.includes('Admin') && <h3>Ver todas las publicaciones</h3>}
+                {currentUser?.roles.includes('Admin') && <h3>Ver todas las publicaciones</h3>}
 
                 <div style={{
                     display: waiting,

@@ -2284,6 +2284,22 @@ svg {
   margin-bottom: 20px;
 }
 
+.user-page-edit {
+  margin-left: 87%;
+  margin-bottom: -40px;
+  cursor: pointer;
+  font-size: 20px;
+  width: fit-content;
+  padding: 3px;
+  border-radius: 5px;
+  color: rgb(0, 92, 128);
+  font-weight: 500;
+}
+
+.user-page-edit:hover {
+  background-color: rgb(255, 255, 255);
+}
+
 .user-page-post-image {
   width: 180px;
   height: 180px;
@@ -2294,6 +2310,7 @@ svg {
 .user-page-post-title {
   font-size: 20px;
   font-weight: 700;
+  max-width: 420px;
 }
 
 #user-page-options {

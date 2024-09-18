@@ -13,7 +13,7 @@ const EditUser = ({ user, displayEditOptions, handleUpdateUserData, handleCloseE
     const [userData, setUserData] = useState({
         username: user.username,
         roles: user.roles,
-        userId: window.sessionStorage.getItem('userId') || '',
+        userId: user.userId,
         password: '',
         confirmPassword: '',
         image: user.image,
@@ -519,11 +519,9 @@ const EditUser = ({ user, displayEditOptions, handleUpdateUserData, handleCloseE
                     <div style={{display: 'flex', placeContent: 'center', gap: '20px', marginTop: '20px'}}>
                         <button id="delete-account-cancel" onClick={() => setDeleteAccountDisplay('none')}>Cancelar</button>
                         <button id="delete-account-submit" onClick={async () => {
-                            const result = await deleteUser(window.sessionStorage.getItem('userId'))
+                            const result = await deleteUser(userData.userId)
                             console.log(result)
-                            window.sessionStorage.removeItem('userId')
-                            window.sessionStorage.removeItem('userRoles')
-                            window.sessionStorage.removeItem('username')
+                            window.localStorage.removeItem('token')
                             setResultMessage((prevState) => {
                                 return {
                                     ...prevState,

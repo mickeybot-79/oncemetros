@@ -41,6 +41,15 @@ export const postsApiSlice = apiSlice.injectEndpoints({
                 }
             })
         }),
+        editPost: builder.mutation({
+            query: ({...post}) => ({
+                url: '/posts/edit',
+                method: 'POST',
+                body: {
+                    ...post
+                }
+            })
+        }),
         addComment: builder.mutation({
             query: ({...comment}) => ({
                 url: '/posts/comment',
@@ -96,6 +105,7 @@ export const postsApiSlice = apiSlice.injectEndpoints({
 export const {
     useGetPostsQuery,
     useCreatePostMutation,
+    useEditPostMutation,
     useAddCommentMutation,
     useGetTagsQuery,
     useAddTagMutation,

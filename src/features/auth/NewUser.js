@@ -111,10 +111,8 @@ const NewUser = () => {
                 try {
                     const result = await createAccount(userData)
                     if (result?.data?.accessToken) {
-                        const decodedToken = jwtDecode(result?.data?.accessToken).UserInfo
-                        window.sessionStorage.setItem('userId', decodedToken.id)
-                        window.sessionStorage.setItem('username', decodedToken.username)
-                        window.sessionStorage.setItem('userRoles', decodedToken.roles.join(','))
+                        const userId = jwtDecode(result?.data?.accessToken).UserInfo.id
+                        window.localStorage.setItem('token', result?.data?.accessToken)
                         setResultMessage((prevState) => {
                             return {
                                 ...prevState,
@@ -125,7 +123,7 @@ const NewUser = () => {
                         })
 
                         setTimeout(() => {
-                            navigate(`/user/${decodedToken.id}`)
+                            navigate(`/user/${userId}`)
                         }, 2000)
                     } else {
                         setResultMessage((prevState) => {
