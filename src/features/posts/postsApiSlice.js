@@ -44,7 +44,7 @@ export const postsApiSlice = apiSlice.injectEndpoints({
         editPost: builder.mutation({
             query: ({...post}) => ({
                 url: '/posts/edit',
-                method: 'POST',
+                method: 'PUT',
                 body: {
                     ...post
                 }
@@ -90,6 +90,16 @@ export const postsApiSlice = apiSlice.injectEndpoints({
                 }
             })
         }),
+        addView: builder.mutation({
+            query: (post, userId) => ({
+                url: 'posts/views',
+                method: 'POST',
+                body: {
+                    post,
+                    userId
+                }
+            })
+        }),
         shareTest: builder.mutation({
             query: (...post) => ({
                 url: 'posts/share',
@@ -110,6 +120,7 @@ export const {
     useGetTagsQuery,
     useAddTagMutation,
     useAddReplyMutation,
+    useAddViewMutation,
     useShareTestMutation
 } = postsApiSlice
 

@@ -18,10 +18,6 @@ const MainPage = () => {
         refetchOnMountOrArgChange: true
     })
 
-    useEffect(() => {
-
-    }, [])
-
     const [presentationDisplay, setPresentationDisplay] = useState('grid')
 
     const [backgroundAnimation, setBackGroundAnimation] = useState({

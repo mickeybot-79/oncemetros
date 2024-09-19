@@ -46,9 +46,6 @@ const Login = ({ handleDisplayLogin, loginAnimation, handleDisplayingLogin }) =>
             setWaiting('none')
             window.localStorage.setItem('token', result?.data?.accessToken)
             const decodedToken = jwtDecode(result?.data?.accessToken).UserInfo
-            //window.sessionStorage.setItem('userId', decodedToken.id)
-            // window.sessionStorage.setItem('username', decodedToken.username)
-            // window.sessionStorage.setItem('userRoles', decodedToken.roles.join(','))
             setResultMessage((prevState) => {
                 return {
                     ...prevState,

@@ -159,10 +159,8 @@ const UserPage = () => {
                     {currentUser?.roles.includes('Editor') && <button id="user-add-post" onClick={() => navigate('/post/new')}>Agregar nueva publicación</button>}
                 </div>
 
-                {/*If Editor Role - Edit own posts */}
                 {currentUser?.roles.includes('Editor') && userPostsElement}
 
-                {/*If Admin Role - View all posts*/}
                 {currentUser?.roles.includes('Admin') && <h3>Ver todas las publicaciones</h3>}
 
                 <div style={{
@@ -186,12 +184,12 @@ const UserPage = () => {
                 </div>
 
                 <EditUser
-                user={currentUser}
-                handleUpdateUserData={(userData) => setCurrentUser(userData)}
-                displayEditOptions={displayEditOptions} 
-                handleCloseEdit={() => setDisplayEditOptions(false)}
-                editOptionsAnimation={editOptionsAnimation}
-                handleEditOptionsAnimation={(animation) => setEditOptionsAnimation(animation)}
+                    user={currentUser}
+                    handleUpdateUserData={(userData) => setCurrentUser(userData)}
+                    displayEditOptions={displayEditOptions}
+                    handleCloseEdit={() => setDisplayEditOptions(false)}
+                    editOptionsAnimation={editOptionsAnimation}
+                    handleEditOptionsAnimation={(animation) => setEditOptionsAnimation(animation)}
                 />
 
             </div>

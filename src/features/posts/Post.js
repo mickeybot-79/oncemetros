@@ -2,6 +2,8 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { WhatsappShareButton } from "react-share"
 import baseUrl from "../../baseurl"
+import { useAddViewMutation } from "./postsApiSlice"
+import { jwtDecode } from "jwt-decode"
 
 const Post = ({ post }) => {
 
@@ -10,6 +12,27 @@ const Post = ({ post }) => {
     let allParagraphElements
 
     const [headingContentElement, setHeadingContentElement] = useState([])
+
+    const [addView] = useAddViewMutation()
+
+    const token = window.localStorage.getItem('token') || ''
+    const userId = token ? jwtDecode(token).UserInfo.id : ''
+
+    useEffect(() => {
+        const sendView = async (userId) => {
+            const result = await addView(post.searchField, userId)
+            return result
+        }
+        if (userId) {
+            if (!post.viewedBy.includes(userId)) {
+                const result = sendView(userId)
+                console.log(result)
+            }
+        } else {
+            const result = sendView()
+            console.log(result)
+        }
+    }, [userId, addView, post])
 
     useEffect(() => {
         setTimeout(() => {
@@ -91,7 +114,7 @@ const Post = ({ post }) => {
             <div id="share-options-container">
                 <img src="../../Images/fb-icon.png" alt="fb" className="share-image" onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=https://los-11-metros.onrender.com/share/${post.searchField}`, 'popup','width=600,height=400')}/>
                 <img src="../../Images/ins-icon.png" alt="ins" className="share-image" onClick={() => window.open(post.insPost || 'https://www.instagram.com/los11metros_/')}/>
-                <img src="../../Images/x-icon.png" alt="x" className="share-image" onClick={() => window.open(`https://twitter.com/share?url=${baseUrl.backend}/share/${post.searchField}`, 'popup', 'width=600,height=400')} />
+                <img src="../../Images/x-icon.png" alt="x" className="share-image" onClick={() => window.open(`https://twitter.com/share?url=https://los-11-metros.onrender.com/share/${post.searchField}`, 'popup', 'width=600,height=400')} />
                 <WhatsappShareButton children={''} url={`${baseUrl.backend}/share/${post.searchField}`} title={post.title}>
                     <img src="../../Images/wp-icon.png" alt="wp" className="share-image" />
                 </WhatsappShareButton>

@@ -36,6 +36,8 @@ const PostPage = () => {
 
     if (isSuccess) currentPost = posts?.entities[id]
 
+    console.log(currentPost)
+
     // const [shareTest] = useShareTestMutation()
 
     // useEffect(() => {

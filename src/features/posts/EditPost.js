@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from "react"
-import { useCreatePostMutation, useGetTagsQuery, useAddTagMutation, useGetPostsQuery, useEditPostMutation } from "./postsApiSlice"
+import { useGetTagsQuery, useAddTagMutation, useGetPostsQuery, useEditPostMutation } from "./postsApiSlice"
 import { useNavigate, useBeforeUnload, useParams } from "react-router-dom"
 import Quill from "quill"
 import Editor from "./EditorTest"
@@ -8,6 +8,10 @@ import { jwtDecode } from "jwt-decode"
 import LoadingIcon from "../../components/LoadingIcon"
 
 const EditPost = () => {
+
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
 
     const navigate = useNavigate()
 
@@ -51,7 +55,7 @@ const EditPost = () => {
             setTimeout(() => {
                 navigate('/')
             }, 3000)
-        } else if (!token || !userRoles.includes('Editor') || currentPost.authorId !== userId) {
+        } else if (!token || !userRoles.includes('Editor') || currentPost?.authorId !== userId) {
             navigate('/')
         }
     }, [currentPost, userId, token, navigate])
@@ -100,10 +104,6 @@ const EditPost = () => {
         selectedOption: 'link',
         selectedValue: isSuccess ? currentPost.thumbnail : ''
     })
-
-    // const [editorPromptDisplay, setEditorPromptDisplay] = useState('block')
-
-    // const [editorLeft, setEditorLeft] = useState()
 
     useBeforeUnload(
         useCallback((e) => {
@@ -356,27 +356,17 @@ const EditPost = () => {
                     thumbnail: imageMethod.selectedOption === 'upload' ? postData.thumbnail : imageMethod.selectedValue
                 })
                 console.log(result)
-                if (result?.data?.searchField) {
-                    window.sessionStorage.removeItem('postTitle')
-                    window.sessionStorage.removeItem('postHeading')
-                    window.sessionStorage.removeItem('postContent')
-                    window.sessionStorage.removeItem('postImgDesc')
-                    window.sessionStorage.removeItem('postImgCred')
-                    window.sessionStorage.removeItem('postTags')
-                    window.sessionStorage.removeItem('postInsPost')
-                    window.sessionStorage.removeItem('postThumbnail')
-                    window.sessionStorage.removeItem('postImage')
-                    window.sessionStorage.removeItem('imageMethod')
+                if (result?.data?.message) {
                     setResultMessage((prevState) => {
                         return {
                             ...prevState,
-                            message: 'Publicación creada correctamente.',
+                            message: 'Publicación actualizada correctamente.',
                             display: 'grid',
                             image: '../../Images/success.gif'
                         }
                     })
                     setTimeout(() => {
-                        navigate(`/post/${result.data.searchField}`)
+                        navigate(`/user/${userId}`)
                     }, 2000)
                 } else {
                     console.log(result)
@@ -564,11 +554,13 @@ const EditPost = () => {
                         value={postData.heading}
                         onChange={handleChange}
                     ></textarea>
-                    <label className="new-post-label" ref={topRef}>Contenido principal:</label>
-                    <select id="writing-select" defaultValue="type" onChange={(e) => setWritingStyle(e.target.value)}>
-                        <option value="type">Edición libre</option>
-                        <option value="html-input">HTML</option>
-                    </select>
+                    <div>
+                        <label className="new-post-label" ref={topRef}>Contenido principal:</label>
+                        <select id="edit-writing-select" defaultValue="type" onChange={(e) => setWritingStyle(e.target.value)}>
+                            <option value="type">Edición libre</option>
+                            <option value="html-input">HTML</option>
+                        </select>
+                    </div>
                     {writingStyle === 'type' && <Editor
                         defaultValue={new Delta()}
                         ref={quillRef}
@@ -580,16 +572,18 @@ const EditPost = () => {
                         value={postData.content}
                         onChange={handleChange}
                     ></textarea>}
-                    <label htmlFor="new-post-image" className="new-post-label">Imagen:</label>
-                    <select onChange={(e) => setImageMethod((prevState) => {
-                        return {
-                            ...prevState,
-                            selectedOption: e.target.value
-                        }
-                    })} defaultValue="link" id="image-method-select">
-                        <option value="link">Agregar enlace de imagen</option>
-                        <option value="upload">Subir archivo de imagen</option>
-                    </select>
+                    <div>
+                        <label htmlFor="new-post-image" className="new-post-label">Imagen:</label>
+                        <select onChange={(e) => setImageMethod((prevState) => {
+                            return {
+                                ...prevState,
+                                selectedOption: e.target.value
+                            }
+                        })} defaultValue="link" id="edit-image-method-select">
+                            <option value="link">Agregar enlace de imagen</option>
+                            <option value="upload">Subir archivo de imagen</option>
+                        </select>
+                    </div>
                     {imageMethod.selectedOption === 'upload' && <input
                         id="new-post-image"
                         name="new-post-image"
@@ -737,7 +731,7 @@ const EditPost = () => {
                 </form>
                 <div id="new-post-buttons">
                     <a href={`${baseUrl.frontend}/user/${userId}`} id="new-post-cancel">Cancelar</a>
-                    <button id="new-post-submit" onClick={handleSubmit}>Publicar</button>
+                    <button id="new-post-submit" onClick={handleSubmit}>Guardar</button>
                 </div>
                 <div id="post-result-container" style={{ display: resultMessage.display }}>
                     <div className="result-container" style={{ animation: resultMessage.animation }}>
