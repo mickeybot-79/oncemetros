@@ -1197,6 +1197,11 @@ textarea {
   color: rgba(245, 245, 245, 0.87);
 }
 
+#new-post-delete:hover {
+  background: linear-gradient(180deg, rgba(236, 178, 101, 0.925), rgba(238, 161, 45, 0.342));
+  color: rgba(245, 245, 245, 0.87);
+}
+
 #post-result-container,
 #user-result-container {
   width: 100%;
@@ -2602,4 +2607,55 @@ svg {
 
 #delete-account-submit:hover {
   background-color: rgba(23, 138, 23, 0.87);
+}
+
+/*Edit Post*/
+#delete-confirm-container {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  place-content: center;
+  background-color: rgba(0, 0, 0, 0.568);
+}
+
+#delete-message-container {
+  width: 500px;
+  background-color: rgba(255, 255, 255, 0.925);
+  padding: 40px;
+  display: grid;
+  place-content: center;
+  place-items: center;
+  border-radius: 20px;
+}
+
+#delete-prompt {
+  font-size: 25px;
+  margin-bottom: 50px;
+}
+
+#delete-cancel,
+#delete-submit {
+  width: 200px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 22px;
+  padding: 10px;
+}
+
+#delete-cancel {
+  background-color: rgba(226, 86, 86, 0.849);
+}
+
+#delete-cancel:hover {
+  background-color: rgba(224, 134, 134, 0.849);
+}
+
+#delete-submit {
+  background-color: rgba(34, 160, 34, 0.884);
+}
+
+#delete-submit:hover {
+  background-color: rgba(95, 187, 95, 0.884);
 }

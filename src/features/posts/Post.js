@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { WhatsappShareButton } from "react-share"
 import baseUrl from "../../baseurl"
@@ -8,6 +8,8 @@ import { jwtDecode } from "jwt-decode"
 const Post = ({ post }) => {
 
     const navigate = useNavigate()
+
+    const effectRan = useRef(false)
 
     let allParagraphElements
 
@@ -19,19 +21,17 @@ const Post = ({ post }) => {
     const userId = token ? jwtDecode(token).UserInfo.id : ''
 
     useEffect(() => {
-        const sendView = async (userId) => {
-            const result = await addView(post.searchField, userId)
-            return result
-        }
-        if (userId) {
-            if (!post.viewedBy.includes(userId)) {
-                const result = sendView(userId)
-                console.log(result)
+        if (effectRan.current === true || process.env.NODE_ENV !== 'development') {
+            const sendView = async (userId) => await addView({ post: post.searchField, userId })
+            if (userId) {
+                if (!post.viewedBy.includes(userId)) {
+                    sendView(userId)
+                }
+            } else {
+                sendView()
             }
-        } else {
-            const result = sendView()
-            console.log(result)
         }
+        return () => effectRan.current = true
     }, [userId, addView, post])
 
     useEffect(() => {

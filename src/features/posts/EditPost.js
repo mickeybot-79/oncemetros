@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from "react"
-import { useGetTagsQuery, useAddTagMutation, useGetPostsQuery, useEditPostMutation } from "./postsApiSlice"
+import { useGetTagsQuery, useAddTagMutation, useGetPostsQuery, useEditPostMutation, useDeletePostMutation } from "./postsApiSlice"
 import { useNavigate, useBeforeUnload, useParams } from "react-router-dom"
 import Quill from "quill"
 import Editor from "./EditorTest"
@@ -77,6 +77,8 @@ const EditPost = () => {
         isLoading,
     }] = useEditPostMutation()
 
+    const [deletePost] = useDeletePostMutation()
+
     const [tagOptions, setTagOptions] = useState([])
 
     const [postData, setPostData] = useState({
@@ -104,6 +106,8 @@ const EditPost = () => {
         selectedOption: 'link',
         selectedValue: isSuccess ? currentPost.thumbnail : ''
     })
+
+    const [deleteDisplay, setDeleteDisplay] = useState('none')
 
     useBeforeUnload(
         useCallback((e) => {
@@ -366,7 +370,7 @@ const EditPost = () => {
                         }
                     })
                     setTimeout(() => {
-                        navigate(`/user/${userId}`)
+                        navigate(`/post/${id}`)
                     }, 2000)
                 } else {
                     console.log(result)
@@ -420,6 +424,26 @@ const EditPost = () => {
                 }, 10)
             }
         }
+    }
+
+    //Delete Post handler
+    const handleDeletePost = async () => {
+        setDeleteDisplay('none')
+        setWaiting('grid')
+        const result = await deletePost({post: id})
+        console.log(result)
+        setWaiting('none')
+        setResultMessage((prevState) => {
+            return {
+                ...prevState,
+                message: 'Publicación eliminada.',
+                display: 'grid',
+                image: '../../Images/success.gif'
+            }
+        })
+        setTimeout(() => {
+            navigate(`/user/${userId}`)
+        }, 2000)
     }
 
     const pictureElement = (
@@ -732,6 +756,7 @@ const EditPost = () => {
                 <div id="new-post-buttons">
                     <a href={`${baseUrl.frontend}/user/${userId}`} id="new-post-cancel">Cancelar</a>
                     <button id="new-post-submit" onClick={handleSubmit}>Guardar</button>
+                    <button id="new-post-delete" onClick={() => setDeleteDisplay('grid')}>Eliminar</button>
                 </div>
                 <div id="post-result-container" style={{ display: resultMessage.display }}>
                     <div className="result-container" style={{ animation: resultMessage.animation }}>
@@ -759,6 +784,15 @@ const EditPost = () => {
                     backgroundColor: 'rgba(0, 0, 0, 0.6)'
                 }}>
                     <div className="loader"></div>
+                </div>
+                <div id="delete-confirm-container" style={{display: deleteDisplay}}>
+                    <div id="delete-message-container">
+                        <p id="delete-prompt">¿Seguro que deseas eliminar la publicación?</p>
+                        <div style={{display: 'flex', gap: '30px'}}>
+                            <button id="delete-cancel" onClick={() => setDeleteDisplay('none')}>Cancelar</button>
+                            <button id="delete-submit" onClick={handleDeletePost}>Eliminar publicación</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         )

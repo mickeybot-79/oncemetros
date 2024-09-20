@@ -50,6 +50,15 @@ export const postsApiSlice = apiSlice.injectEndpoints({
                 }
             })
         }),
+        deletePost: builder.mutation({
+            query: ({...post}) => ({
+                url: '/posts/delete',
+                method: 'DELETE',
+                body: {
+                    ...post
+                }
+            })
+        }),
         addComment: builder.mutation({
             query: ({...comment}) => ({
                 url: '/posts/comment',
@@ -91,12 +100,12 @@ export const postsApiSlice = apiSlice.injectEndpoints({
             })
         }),
         addView: builder.mutation({
-            query: (post, userId) => ({
+            query: ({post, userId}) => ({
                 url: 'posts/views',
                 method: 'POST',
                 body: {
-                    post,
-                    userId
+                    post: post,
+                    userId: userId
                 }
             })
         }),
@@ -116,6 +125,7 @@ export const {
     useGetPostsQuery,
     useCreatePostMutation,
     useEditPostMutation,
+    useDeletePostMutation,
     useAddCommentMutation,
     useGetTagsQuery,
     useAddTagMutation,

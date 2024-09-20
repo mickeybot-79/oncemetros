@@ -3,13 +3,13 @@ import Post from "./Post"
 import { useGetPostsQuery } from "./postsApiSlice"
 import Comments from "./Comments"
 import PageHeader from "../../components/PageHeader"
-import { useEffect, useRef } from "react"
-import { useShareTestMutation } from "./postsApiSlice"
+import { useEffect, /*useRef*/ } from "react"
+// import { useShareTestMutation } from "./postsApiSlice"
 import LoadingIcon from "../../components/LoadingIcon"
 
 const PostPage = () => {
 
-    const effectRan = useRef()
+    // const effectRan = useRef()
 
     const { id } = useParams()
 
@@ -28,6 +28,27 @@ const PostPage = () => {
         refetchOnMountOrArgChange: true
     })
 
+    // const [shareTest] = useShareTestMutation()
+
+    // useEffect(() => {
+    //     if (effectRan.current === true || process.env.NODE_ENV !== 'development') {
+    //         if (posts?.entities[id]?.title) {
+    //             const createShareFile = async () => {
+    //                 await shareTest({
+    //                     url: `https://oncemetros.onrender.com/post/${posts?.entities[id]?.searchField}`,
+    //                     title: posts?.entities[id]?.title,
+    //                     heading: posts?.entities[id]?.heading.split('\n')[0],
+    //                     thumbnail: posts?.entities[id]?.thumbnail,
+    //                     post: posts?.entities[id]?.searchField
+    //                 })
+    //             }
+    //             createShareFile()
+    //         }
+    //     }
+    //     return () => effectRan.current = true
+    //     //eslint-disable-next-line
+    // }, [])
+
     if (isLoading) {
         return (
             <LoadingIcon />
@@ -35,28 +56,6 @@ const PostPage = () => {
     }
 
     if (isSuccess) currentPost = posts?.entities[id]
-
-    console.log(currentPost)
-
-    // const [shareTest] = useShareTestMutation()
-
-    // useEffect(() => {
-    //     if (effectRan.current === true || process.env.NODE_ENV !== 'development') {
-    //         if (post?.title) {
-    //             const createShareFile = async () => {
-    //                 await shareTest({
-    //                     url: `https://oncemetros.onrender.com/post/${post?.searchField}`,
-    //                     title: post?.title,
-    //                     description: post?.heading.split('\n')[0],
-    //                     image: `https://oncemetros.onrender.com/Images/${post?.thumbnail.split('/')[2]}`,
-    //                     post: post?.searchField
-    //                 })
-    //             }
-    //             createShareFile()
-    //         }
-    //     }
-    //     return () => effectRan.current = true
-    // }, [post, shareTest])
 
     if (currentPost) {
         return (
