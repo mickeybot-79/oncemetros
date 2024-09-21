@@ -6,6 +6,8 @@ import PageHeader from "../../components/PageHeader"
 import { useEffect, /*useRef*/ } from "react"
 // import { useShareTestMutation } from "./postsApiSlice"
 import LoadingIcon from "../../components/LoadingIcon"
+import { useGetUserDataQuery } from "../auth/authApiSlice"
+import { jwtDecode } from "jwt-decode"
 
 const PostPage = () => {
 
@@ -25,6 +27,17 @@ const PostPage = () => {
         isLoading
     } = useGetPostsQuery('postsList', {
         pollingInterval: 600000,
+        refetchOnMountOrArgChange: true
+    })
+
+    const token = window.localStorage.getItem('token')
+    const userId = token ? jwtDecode(token).UserInfo.id : 'noUser'
+
+    const {
+        data: user,
+        isSuccess: isUserSuccess,
+        isLoading: isUserLoading
+    } = useGetUserDataQuery(userId, {
         refetchOnMountOrArgChange: true
     })
 
@@ -49,21 +62,24 @@ const PostPage = () => {
     //     //eslint-disable-next-line
     // }, [])
 
-    if (isLoading) {
+    if (isLoading || isUserLoading) {
         return (
             <LoadingIcon />
         )
     }
 
-    if (isSuccess) currentPost = posts?.entities[id]
+    if (isSuccess && isUserSuccess) {
 
-    if (currentPost) {
+        console.log(user)
+
+        currentPost = posts?.entities[id]
+
         return (
             <>
                 <PageHeader />
                 <div id="post-page-container">
                     <Post post={currentPost} />
-                    <Comments post={currentPost}/>
+                    <Comments post={currentPost} user={user || ''}/>
                 </div>
             </>
         )

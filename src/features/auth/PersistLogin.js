@@ -32,7 +32,7 @@ const PersistLogin = () => {
                     if (result?.error?.originalStatus === 403 || result?.error?.originalStatus === 401) {
                         if (!isTemp) window.localStorage.setItem('isTemp', 'y')
                         window.localStorage.removeItem('token')
-                        window.sessionStorage.setItem('refreshExpired')
+                        window.sessionStorage.setItem('refreshExpired', 'y')
                     } else {
                         window.localStorage.setItem('isTemp', 'n')
                     }

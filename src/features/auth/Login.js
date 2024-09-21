@@ -155,6 +155,12 @@ const Login = ({ handleDisplayLogin, loginAnimation, handleDisplayingLogin }) =>
                     }}>Aceptar</button>
                 </div>
             </div>
+            <div>
+                <p>Por favor, ingresa tu dirección de correo electrónico:</p>
+                <input type="text"/>
+                <button>Cancelar</button>
+                <button>Enviar correo electrónico de recuperación</button>
+            </div>
         </div>
     )
 }

@@ -107,6 +107,7 @@ const UserPage = () => {
                         <div>
                             <p className="user-page-post-title">{posts?.entities[currentPost].title}</p>
                             <p>{posts?.entities[currentPost].views} vistas</p>
+                            <p>{posts?.entities[currentPost].comments.length} comentarios</p>
                         </div>
                     </div>
                 </div>

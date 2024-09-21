@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { useAddCommentMutation, useAddReplyMutation } from "./postsApiSlice"
 
-const Comments = ({ post }) => {
+const Comments = ({ post, user }) => {
 
     const [allComments, setAllComments] = useState({})
 
@@ -27,16 +27,18 @@ const Comments = ({ post }) => {
     const [addReply] = useAddReplyMutation()
 
     const newCommentRef = useRef()
-
     const allCommentsRef = useRef()
 
     const handleSubmit = async () => {
         setDisplayCommentLoader('block')
         const result = await addComment({
             post: post.searchField,
-            user: '',
+            userId: user.userId,
+            username: user.username,
+            image: user.image,
             content: newComment
         })
+        //console.log(result)
         if (result?.data?.searchField) {
             setNewComment('')
             setAllComments([...result.data.comments])
@@ -45,6 +47,7 @@ const Comments = ({ post }) => {
     }
 
     const handleStartReply = (e, comm, usr) => {
+        //console.log(usr)
         setReplying(() => {
             return {
                 commnt: comm,
@@ -66,16 +69,18 @@ const Comments = ({ post }) => {
         }
     } 
 
-    const handlePostReply = async (comment, user) => {
+    const handlePostReply = async (comment, usr) => {
         setDisplayReplyLoader('block')
         const result = await addReply({
             post: post.searchField,
             comment,
-            user: '',
+            userId: user.userId,
+            username: user.username,
+            image: user.image,
             content: newReply,
-            replyTo: user
+            replyTo: usr
         })
-        console.log(result)
+        //console.log(result)
         if (result?.data?.searchField) {
             setNewReply('')
             setReplying('')
@@ -99,12 +104,12 @@ const Comments = ({ post }) => {
                 return (
                     <div className="comment-reply-container" key={reply.date}>
                         <div style={{display: 'flex', alignItems: 'center', gap:'20px'}}>
-                            <img src="../../Images/favicon.png" alt="user-image" className="comment-reply-image" />
+                            <img src={reply.image || "../../Images/favicon.png"} alt="user-image" className="comment-reply-image" />
                             <p className="comment-reply-content"><a href='...'>{reply.replyTo}</a>{reply.content}</p>
                         </div>
                         <div>
                             <p className="comment-reply-date">{convertedReplyDate}</p>
-                            <button className="comment-reply-option" onClick={(e) => handleStartReply(e, comment.searchField, reply.user)}>Responder</button>
+                            <button className="comment-reply-option" onClick={(e) => handleStartReply(e, comment.searchField, reply.username)}>Responder</button>
                         </div>
                     </div>
                 )
@@ -114,13 +119,13 @@ const Comments = ({ post }) => {
                 <div key={comment.searchField}>
                     <div className="comment-container">
                         <div className="comment-content-image">
-                            <img src="../../Images/favicon.png" alt="user-image" className="comment-image" />
+                            <img src={comment.image || "../../Images/favicon.png"} alt="user-image" className="comment-image" />
                             <p className="comment-content">{comment.content}</p>
                         </div>
                         <div className="comment-date-options">
                             <p className="comment-date">{convertedDate}</p>
                             <div className="comment-options-container">
-                                <button className="comment-reply" onClick={(e) => handleStartReply(e, comment.searchField, comment.user)}>Responder</button>
+                                <button className="comment-reply" onClick={(e) => handleStartReply(e, comment.searchField, comment.username)}>Responder</button>
                             </div>
                         </div>
                     </div>
@@ -143,7 +148,7 @@ const Comments = ({ post }) => {
                                     user: ''
                                 })
                             }}>Cancelar</button>
-                            <button className="reply-submit" onClick={() => handlePostReply(comment.searchField, comment.user)}>Publicar</button>
+                            <button className="reply-submit" onClick={() => handlePostReply(comment.searchField)}>Publicar</button>
                         </div>
                     </div>
                     {comment.replies.length > 0 && <div>
@@ -167,7 +172,7 @@ const Comments = ({ post }) => {
         <div id="comments-container" ref={allCommentsRef}>
             <div id="new-comment-container">
                 <div id="new-comment-img-text">
-                    <img src="../../Images/favicon.png" alt="logo" id="new-comment-icon" />
+                    <img src={user.image || "../../Images/favicon.png"} alt="logo" id="new-comment-icon" />
                     <textarea
                         placeholder="Nuevo comentario..."
                         id="new-comment-content"
