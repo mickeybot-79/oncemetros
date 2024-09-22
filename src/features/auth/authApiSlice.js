@@ -88,6 +88,15 @@ export const authApiSlice = apiSlice.injectEndpoints({
                 }
             }
         }),
+        resetPassword: builder.mutation({
+            query: ({username}) => ({
+                url: `/auth/pass`,
+                method: 'POST',
+                body: {
+                    username
+                }
+            })
+        }),
         getUserData: builder.query({
             query: (userId) => ({
                 url: `/auth/user/${userId}`,
@@ -150,6 +159,7 @@ export const {
     useCreateAccountMutation,
     useSendLogoutMutation,
     useRefreshMutation,
+    useResetPasswordMutation,
     useGetUserDataQuery,
     useVerifyUsernameMutation,
     useGetUserProfileQuery,

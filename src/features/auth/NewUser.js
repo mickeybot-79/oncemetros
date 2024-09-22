@@ -21,6 +21,7 @@ const NewUser = () => {
         username: '',
         password: '',
         confirmPassword: '',
+        email: '',
         image: '../../Images/user-placeholder.jpg',
         aboutme: ''
     })
@@ -106,7 +107,9 @@ const NewUser = () => {
     
         const handleCreateUser = async () => {
             setWaiting('grid')
-            const canSave = [userData.username, userData.password, userData.confirmPassword === userData.password].every(Boolean) && !isLoading
+            const emailExp = /^[a-zA-Z0-9._%±]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/
+            const validEmail = userData.email && emailExp.test(userData.email)
+            const canSave = [userData.username, userData.password, userData.confirmPassword === userData.password, validEmail].every(Boolean) && !isLoading
             if (canSave) {
                 try {
                     const result = await createAccount(userData)
@@ -171,12 +174,23 @@ const NewUser = () => {
                             }
                         })
                     }, 10)
-                } else if (userData.password !== userData.confirmPasswordassword) {
+                } else if (userData.password !== userData.confirmPassword) {
                     setTimeout(() => {
                         setResultMessage((prevState) => {
                             return {
                                 ...prevState,
                                 message: 'Las contraseñas no coinciden',
+                                display: 'grid',
+                                confirmButton: 'block',
+                            }
+                        })
+                    }, 10)
+                } else if (!validEmail) {
+                    setTimeout(() => {
+                        setResultMessage((prevState) => {
+                            return {
+                                ...prevState,
+                                message: 'Por favor, ingresa un email válido de recuperación de contraseña.',
                                 display: 'grid',
                                 confirmButton: 'block',
                             }
@@ -289,6 +303,14 @@ const NewUser = () => {
                             marginBottom: '-10px'
                         }}
                     >Las contraseñas no coinciden</p>}
+                    <label htmlFor="new-user-email" className="new-user-label">Correo electrónico de recuperación de contraseña:</label>
+                    <input
+                        id="new-user-email"
+                        type="text"
+                        name="email"
+                        placeholder="Correo electrónico"
+                        value={userData.email}
+                        onChange={handleChange} />
                     <div id="user-image-container">
                         <div id="image-label-input">
                             <label htmlFor="new-user-image" className="new-user-label">Imagen de perfil (opcional):</label>

@@ -16,6 +16,7 @@ const EditUser = ({ user, displayEditOptions, handleUpdateUserData, handleCloseE
         userId: user.userId,
         password: '',
         confirmPassword: '',
+        email: '',
         image: user.image,
         aboutme: user.aboutme
     })
@@ -189,6 +190,7 @@ const EditUser = ({ user, displayEditOptions, handleUpdateUserData, handleCloseE
                             userId: window.sessionStorage.getItem('userId') || '',
                             password: '',
                             confirmPassword: '',
+                            email: '',
                             image: user.image,
                             aboutme: user.aboutme
                         })
@@ -233,6 +235,7 @@ const EditUser = ({ user, displayEditOptions, handleUpdateUserData, handleCloseE
                                 userId: window.sessionStorage.getItem('userId') || '',
                                 password: '',
                                 confirmPassword: '',
+                                email: '',
                                 image: user.image,
                                 aboutme: user.aboutme
                             })
@@ -280,6 +283,7 @@ const EditUser = ({ user, displayEditOptions, handleUpdateUserData, handleCloseE
                             userId: window.sessionStorage.getItem('userId') || '',
                             password: '',
                             confirmPassword: '',
+                            email: '',
                             image: user.image,
                             aboutme: user.aboutme
                         })
@@ -323,6 +327,7 @@ const EditUser = ({ user, displayEditOptions, handleUpdateUserData, handleCloseE
                                 userId: window.sessionStorage.getItem('userId') || '',
                                 password: '',
                                 confirmPassword: '',
+                                email: '',
                                 image: user.image,
                                 aboutme: user.aboutme
                             })
@@ -380,6 +385,7 @@ const EditUser = ({ user, displayEditOptions, handleUpdateUserData, handleCloseE
                             userId: window.sessionStorage.getItem('userId') || '',
                             password: '',
                             confirmPassword: '',
+                            email: '',
                             image: user.image,
                             aboutme: user.aboutme
                         })
@@ -423,6 +429,7 @@ const EditUser = ({ user, displayEditOptions, handleUpdateUserData, handleCloseE
                                 userId: window.sessionStorage.getItem('userId') || '',
                                 password: '',
                                 confirmPassword: '',
+                                email: '',
                                 image: user.image,
                                 aboutme: user.aboutme
                             })
@@ -432,6 +439,94 @@ const EditUser = ({ user, displayEditOptions, handleUpdateUserData, handleCloseE
                             return {
                                 ...prevState,
                                 message: 'Las contraseñas no coinciden',
+                                display: 'grid',
+                                confirmButton: 'block',
+                            }
+                        })
+                    }
+                }}>Guardar</button>
+            </div>
+        </div>
+    )
+
+    const editEmail = (
+        <div
+            style={{
+                display: selectedOption === 'email' ? 'grid' : 'none',
+                placeContent: 'center',
+                gap: '50px',
+                paddingLeft: '30px',
+                width: '450px',
+                height: '100vh',
+                animation: selectedOptionAnimation,
+                background: `linear-gradient(90deg, 
+                rgba(77, 214, 207, 0.01),
+                rgba(77, 214, 207, 0.884),
+                rgba(77, 214, 207, 0.884),
+                rgba(77, 214, 207, 0.884),
+                rgba(77, 214, 207, 0.884),
+                rgba(77, 214, 207, 0.884),
+                rgba(77, 214, 207, 0.884),
+                rgba(77, 214, 207, 0.884))`}}>
+            <p style={{ fontSize: '22px', textShadow: '1px 1px', maxWidth: '300px' }}>Tu correo electrónico de recuperación de contraseña:</p>
+            <input
+                style={{ width: '300px', height: '35px', fontSize: '18px', borderRadius: '5px' }}
+                placeholder="Correo electrónico"
+                name="email"
+                value={userData.email}
+                onChange={(e) => handleChange(e)} />
+            <div style={{ display: 'flex', gap: '20px' }}>
+                <button className="user-edit-button-cancel" onClick={() => {
+                    setSelectedOptionAnimation('selected-option-out 0.2s linear 1')
+                    setTimeout(() => {
+                        setSelectedOption('')
+                        setUserData({
+                            username: user.username,
+                            roles: user.roles,
+                            userId: window.sessionStorage.getItem('userId') || '',
+                            password: '',
+                            confirmPassword: '',
+                            email: '',
+                            image: user.image,
+                            aboutme: user.aboutme
+                        })
+                    }, 180)
+                }}>Cancelar</button>
+                <button className="user-edit-button-submit" onClick={async () => {
+                    const emailExp = /^[a-zA-Z0-9._%±]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/
+                    const validEmail = userData.email && emailExp.test(userData.email) && userData.email !== user?.email
+                    if (validEmail) {
+                        setWaiting('grid')
+                        try {
+                            const result = await updateUserData({userData})
+                            console.log(result)
+                            setWaiting('none')
+                            handleUpdateUserData(userData)
+                            setResultMessage((prevState) => {
+                                return {
+                                    ...prevState,
+                                    message: 'Correo electrónico actualizado correctamente.',
+                                    display: 'grid',
+                                    confirmButton: 'block',
+                                    image: '../../Images/success.gif'
+                                }
+                            })
+                        } catch (err) {
+                            console.log(err)
+                            setResultMessage((prevState) => {
+                                return {
+                                    ...prevState,
+                                    message: err,
+                                    display: 'grid',
+                                    confirmButton: 'block',
+                                }
+                            })
+                        }
+                    } else {
+                        setResultMessage((prevState) => {
+                            return {
+                                ...prevState,
+                                message: 'Por favor, ingresa un correo electrónico válido.',
                                 display: 'grid',
                                 confirmButton: 'block',
                             }
@@ -470,6 +565,7 @@ const EditUser = ({ user, displayEditOptions, handleUpdateUserData, handleCloseE
                 setUserData({
                     password: '',
                     confirmPassword: '',
+                    email: '',
                     image: user.image,
                     aboutme: user.aboutme
                 })
@@ -496,6 +592,10 @@ const EditUser = ({ user, displayEditOptions, handleUpdateUserData, handleCloseE
                     setSelectedOptionAnimation('selected-option-in 0.2s linear 1')
                 }}>Cambiar contraseña</li>
                 <li className="edit-account-option" onClick={() => {
+                    setSelectedOption('email')
+                    setSelectedOptionAnimation('selected-option-in 0.2s linear 1')
+                }}>Email de recuperación</li>
+                <li className="edit-account-option" onClick={() => {
                     setSelectedOption('delete')
                     setSelectedOptionAnimation('selected-option-in 0.2s linear 1')
                 }}><span>Eliminar cuenta</span></li>
@@ -511,6 +611,7 @@ const EditUser = ({ user, displayEditOptions, handleUpdateUserData, handleCloseE
                 {editImage}
                 {editAboutMe}
                 {editPassword}
+                {editEmail}
                 {deleteAccount}
             </div>
             <div style={{display: deleteAccountDisplay, position: 'fixed', width: '100%', height: '100%', placeContent: 'center', backgroundColor: 'rgba(0,0,0,0.5)'}}>

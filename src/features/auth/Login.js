@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { useLoginMutation } from "./authApiSlice"
+import { useLoginMutation, useResetPasswordMutation } from "./authApiSlice"
 import { useLocation, useNavigate } from "react-router-dom"
 import { jwtDecode } from "jwt-decode"
 
@@ -10,6 +10,10 @@ const Login = ({ handleDisplayLogin, loginAnimation, handleDisplayingLogin }) =>
     const navigate = useNavigate()
 
     const [login] = useLoginMutation()
+
+    const [resetPassword] = useResetPasswordMutation()
+
+    const [resetEmail, setResetEmail] = useState('')
 
     const [persist, setPersist] = useState(window.localStorage.getItem('persist') || 'true')
 
@@ -27,6 +31,8 @@ const Login = ({ handleDisplayLogin, loginAnimation, handleDisplayingLogin }) =>
         confirmButton: 'none',
         animation: 'new-post-result 0.2s linear 1'
     })
+
+    const [passResetDisplay, setPassResetDisplay] = useState('none')
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -64,6 +70,11 @@ const Login = ({ handleDisplayLogin, loginAnimation, handleDisplayingLogin }) =>
         }
     }
 
+    const handleResetPassword = async () => {
+        const result = await resetPassword({username: resetEmail})
+        console.log(result)
+    }
+
     return (
         <div id="login-page-container">
             <form id="login-form" style={{animation: loginAnimation}}>
@@ -98,6 +109,7 @@ const Login = ({ handleDisplayLogin, loginAnimation, handleDisplayingLogin }) =>
                 />
                 <button id="password-reset-option" onClick={(e) => {
                     e.preventDefault()
+                    setPassResetDisplay('grid')
                 }}>¿Olvidaste tu contraseña?</button>
                 <div>
                     <label htmlFor="remember-login" className="login-label">Recordar usuario</label>
@@ -155,11 +167,18 @@ const Login = ({ handleDisplayLogin, loginAnimation, handleDisplayingLogin }) =>
                     }}>Aceptar</button>
                 </div>
             </div>
+            <div id="password-reset-container" style={{display: passResetDisplay}}>
+                <div id="password-reset">
+                    <p id="password-reset-prompt">Por favor, ingresa tu nombre de usuario:</p>
+                    <input type="text" id="password-reset-input" placeholder="Correo electrónico" value={resetEmail} onChange={(e)=> setResetEmail(e.target.value)}/>
+                    <div id="password-reset-options">
+                        <button id="password-reset-cancel" onClick={() => setPassResetDisplay('none')}>Cancelar</button>
+                        <button id="password-reset-submit" onClick={handleResetPassword}>Enviar email de recuperación</button>
+                    </div>
+                </div>
+            </div>
             <div>
-                <p>Por favor, ingresa tu dirección de correo electrónico:</p>
-                <input type="text"/>
-                <button>Cancelar</button>
-                <button>Enviar correo electrónico de recuperación</button>
+                <p>Por favor, revisa tu correo electrónico de recuperación.</p>
             </div>
         </div>
     )
