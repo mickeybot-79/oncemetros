@@ -70,6 +70,7 @@ const UserPage = () => {
         userId: token ? jwtDecode(token).UserInfo.id : '',
         password: '',
         confirmPassword: '',
+        email: '',
         image: '',
         aboutme: ''
     })
@@ -82,6 +83,7 @@ const UserPage = () => {
                 userId: user.userId,
                 password: '',
                 confirmPassword: '',
+                email: user.email,
                 image: user.image,
                 aboutme: user.aboutme
             }

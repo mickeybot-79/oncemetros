@@ -170,15 +170,31 @@ const Login = ({ handleDisplayLogin, loginAnimation, handleDisplayingLogin }) =>
             <div id="password-reset-container" style={{display: passResetDisplay}}>
                 <div id="password-reset">
                     <p id="password-reset-prompt">Por favor, ingresa tu nombre de usuario:</p>
-                    <input type="text" id="password-reset-input" placeholder="Correo electrónico" value={resetEmail} onChange={(e)=> setResetEmail(e.target.value)}/>
+                    <input type="text" id="password-reset-input" placeholder="Nombre de usuario" value={resetEmail} onChange={(e)=> setResetEmail(e.target.value)}/>
                     <div id="password-reset-options">
-                        <button id="password-reset-cancel" onClick={() => setPassResetDisplay('none')}>Cancelar</button>
+                        <button id="password-reset-cancel" onClick={() => {
+                            setPassResetDisplay('none')
+                            setResetEmail('')
+                        }}>Cancelar</button>
                         <button id="password-reset-submit" onClick={handleResetPassword}>Enviar email de recuperación</button>
                     </div>
                 </div>
             </div>
             <div>
-                <p>Por favor, revisa tu correo electrónico de recuperación.</p>
+                <div id="password-reset-email">
+                    <p id="password-email-prompt">Por favor, ingresa un correo electrónico de recuperación:</p>
+                    <input type="text" id="password-email-input" placeholder="Correo electrónico" value={resetEmail} onChange={(e) => setResetEmail(e.target.value)} />
+                    <div id="password-email-options">
+                        <button id="password-email-cancel" onClick={() => {
+                            setPassResetDisplay('none')
+                            setResetEmail('')
+                        }}>Cancelar</button>
+                        <button id="password-email-submit" onClick={handleResetPassword}>Enviar email de recuperación</button>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <p>Por favor, revisa tu correo electrónico.</p>
             </div>
         </div>
     )
