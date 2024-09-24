@@ -89,11 +89,12 @@ export const authApiSlice = apiSlice.injectEndpoints({
             }
         }),
         resetPassword: builder.mutation({
-            query: ({username}) => ({
+            query: ({username, email}) => ({
                 url: `/auth/pass`,
                 method: 'POST',
                 body: {
-                    username
+                    username,
+                    email
                 }
             })
         }),

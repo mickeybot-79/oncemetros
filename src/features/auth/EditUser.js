@@ -468,7 +468,7 @@ const EditUser = ({ user, displayEditOptions, handleUpdateUserData, handleCloseE
                 rgba(77, 214, 207, 0.884),
                 rgba(77, 214, 207, 0.884),
                 rgba(77, 214, 207, 0.884))`}}>
-            <p style={{ fontSize: '22px', textShadow: '1px 1px', maxWidth: '300px' }}>Tu correo electrónico de recuperación de contraseña:</p>
+            <p style={{ fontSize: '22px', textShadow: '1px 1px', maxWidth: '300px' }}>Tu correo electrónico de recuperación:</p>
             <input
                 style={{ width: '300px', height: '35px', fontSize: '18px', borderRadius: '5px' }}
                 placeholder="Correo electrónico"
@@ -483,10 +483,10 @@ const EditUser = ({ user, displayEditOptions, handleUpdateUserData, handleCloseE
                         setUserData({
                             username: user.username,
                             roles: user.roles,
-                            userId: window.sessionStorage.getItem('userId') || '',
+                            userId: user.userId || '',
                             password: '',
                             confirmPassword: '',
-                            email: '',
+                            email: user.email || '',
                             image: user.image,
                             aboutme: user.aboutme
                         })

@@ -2,6 +2,7 @@ import { useState } from "react"
 import { useLoginMutation, useResetPasswordMutation } from "./authApiSlice"
 import { useLocation, useNavigate } from "react-router-dom"
 import { jwtDecode } from "jwt-decode"
+import userEvent from "@testing-library/user-event"
 
 const Login = ({ handleDisplayLogin, loginAnimation, handleDisplayingLogin }) => {
 
@@ -12,6 +13,8 @@ const Login = ({ handleDisplayLogin, loginAnimation, handleDisplayingLogin }) =>
     const [login] = useLoginMutation()
 
     const [resetPassword] = useResetPasswordMutation()
+
+    const [resetUsername, setResetUsername] = useState('')
 
     const [resetEmail, setResetEmail] = useState('')
 
@@ -33,6 +36,8 @@ const Login = ({ handleDisplayLogin, loginAnimation, handleDisplayingLogin }) =>
     })
 
     const [passResetDisplay, setPassResetDisplay] = useState('none')
+
+    const [passEmailDisplay, setPassEmailDisplay] = useState('none')
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -71,8 +76,34 @@ const Login = ({ handleDisplayLogin, loginAnimation, handleDisplayingLogin }) =>
     }
 
     const handleResetPassword = async () => {
-        const result = await resetPassword({username: resetEmail})
+        setWaiting('grid')
+        setPassResetDisplay('none')
+        setPassEmailDisplay('none')
+        const result = await resetPassword({username: resetUsername, email: resetEmail})
+        setWaiting('none')
         console.log(result)
+        if (result?.error?.data?.error === 'No email.') {
+            setPassEmailDisplay('grid')
+        } else if (result?.error?.data?.error === 'No user.') {
+            setResultMessage((prevState) => {
+                return {
+                    ...prevState,
+                    message: 'Nombre de usuario no encontrado.',
+                    display: 'grid',
+                    confirmButton: 'block',
+                }
+            })
+        } else {
+            setResultMessage((prevState) => {
+                return {
+                    ...prevState,
+                    message: 'Por favor, revisa tu correo electrónico.',
+                    display: 'grid',
+                    confirmButton: 'block',
+                    image: '../../Images/success.gif'
+                }
+            })
+        }
     }
 
     return (
@@ -170,31 +201,30 @@ const Login = ({ handleDisplayLogin, loginAnimation, handleDisplayingLogin }) =>
             <div id="password-reset-container" style={{display: passResetDisplay}}>
                 <div id="password-reset">
                     <p id="password-reset-prompt">Por favor, ingresa tu nombre de usuario:</p>
-                    <input type="text" id="password-reset-input" placeholder="Nombre de usuario" value={resetEmail} onChange={(e)=> setResetEmail(e.target.value)}/>
+                    <input type="text" id="password-reset-input" placeholder="Nombre de usuario" value={resetUsername} onChange={(e)=> setResetUsername(e.target.value)}/>
                     <div id="password-reset-options">
                         <button id="password-reset-cancel" onClick={() => {
                             setPassResetDisplay('none')
-                            setResetEmail('')
+                            setResetUsername('')
                         }}>Cancelar</button>
                         <button id="password-reset-submit" onClick={handleResetPassword}>Enviar email de recuperación</button>
                     </div>
                 </div>
             </div>
-            <div>
+            <div id="password-email-container" style={{display: passEmailDisplay}}>
                 <div id="password-reset-email">
                     <p id="password-email-prompt">Por favor, ingresa un correo electrónico de recuperación:</p>
                     <input type="text" id="password-email-input" placeholder="Correo electrónico" value={resetEmail} onChange={(e) => setResetEmail(e.target.value)} />
                     <div id="password-email-options">
                         <button id="password-email-cancel" onClick={() => {
                             setPassResetDisplay('none')
+                            setPassEmailDisplay('none')
                             setResetEmail('')
+                            setResetUsername('')
                         }}>Cancelar</button>
                         <button id="password-email-submit" onClick={handleResetPassword}>Enviar email de recuperación</button>
                     </div>
                 </div>
-            </div>
-            <div>
-                <p>Por favor, revisa tu correo electrónico.</p>
             </div>
         </div>
     )

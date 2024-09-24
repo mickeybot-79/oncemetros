@@ -20,6 +20,7 @@ import UserPage from './features/auth/UserPage'
 import PersistLogin from './features/auth/PersistLogin'
 import ProfilePage from './features/auth/ProfilePage'
 import EditPost from './features/posts/EditPost'
+import PasswordReset from './features/auth/PasswordReset'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -35,6 +36,7 @@ const router = createBrowserRouter(
         <Route path="posts/:user" index element={<UserPosts />} />
         <Route path="search" index element={<SearchPage />} />
         <Route path="users/new" index element={<NewUser />} />
+        <Route path="reset/:token" index element={<PasswordReset />} />
         <Route path="user/:id" index element={<UserPage />} />
         <Route path="profile/:id" index element={<ProfilePage />} />
         <Route path="loading" index element={<LoadingIcon />} />
