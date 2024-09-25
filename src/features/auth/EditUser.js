@@ -16,7 +16,7 @@ const EditUser = ({ user, displayEditOptions, handleUpdateUserData, handleCloseE
         userId: user.userId,
         password: '',
         confirmPassword: '',
-        email: '',
+        email: user.email,
         image: user.image,
         aboutme: user.aboutme
     })

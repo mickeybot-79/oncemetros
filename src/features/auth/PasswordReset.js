@@ -1,15 +1,17 @@
-//import { jwtDecode } from "jwt-decode"
 import { useState } from "react"
-import { useParams } from "react-router-dom"
-import { useUpdateUserDataMutation } from "./authApiSlice"
+import { useNavigate, useParams } from "react-router-dom"
+import { useUpdateUserPasswordMutation } from "./authApiSlice"
+import { jwtDecode } from "jwt-decode"
 
 const PasswordReset = () => {
 
     const { token } = useParams()
 
-    //const userId = token ? jwtDecode(token).userId : ''
+    const navigate = useNavigate()
 
-    const [updateUserData] = useUpdateUserDataMutation()
+    const [updateUserPassword] = useUpdateUserPasswordMutation()
+
+    const username = token ? jwtDecode(token).username : ''
 
     const [userData, setUserData] = useState({
         token,
@@ -25,6 +27,8 @@ const PasswordReset = () => {
         animation: 'new-post-result 0.2s linear 1'
     })
 
+    const [waiting, setWaiting] = useState('none')
+
     const handleChange = (e) => {
         const {name, value} = e.target
         setUserData((prevState) => {
@@ -36,11 +40,29 @@ const PasswordReset = () => {
     }
 
     const handleSubmit = async () => {
-        const validPassword = userData.password !== '' && userData.confirmPassword !== '' && userData.password.length === userData.confirmPassword.length && userData.password !== userData.confirmPassword
+        setWaiting('grid')
+        const validPassword = userData.password !== '' && userData.confirmPassword !== '' && userData.password.length === userData.confirmPassword.length && userData.password === userData.confirmPassword
         if (validPassword) {
-            // const result = await updateUserData({userData})
-            // console.log(result)
+            const result = await updateUserPassword({...userData})
+            console.log(result)
+            if (result?.data) {
+                setWaiting('none')
+                window.localStorage.setItem('token', result?.data?.accessToken)
+                const decodedToken = jwtDecode(result?.data?.accessToken).UserInfo
+                setResultMessage((prevState) => {
+                    return {
+                        ...prevState,
+                        message: 'Contraseña actualizada correctamente',
+                        display: 'grid',
+                        image: '../../Images/success.gif'
+                    }
+                })
+                setTimeout(() => {
+                    navigate(`/user/${decodedToken.id}`)
+                }, 2000)
+            }
         } else {
+            setWaiting('none')
             setResultMessage((prevState) => {
                 return {
                     ...prevState,
@@ -53,40 +75,56 @@ const PasswordReset = () => {
     }
 
     return (
-        <div>
-            <p>Por favor, ingresa una nueva contraseña</p>
-            <input
-                id="reset-new-password"
-                name="password"
-                type="password"
-                value={userData.password}
-                placeholder="Contraseña"
-                onChange={handleChange}
+        <div id="reset-page-container">
+            <div id="reset-page-form">
+                <p id="reset-page-username">Usuario: {username}</p>
+                <p className="reset-page-prompt">Por favor, ingresa una nueva contraseña</p>
+                <input
+                    id="reset-new-password"
+                    name="password"
+                    type="password"
+                    value={userData.password}
+                    placeholder="Contraseña"
+                    onChange={handleChange}
                 />
-            <p>Confirma la nueva contraseña</p>
-            <input 
-                id="reset-new-confirmPassword"
-                name="confirmPassword"
-                type="password"
-                value={userData.confirmPassword}
-                placeholder="Reingresa la contraseña"
-                onChange={handleChange}
-            />
-            <p style={{display: userData.password !== '' && userData.confirmPassword !== '' && userData.password.length === userData.confirmPassword.length && userData.password !== userData.confirmPassword ? 'block': 'none'}}>Las contraseñas no coinciden</p>
-            <button onClick={handleSubmit}>Enviar</button>
-            <div id="post-result-container" style={{display: resultMessage.display}}>
-                <div className="result-container" style={{animation: resultMessage.animation}}>
-                    <img src={resultMessage.image} alt="" id="post-result-image"/>
-                    <p id="post-result-message">{resultMessage.message}</p>
-                    <button className="result-confirm" style={{display: resultMessage.confirmButton}} onClick={() => {
-                        setResultMessage((prevState) => {
-                            return {
-                                ...prevState,
-                                display: 'none',
-                                confirmButton: 'none'
-                            }
-                        })
-                    }}>Aceptar</button>
+                <p className="reset-page-prompt">Confirma la nueva contraseña</p>
+                <input
+                    id="reset-new-confirmPassword"
+                    name="confirmPassword"
+                    type="password"
+                    value={userData.confirmPassword}
+                    placeholder="Reingresa la contraseña"
+                    onChange={handleChange}
+                />
+                <p id="reset-page-mismatch" style={{ opacity: userData.password !== '' && userData.confirmPassword !== '' && userData.password.length > 0 && userData.confirmPassword.length > 0 && userData.password !== userData.confirmPassword ? '1' : '0' }}>Las contraseñas no coinciden</p>
+                <button id="reset-page-submit" onClick={handleSubmit}>Enviar</button>
+                <div style={{
+                    display: waiting,
+                    position: 'fixed',
+                    top: '0',
+                    left: '0',
+                    width: '100%',
+                    height: '100%',
+                    placeContent: 'center',
+                    placeItems: 'center',
+                    backgroundColor: 'rgba(0, 0, 0, 0.6)'
+                }}>
+                    <div className="loader"></div>
+                </div>
+                <div id="post-result-container" style={{ display: resultMessage.display }}>
+                    <div className="result-container" style={{ animation: resultMessage.animation }}>
+                        <img src={resultMessage.image} alt="" id="post-result-image" />
+                        <p id="post-result-message">{resultMessage.message}</p>
+                        <button className="result-confirm" style={{ display: resultMessage.confirmButton }} onClick={() => {
+                            setResultMessage((prevState) => {
+                                return {
+                                    ...prevState,
+                                    display: 'none',
+                                    confirmButton: 'none'
+                                }
+                            })
+                        }}>Aceptar</button>
+                    </div>
                 </div>
             </div>
         </div>
