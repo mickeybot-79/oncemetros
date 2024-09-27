@@ -98,6 +98,15 @@ export const authApiSlice = apiSlice.injectEndpoints({
                 }
             })
         }),
+        verifyResetToken: builder.mutation({
+            query: (token) => ({
+                url: '/auth/verify',
+                method: 'POST',
+                body: {
+                    token
+                }
+            })
+        }),
         updateUserPassword: builder.mutation({
             query: ({...userData}) => ({
                 url: `/auth/reset`,
@@ -170,6 +179,7 @@ export const {
     useSendLogoutMutation,
     useRefreshMutation,
     useResetPasswordMutation,
+    useVerifyResetTokenMutation,
     useUpdateUserPasswordMutation,
     useGetUserDataQuery,
     useVerifyUsernameMutation,

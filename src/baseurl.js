@@ -4,7 +4,7 @@
 // }
 
 const baseUrl = {
-    backend: 'https://los-11-metros.onrender.com',
+    backend: 'https://los11metros.onrender.com',
     frontend: 'https://oncemetros.onrender.com'
 }
 

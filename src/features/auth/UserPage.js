@@ -64,6 +64,8 @@ const UserPage = () => {
         refetchOnMountOrArgChange: true
     })
 
+    console.log(user)
+
     const [currentUser, setCurrentUser] = useState({
         username: token ? jwtDecode(token).UserInfo.username : '',
         roles: token ? jwtDecode(token).UserInfo.roles : [],
