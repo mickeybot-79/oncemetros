@@ -8,7 +8,6 @@ const Layout = () => {
                 <img src='../Images/background.jpg' alt='background-image' id='background-image' />
                 <Outlet />
             </div>
-            {/*<PageFooter />*/}
         </>
     )
 }

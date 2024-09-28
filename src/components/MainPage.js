@@ -4,10 +4,27 @@ import { useNavigate } from "react-router-dom"
 import Presentation from "./Presentation"
 import PageHeader from "./PageHeader"
 import LoadingIcon from "./LoadingIcon"
+import { useAddPageViewMutation } from "./pageApiSlice"
+import PageFooter from "./PageFooter"
 
 const MainPage = () => {
 
     const navigate = useNavigate()
+
+    const [addPageView] = useAddPageViewMutation()
+
+    useEffect(() => {
+        const viewAdded = window.localStorage.getItem('viewAdded')
+        if (!viewAdded) {
+            const sendView = async () => {
+                const result = await addPageView()
+                console.log(result)
+                window.localStorage.setItem('viewAdded', 'y')
+            }
+            sendView()
+        }
+        //eslint-disable-next-line
+    }, [])
 
     const {
         data: posts,
@@ -337,6 +354,7 @@ const MainPage = () => {
                         }}>
                         <p className="down-prompt">{'>'}</p>
                     </div>
+                    <PageFooter />
                 </main>
             </div>
             {/*Footer*/}

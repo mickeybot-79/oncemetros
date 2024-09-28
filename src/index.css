@@ -2802,3 +2802,16 @@ svg {
 #reset-page-submit:hover {
   background-color: rgb(10, 156, 10);
 }
+
+/*Page Footer*/
+#page-footer {
+  display: flex;
+    width: 100%;
+    height: 100px;
+    background: linear-gradient(90deg,
+        gray,
+        green,
+        gray);
+    justify-content: space-around;
+    padding: 0px 50px;
+}

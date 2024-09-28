@@ -2,7 +2,6 @@ import { useState } from "react"
 import { useLoginMutation, useResetPasswordMutation } from "./authApiSlice"
 import { useLocation, useNavigate } from "react-router-dom"
 import { jwtDecode } from "jwt-decode"
-import userEvent from "@testing-library/user-event"
 
 const Login = ({ handleDisplayLogin, loginAnimation, handleDisplayingLogin }) => {
 

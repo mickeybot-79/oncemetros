@@ -25,8 +25,8 @@ const PasswordReset = () => {
     useEffect(() => {
         const fetchResult = async () => {
             const result = await verifyResetToken(token)
-            if (result?.error?.data?.result === 'Expired') {
-                console.log(result)
+            if (result?.data?.result !== 'Success') {
+                //console.log(result)
                 setIsError(true)
                 setResultMessage((prevState) => {
                     return {
@@ -36,6 +36,7 @@ const PasswordReset = () => {
                     }
                 })
             } else {
+                //console.log(result)
                 setLoading(false)
             }
         }
@@ -129,8 +130,8 @@ const PasswordReset = () => {
             )
         }
     } else {
-        console.log(loading)
-        console.log(isError)
+        console.log('loading:', loading)
+        console.log('isError:', isError)
         return (
             <div id="reset-page-container">
                 <div id="reset-page-form">
