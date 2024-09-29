@@ -140,6 +140,7 @@ const UserPage = () => {
                     setWaiting('none')
                     setTimeout(() => {
                         window.localStorage.setItem('persist', false)
+                        window.sessionStorage.setItem('logged', 'n')
                         window.localStorage.removeItem('token')
                         setResultMessage((prevState) => {
                             return {
@@ -167,6 +168,8 @@ const UserPage = () => {
                 {currentUser?.roles.includes('Editor') && userPostsElement}
 
                 {currentUser?.roles.includes('Admin') && <h3>Ver todas las publicaciones</h3>}
+
+                {currentUser?.roles.includes('Admin') && <h3>Ver comentarios de los usuarios</h3>}
 
                 <div style={{
                     display: waiting,

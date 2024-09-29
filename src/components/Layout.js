@@ -2,6 +2,15 @@ import { Outlet } from 'react-router-dom'
 
 const Layout = () => {
 
+    const logged = window.sessionStorage.getItem('logged')
+    const token = window.localStorage.getItem('token')
+
+    if (token && (!logged || logged === 'n')) {
+        setTimeout(() => {
+            window.localStorage.removeItem('token')
+        }, 100)
+    }
+
     return (
         <>
             <div className="page-container">

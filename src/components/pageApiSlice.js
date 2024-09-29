@@ -16,8 +16,17 @@ export const pageApiSlice = apiSlice.injectEndpoints({
                 url: '/pageView',
                 method: 'POST'
             })
+        }),
+        sendFeedback: builder.mutation({
+            query: ({...feedback}) => ({
+                url: '/feedback',
+                method: 'POST',
+                body: {
+                    ...feedback
+                }
+            })
         })
     })
 })
 
-export const { useGetPageViewsQuery, useAddPageViewMutation } = pageApiSlice
+export const { useGetPageViewsQuery, useAddPageViewMutation, useSendFeedbackMutation } = pageApiSlice

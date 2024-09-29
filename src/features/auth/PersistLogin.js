@@ -9,6 +9,7 @@ const PersistLogin = () => {
 
     const persist = JSON.parse(localStorage.getItem("persist")) || false
     const token = useSelector(selectCurrentToken)
+    const logged = window.sessionStorage.getItem('logged')
     const session = window.sessionStorage.getItem('session')
     const isTemp = window.localStorage.getItem('isTemp')
     const effectRan = useRef(false)
@@ -41,10 +42,14 @@ const PersistLogin = () => {
                 }
             }
 
-            if (persist || (isTemp === 'n' && session)) {
+            //if (persist || (isTemp === 'n' && session)) {
+            if (persist || logged) {
                 verifyRefreshToken()
             } else if (!isTemp) {
                 window.localStorage.setItem('isTemp', 'y')
+            }
+            if (!logged || logged === 'n') {
+                window.localStorage.removeItem('token')
             }
             if (!session) window.sessionStorage.setItem('session', 'actv')
             setTrueSuccess(true)
