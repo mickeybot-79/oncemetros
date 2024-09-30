@@ -167,9 +167,9 @@ const UserPage = () => {
 
                 {currentUser?.roles.includes('Editor') && userPostsElement}
 
-                {currentUser?.roles.includes('Admin') && <h3>Ver todas las publicaciones</h3>}
+                {/* {currentUser?.roles.includes('Admin') && <h3>Ver todas las publicaciones</h3>} */}
 
-                {currentUser?.roles.includes('Admin') && <h3>Ver comentarios de los usuarios</h3>}
+                {currentUser?.roles.includes('Admin') && <h3 onClick={() => navigate('/feedback')}>Ver comentarios de los usuarios</h3>}
 
                 <div style={{
                     display: waiting,

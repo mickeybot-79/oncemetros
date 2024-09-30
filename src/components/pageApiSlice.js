@@ -4,7 +4,7 @@ export const pageApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
         getPageViews: builder.query({
             query: () => ({
-                url: '/pageView/get',
+                url: '/page/view/get',
                 method: 'GET'
             }),
             providesTags: (result, error, arg) => {
@@ -13,20 +13,29 @@ export const pageApiSlice = apiSlice.injectEndpoints({
         }),
         addPageView: builder.mutation({
             query: () => ({
-                url: '/pageView',
+                url: '/page/view',
                 method: 'POST'
             })
         }),
         sendFeedback: builder.mutation({
             query: ({...feedback}) => ({
-                url: '/feedback',
+                url: '/page/feedback',
                 method: 'POST',
                 body: {
                     ...feedback
                 }
             })
-        })
+        }),
+        getFeedback: builder.query({
+            query: () => ({
+                url: '/page/feedback/get',
+                method: 'GET'
+            }),
+            providesTags: (result, error, arg) => {
+                return [{ type: 'Feedback', id: 'LIST' }]
+            }
+        }),
     })
 })
 
-export const { useGetPageViewsQuery, useAddPageViewMutation, useSendFeedbackMutation } = pageApiSlice
+export const { useGetPageViewsQuery, useAddPageViewMutation, useSendFeedbackMutation, useGetFeedbackQuery } = pageApiSlice

@@ -22,6 +22,7 @@ import ProfilePage from './features/auth/ProfilePage'
 import EditPost from './features/posts/EditPost'
 import PasswordReset from './features/auth/PasswordReset'
 import ContactUs from './components/ContactUs'
+import AllFeedback from './components/AllFeedback'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -37,6 +38,7 @@ const router = createBrowserRouter(
         <Route path="posts/:user" index element={<UserPosts />} />
         <Route path="search" index element={<SearchPage />} />
         <Route path="contact" index element={<ContactUs />} />
+        <Route path="feedback" index element={<AllFeedback />} />
         <Route path="users/new" index element={<NewUser />} />
         <Route path="reset/:token" index element={<PasswordReset />} />
         <Route path="user/:id" index element={<UserPage />} />

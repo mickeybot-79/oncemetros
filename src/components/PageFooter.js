@@ -32,8 +32,14 @@ const PageFooter = () => {
         return (
             <footer id="page-footer">
                 <p id="page-views">Visitas a la página: {views.allViews}</p>
-                <p className="footer-option" onClick={() => navigate('/contact')}>Contacto</p>
-                <p className="footer-option" onClick={() => navigate('/contact')}>Reportar un problema</p>
+                <p className="footer-option" onClick={() => {
+                    window.sessionStorage.setItem('feedback', 'feedback')
+                    navigate('/contact')
+                }}>Contacto</p>
+                <p className="footer-option" onClick={() => {
+                    window.sessionStorage.setItem('feedback', 'problem')
+                    navigate('/contact')
+                }}>Reportar un problema</p>
                 {/*Donate*/}
                 {/* <div>
                     <p>Donar</p>

@@ -3,15 +3,15 @@ import Post from "./Post"
 import { useGetPostsQuery } from "./postsApiSlice"
 import Comments from "./Comments"
 import PageHeader from "../../components/PageHeader"
-import { useEffect, /*useRef*/ } from "react"
-// import { useShareTestMutation } from "./postsApiSlice"
+import { useEffect, useRef } from "react"
+import { useShareTestMutation } from "./postsApiSlice"
 import LoadingIcon from "../../components/LoadingIcon"
 import { useGetUserDataQuery } from "../auth/authApiSlice"
 import { jwtDecode } from "jwt-decode"
 
 const PostPage = () => {
 
-    // const effectRan = useRef()
+    const effectRan = useRef()
 
     const { id } = useParams()
 
