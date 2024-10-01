@@ -14,18 +14,11 @@ const UserPage = () => {
 
     const { id } = useParams()
 
-    const token = window.localStorage.getItem('token')
+    //const token = window.localStorage.getItem('token')
 
     const tokenTest = useSelector(selectCurrentToken)
-    console.log(tokenTest)
-    console.log(token)
-
-    useEffect(() => {
-        setTimeout(() => {
-            console.log(tokenTest)
-        }, 10)
-        //eslint-disable-next-line
-    }, [])
+    //console.log(tokenTest)
+    //console.log(token)
 
     const [resultMessage, setResultMessage] = useState({
         message: 'Sesión cerrada',
@@ -35,7 +28,7 @@ const UserPage = () => {
     })
 
     useEffect(() => {
-        console.log(tokenTest)
+        //console.log(tokenTest)
         const userId = tokenTest ? jwtDecode(tokenTest).UserInfo.id : ''
         const refreshExpired = window.sessionStorage.getItem('refreshExpired') || ''
         if (refreshExpired) {

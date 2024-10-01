@@ -4,7 +4,7 @@ import baseUrl from '../../baseurl'
 
 const baseQuery = fetchBaseQuery({
     baseUrl: baseUrl.backend,
-    credentials: 'include',
+    //credentials: 'include',
     prepareHeaders: (headers, { getState }) => {
         const token = getState().auth.token
         if (token) {
