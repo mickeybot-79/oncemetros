@@ -2856,7 +2856,7 @@ svg {
   text-decoration: none;
 }
 
-/*Feedback Page*/
+/*Contact Us Page*/
 #feedback-container {
   display: grid;
   width: 100%;
@@ -2868,7 +2868,7 @@ svg {
   font-size: 45px;
   text-align: center;
   margin-top: 100px;
-  color: rgba(0, 0, 0, 0.767);
+  color: rgba(0, 0, 0, 0.85);
   text-shadow: 5px 5px 5px rgb(255, 255, 255);
   font-weight: 900;
 }
@@ -2943,4 +2943,53 @@ svg {
 #feedback-submit:hover {
   background-color: rgba(50, 94, 175, 0.945);
   opacity: 1;
+}
+
+/*Feedback Page*/
+#feedback-page-container {
+  width: 100%;
+  display: grid;
+  place-content: center;
+  padding-bottom: 50px;
+}
+
+#feedback-page-title {
+  font-size: 35px;
+  text-shadow: 3px 3px 3px white;
+  color: rgb(24, 24, 24);
+}
+
+#feedback-elements-container {
+  display: grid;
+  gap: 30px;
+  place-content: center;
+}
+
+.feedback-item-container {
+  width: fit-content;
+  min-width: 300px;
+  background-color: rgba(143, 215, 224, 0.904);
+  border-radius: 10px;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+.feedback-item-userId {
+  font-size: 15px;
+}
+
+.feedback-item-username {
+  font-size: 20px;
+  text-decoration: underline;
+  cursor: pointer;
+  color: rgb(11, 57, 68);
+}
+
+.feedback-item-date {
+  font-size: 15px;
+}
+
+.feedback-item-content {
+  font-size: 20px;
+  max-width: 500px;
 }

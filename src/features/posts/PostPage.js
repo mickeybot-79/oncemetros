@@ -70,7 +70,7 @@ const PostPage = () => {
 
     if (isSuccess && isUserSuccess) {
 
-        console.log(user)
+        //console.log(user)
 
         currentPost = posts?.entities[id]
 

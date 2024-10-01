@@ -5,6 +5,8 @@ import { useGetPostsQuery } from "../posts/postsApiSlice"
 import { useEffect, useState } from "react"
 import EditUser from "./EditUser"
 import { jwtDecode } from "jwt-decode"
+import { useSelector } from "react-redux"
+import { selectCurrentToken } from "./authSlice"
 
 const UserPage = () => {
 
@@ -14,6 +16,17 @@ const UserPage = () => {
 
     const token = window.localStorage.getItem('token')
 
+    const tokenTest = useSelector(selectCurrentToken)
+    console.log(tokenTest)
+    console.log(token)
+
+    useEffect(() => {
+        setTimeout(() => {
+            console.log(tokenTest)
+        }, 10)
+        //eslint-disable-next-line
+    }, [])
+
     const [resultMessage, setResultMessage] = useState({
         message: 'Sesión cerrada',
         image: '../../Images/success.gif',
@@ -22,7 +35,8 @@ const UserPage = () => {
     })
 
     useEffect(() => {
-        const userId = token ? jwtDecode(token).UserInfo.id : ''
+        console.log(tokenTest)
+        const userId = tokenTest ? jwtDecode(tokenTest).UserInfo.id : ''
         const refreshExpired = window.sessionStorage.getItem('refreshExpired') || ''
         if (refreshExpired) {
             setResultMessage((prevState) => {
@@ -35,10 +49,10 @@ const UserPage = () => {
             setTimeout(() => {
                 navigate('/')
             }, 3000)
-        } else if (!token || userId !== id) {
+        } else if (!tokenTest || userId !== id) {
             navigate('/')
         }
-    }, [token, id, navigate])
+    }, [tokenTest, id, navigate])
 
     const [sendLogout] = useSendLogoutMutation()
 
@@ -64,12 +78,12 @@ const UserPage = () => {
         refetchOnMountOrArgChange: true
     })
 
-    console.log(user)
+    //console.log(user)
 
     const [currentUser, setCurrentUser] = useState({
-        username: token ? jwtDecode(token).UserInfo.username : '',
-        roles: token ? jwtDecode(token).UserInfo.roles : [],
-        userId: token ? jwtDecode(token).UserInfo.id : '',
+        username: tokenTest ? jwtDecode(tokenTest).UserInfo.username : '',
+        roles: tokenTest ? jwtDecode(tokenTest).UserInfo.roles : [],
+        userId: tokenTest ? jwtDecode(tokenTest).UserInfo.id : '',
         password: '',
         confirmPassword: '',
         email: '',

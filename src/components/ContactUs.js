@@ -47,6 +47,7 @@ const ContactUs = () => {
         if (canSave) {
             const result = await sendFeedback({
                 userId: token ? jwtDecode(token).UserInfo.id : 'noUser',
+                username: token ? jwtDecode(token).UserInfo.username : '',
                 type: feedbackData.type,
                 content: feedbackData.content
             })
@@ -83,7 +84,7 @@ const ContactUs = () => {
     return (
         <div id="feedback-container">
             <a href={`${baseUrl.frontend}`} id="new-post-back"><div>➜</div> Volver</a>
-            <h3 id="feedback-title">Enviar comentarios</h3>
+            <h3 id="feedback-title">Envíanos tus comentarios</h3>
             <form id="feedback-form">
                 <div id="feedback-select-container">
                     <p id="feedback-select-prompt">Tipo de comentario:</p>
@@ -95,7 +96,7 @@ const ContactUs = () => {
                             }
                         })}}
                         style={{ fontFamily: 'Impact, Haettenschweiler, `Arial Narrow Bold`, sans-serif', fontSize: '15px' }}>
-                        <option value="feedback">Valoración</option>
+                        <option value="feedback">Opinión</option>
                         <option value="question">Consulta</option>
                         <option value="suggestion">Sugerencia</option>
                         <option value="problem">Reportar un problema</option>
