@@ -5,6 +5,8 @@ import Quill from "quill"
 import Editor from "./EditorTest"
 import baseUrl from "../../baseurl"
 import { jwtDecode } from "jwt-decode"
+import { useSelector } from "react-redux"
+import { selectCurrentToken } from "../auth/authSlice"
 
 const NewPost = () => {
 
@@ -18,7 +20,8 @@ const NewPost = () => {
         animation: 'new-post-result 0.2s linear 1'
     })
 
-    const token = window.localStorage.getItem('token')
+    //const token = window.localStorage.getItem('token')
+    const token = useSelector(selectCurrentToken)
     const userId = token ? jwtDecode(token).UserInfo.id : ''
 
     useEffect(() => {

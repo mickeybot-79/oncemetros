@@ -4,12 +4,15 @@ import { useNavigate } from "react-router-dom"
 import { useGetFeedbackQuery } from "./pageApiSlice"
 import LoadingIcon from "./LoadingIcon"
 import baseUrl from "../baseurl"
+import { useSelector } from "react-redux"
+import { selectCurrentToken } from "../features/auth/authSlice"
 
 const AllFeedback = () => {
 
     const navigate = useNavigate()
 
-    const token = window.localStorage.getItem('token')
+    //const token = window.localStorage.getItem('token')
+    const token = useSelector(selectCurrentToken)
 
     useEffect(() => {
         const isAdmin = token ? jwtDecode(token).UserInfo.roles.includes('Admin') : false

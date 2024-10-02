@@ -55,7 +55,7 @@ const Login = ({ handleDisplayLogin, loginAnimation, handleDisplayingLogin }) =>
         } else {
             setWaiting('none')
             window.sessionStorage.setItem('logged', 'y')
-            window.localStorage.setItem('token', result?.data?.accessToken)
+            // window.localStorage.setItem('token', result?.data?.accessToken)
             const decodedToken = jwtDecode(result?.data?.accessToken).UserInfo
             setResultMessage((prevState) => {
                 return {
@@ -69,7 +69,7 @@ const Login = ({ handleDisplayLogin, loginAnimation, handleDisplayingLogin }) =>
                 if (currentLocation.pathname === '/') handleDisplayingLogin()
                 handleDisplayLogin()
                 window.localStorage.setItem('persist', persist)
-                window.localStorage.setItem('isTemp', 'n')
+                //window.localStorage.setItem('isTemp', 'n')
                 navigate(`/user/${decodedToken.id}`)
             }, 2000)
         }

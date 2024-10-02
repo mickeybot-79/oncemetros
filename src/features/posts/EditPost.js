@@ -6,6 +6,8 @@ import Editor from "./EditorTest"
 import baseUrl from "../../baseurl"
 import { jwtDecode } from "jwt-decode"
 import LoadingIcon from "../../components/LoadingIcon"
+import { useSelector } from "react-redux"
+import { selectCurrentToken } from "../auth/authSlice"
 
 const EditPost = () => {
 
@@ -38,7 +40,8 @@ const EditPost = () => {
 
     if (isSuccess) currentPost = posts?.entities[id]
 
-    const token = window.localStorage.getItem('token')
+    //const token = window.localStorage.getItem('token')
+    const token = useSelector(selectCurrentToken)
     const userId = token ? jwtDecode(token).UserInfo.id : ''
 
     useEffect(() => {
