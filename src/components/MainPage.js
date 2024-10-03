@@ -294,8 +294,13 @@ const MainPage = () => {
             <div id="main-page-container" style={{overflow: 'hidden'}}>
                 <main style={{ display: presentationDisplay === 'none' ? 'grid' : 'none' }}>
                     <section id="main-stories">
-                        <div id="stories-scroll-left" onClick={handleScrollLeft} style={{animation: mainStoriesContainerAnimation}}><p>{'<'}</p></div>
-                        <div id="main-stories-container" style={{animation: mainStoriesContainerAnimation}}>
+                        <div id="main-background-container">
+                            {/* <div id="main-stories-background-image-container">
+                                <img src="../Images/background.jpg" alt="background" id="main-stories-background" />
+                            </div> */}
+                        </div>
+                        <div id="stories-scroll-left" onClick={handleScrollLeft} style={{ animation: mainStoriesContainerAnimation }}><p>{'<'}</p></div>
+                        <div id="main-stories-container" style={{ animation: mainStoriesContainerAnimation }}>
                             <div id="stories-scroll-container" style={{ animation: mainStoriesContainerAnimation }}>
                                 {mainStories}
                             </div>
@@ -345,15 +350,21 @@ const MainPage = () => {
                                 <li className="tags-list-item" onClick={() => navigate('/tags')}>Más...</li>
                             </ul>
                         </div>
+                        <div
+                            className="down-prompt-container"
+                            style={{ 
+                                opacity: downPromptDisplay.opacity, 
+                                animation: downPromptDisplay.animation, 
+                                marginBottom: '0px',
+                                marginTop: '800px',
+                                position: 'absolute'
+                            }}
+                            onClick={() => {
+                                window.scrollTo({ top: 0, behavior: 'smooth' })
+                            }}>
+                            <p className="down-prompt">{'>'}</p>
+                        </div>
                     </section>
-                    <div
-                        className="down-prompt-container"
-                        style={{ opacity: downPromptDisplay.opacity, animation: downPromptDisplay.animation, marginBottom: '100px' }}
-                        onClick={() => {
-                            window.scrollTo({top: 0, behavior: 'smooth' })
-                        }}>
-                        <p className="down-prompt">{'>'}</p>
-                    </div>
                     <PageFooter />
                 </main>
             </div>

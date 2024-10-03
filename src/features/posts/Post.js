@@ -106,13 +106,14 @@ const Post = ({ post }) => {
             {post.heading && <div id="post-heading">{headingContentElement}</div>}
             <div id="post-content">{allParagraphElements}</div>
             <div style={{ display: 'inline', placeSelf: 'start' }}>
-                {/* REDIRECT USERS TO AUTHOR PROFILE INSTEAD OF TAGS PAGE*/}
                 <p id="post-author" onClick={() => navigate(`/profile/${post.authorId}`)}>Por <span>{post.authorName}</span></p> 
                 <p id="post-date">{convertedDate}</p>
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'left', alignItems: 'center', placeSelf: 'start', lineHeight: '5px' }}>Etiquetas: {tagElements}</div>
             <div id="share-options-container">
                 <img src="../../Images/fb-icon.png" alt="fb" className="share-image" onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=https://los11metros.onrender.com/share/${post.searchField}`, 'popup','width=600,height=400')}/>
+                {/* <img src="../../Images/fb-icon.png" alt="fb" className="share-image" onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=https://oncemetros.onrender.com`, 'popup','width=600,height=400')}/> */}
+                {/* <a href={`https://www.facebook.com/sharer/sharer.php?u=https://los11metros.onrender.com/share/${post.searchField}`} target="_popup" rel="noreferrer"><img src="../../Images/fb-icon.png" alt="fb" className="share-image" /></a> */}
                 <img src="../../Images/ins-icon.png" alt="ins" className="share-image" onClick={() => window.open(post.insPost || 'https://www.instagram.com/los11metros_/')}/>
                 <img src="../../Images/x-icon.png" alt="x" className="share-image" onClick={() => window.open(`https://twitter.com/share?url=https://los11metros.onrender.com/share/${post.searchField}`, 'popup', 'width=600,height=400')} />
                 <WhatsappShareButton children={''} url={`${baseUrl.backend}/share/${post.searchField}`} title={post.title}>

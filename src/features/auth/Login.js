@@ -54,8 +54,7 @@ const Login = ({ handleDisplayLogin, loginAnimation, handleDisplayingLogin }) =>
             })
         } else {
             setWaiting('none')
-            window.sessionStorage.setItem('logged', 'y')
-            // window.localStorage.setItem('token', result?.data?.accessToken)
+            window.localStorage.setItem('logged', 'y')
             const decodedToken = jwtDecode(result?.data?.accessToken).UserInfo
             setResultMessage((prevState) => {
                 return {

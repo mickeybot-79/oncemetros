@@ -7,6 +7,7 @@ import EditUser from "./EditUser"
 import { jwtDecode } from "jwt-decode"
 import { useSelector } from "react-redux"
 import { selectCurrentToken } from "./authSlice"
+import baseUrl from "../../baseurl"
 
 const UserPage = () => {
 
@@ -134,7 +135,8 @@ const UserPage = () => {
 
         return (
             <div id="user-page-container">
-                <button id="user-page-back" onClick={() => navigate('/')}><div>➜</div> Inicio</button>
+                {/* <button id="user-page-back" onClick={() => navigate('/')}><div>➜</div> Inicio</button> */}
+                <a href={`${baseUrl.frontend}`} id="new-post-back"><div>➜</div> Inicio</a>
                 <button id="user-page-logout" onClick={async () => {
                     setWaiting('grid')
                     await sendLogout()
@@ -147,8 +149,8 @@ const UserPage = () => {
                     setWaiting('none')
                     setTimeout(() => {
                         window.localStorage.setItem('persist', false)
-                        window.sessionStorage.setItem('logged', 'n')
-                        window.localStorage.removeItem('token')
+                        window.localStorage.removeItem('logged')
+                        //window.localStorage.removeItem('token')
                         setResultMessage((prevState) => {
                             return {
                                 ...prevState,
