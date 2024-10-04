@@ -10,7 +10,7 @@ const PersistLogin = () => {
     const persist = JSON.parse(localStorage.getItem("persist")) || false
     const token = useSelector(selectCurrentToken)
     const logged = window.localStorage.getItem('logged')
-    const session = window.sessionStorage.getItem('session')
+    //const session = window.sessionStorage.getItem('session')
     //const isTemp = window.localStorage.getItem('isTemp')
     const effectRan = useRef(false)
 
@@ -32,9 +32,9 @@ const PersistLogin = () => {
                     const result = await refresh()
                     if (result?.error?.originalStatus === 403 || result?.error?.originalStatus === 401) {
                         //if (!isTemp) window.localStorage.setItem('isTemp', 'y')
-                        window.localStorage.removeItem('token')
+                        window.localStorage.removeItem('logged')
                     } else {
-                        window.localStorage.setItem('isTemp', 'n')
+                        window.localStorage.setItem('logged', 'y')
                     }
                 }
                 catch (err) {
@@ -54,7 +54,7 @@ const PersistLogin = () => {
             // if (!logged || logged === 'n') {
             //     window.localStorage.removeItem('token')
             // }
-            if (!session) window.sessionStorage.setItem('session', 'actv')
+            //if (!session) window.sessionStorage.setItem('session', 'actv')
             setTrueSuccess(true)
         }   
 

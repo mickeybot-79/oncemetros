@@ -17,8 +17,8 @@ const UserPage = () => {
 
     //const token = window.localStorage.getItem('token')
 
-    const tokenTest = useSelector(selectCurrentToken)
-    //console.log(tokenTest)
+    const token = useSelector(selectCurrentToken)
+    //console.log(token)
     //console.log(token)
 
     const [resultMessage, setResultMessage] = useState({
@@ -29,24 +29,30 @@ const UserPage = () => {
     })
 
     useEffect(() => {
-        //console.log(tokenTest)
-        const userId = tokenTest ? jwtDecode(tokenTest).UserInfo.id : ''
-        const refreshExpired = window.sessionStorage.getItem('refreshExpired') || ''
-        if (refreshExpired) {
-            setResultMessage((prevState) => {
-                return {
-                    ...prevState,
-                    message: 'Sesión expirada, por favor vuelve a iniciar sesión.',
-                    display: 'grid',
-                }
-            })
-            setTimeout(() => {
-                navigate('/')
-            }, 3000)
-        } else if (!tokenTest || userId !== id) {
+        //console.log(token)
+        const start = Date.now()
+        let end
+        setTimeout(() => {
+            end = Date.now()
+        }, 1000)
+        const userId = token ? jwtDecode(token).UserInfo.id : ''
+        // const refreshExpired = window.sessionStorage.getItem('refreshExpired') || ''
+        // if (refreshExpired) {
+        //     setResultMessage((prevState) => {
+        //         return {
+        //             ...prevState,
+        //             message: 'Sesión expirada, por favor vuelve a iniciar sesión.',
+        //             display: 'grid',
+        //         }
+        //     })
+        //     setTimeout(() => {
+        //         navigate('/')
+        //     }, 3000)
+        // } else
+        if (end - start >= 1000 && (!token || userId !== id)) {
             navigate('/')
         }
-    }, [tokenTest, id, navigate])
+    }, [token, id, navigate])
 
     const [sendLogout] = useSendLogoutMutation()
 
@@ -75,9 +81,9 @@ const UserPage = () => {
     //console.log(user)
 
     const [currentUser, setCurrentUser] = useState({
-        username: tokenTest ? jwtDecode(tokenTest).UserInfo.username : '',
-        roles: tokenTest ? jwtDecode(tokenTest).UserInfo.roles : [],
-        userId: tokenTest ? jwtDecode(tokenTest).UserInfo.id : '',
+        username: token ? jwtDecode(token).UserInfo.username : '',
+        roles: token ? jwtDecode(token).UserInfo.roles : [],
+        userId: token ? jwtDecode(token).UserInfo.id : '',
         password: '',
         confirmPassword: '',
         email: '',

@@ -548,12 +548,12 @@ ul {
   background-color: rgba(238, 231, 231, 0.589);
 }
 
-#popular-stories {
+/* #popular-stories {
   background-image: url("../src/Images/background2.jpg");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
-}
+} */
 
 #popular-stories-container {
   display: grid;
@@ -712,10 +712,10 @@ ul {
   padding: 0px 0px 50px 0px;
   margin-bottom: -200px;
   padding-bottom: 400px;
-  background-image: url("../src/Images/background3.jpg");
+  /* background-image: url("../src/Images/background3.jpg");
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-size: cover;
+  background-size: cover; */
 }
 
 #explore-title {

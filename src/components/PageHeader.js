@@ -3,6 +3,8 @@ import { useLocation, useNavigate } from "react-router-dom"
 import Login from "../features/auth/Login"
 import { useGetUserDataQuery } from "../features/auth/authApiSlice"
 import { jwtDecode } from "jwt-decode"
+import { useSelector } from "react-redux"
+import { selectCurrentToken } from "../features/auth/authSlice"
 
 const PageHeader = ({ handleDisplayingLogin }) => {
 
@@ -10,7 +12,8 @@ const PageHeader = ({ handleDisplayingLogin }) => {
 
     const navigate = useNavigate()
 
-    const token = window.localStorage.getItem('token') || ''
+    //const token = window.localStorage.getItem('token') || ''
+    const token = useSelector(selectCurrentToken)
     const userId = token ? jwtDecode(token).UserInfo.id : ''
 
     const [currentUser, setCurrentUser] = useState({

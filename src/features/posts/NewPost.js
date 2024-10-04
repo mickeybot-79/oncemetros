@@ -25,20 +25,26 @@ const NewPost = () => {
     const userId = token ? jwtDecode(token).UserInfo.id : ''
 
     useEffect(() => {
+        const start = Date.now()
+        let end
+        setTimeout(() => {
+            end = Date.now()
+        }, 1000)
         const userRoles = token ? jwtDecode(token).UserInfo.roles : []
-        const refreshExpired = window.sessionStorage.getItem('refreshExpired') || ''
-        if (refreshExpired) {
-            setResultMessage((prevState) => {
-                return {
-                    ...prevState,
-                    message: 'Sesión expirada, por favor vuelve a iniciar sesión.',
-                    display: 'grid',
-                }
-            })
-            setTimeout(() => {
-                navigate('/')
-            }, 3000)
-        } else if (!token || !userRoles.includes('Editor')) {
+        // const refreshExpired = window.sessionStorage.getItem('refreshExpired') || ''
+        // if (refreshExpired) {
+        //     setResultMessage((prevState) => {
+        //         return {
+        //             ...prevState,
+        //             message: 'Sesión expirada, por favor vuelve a iniciar sesión.',
+        //             display: 'grid',
+        //         }
+        //     })
+        //     setTimeout(() => {
+        //         navigate('/')
+        //     }, 3000)
+        // } else 
+        if (end - start >= 1000 && (!token || !userRoles.includes('Editor'))) {
             navigate('/')
         }
     }, [token, navigate])
