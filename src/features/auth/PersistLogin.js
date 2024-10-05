@@ -9,7 +9,7 @@ const PersistLogin = () => {
 
     const persist = JSON.parse(localStorage.getItem("persist")) || false
     const token = useSelector(selectCurrentToken)
-    const logged = window.localStorage.getItem('logged')
+    const logged = window.sessionStorage.getItem('logged')
     //const session = window.sessionStorage.getItem('session')
     //const isTemp = window.localStorage.getItem('isTemp')
     const effectRan = useRef(false)

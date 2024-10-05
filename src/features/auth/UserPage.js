@@ -2,12 +2,13 @@ import { useNavigate, useParams } from "react-router-dom"
 import { useGetUserDataQuery, useSendLogoutMutation } from "./authApiSlice"
 import LoadingIcon from "../../components/LoadingIcon"
 import { useGetPostsQuery } from "../posts/postsApiSlice"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import EditUser from "./EditUser"
-import { jwtDecode } from "jwt-decode"
-import { useSelector } from "react-redux"
-import { selectCurrentToken } from "./authSlice"
+// import { jwtDecode } from "jwt-decode"
+// import { useSelector } from "react-redux"
+// import { selectCurrentToken } from "./authSlice"
 import baseUrl from "../../baseurl"
+import useAuth from "./useAuth"
 
 const UserPage = () => {
 
@@ -15,9 +16,13 @@ const UserPage = () => {
 
     const { id } = useParams()
 
-    //const token = window.localStorage.getItem('token')
+    const effectRan = useRef(false)
 
-    const token = useSelector(selectCurrentToken)
+    const logged = window.sessionStorage.getItem('logged')
+
+    const {currentUserId, currentUsername, status} = useAuth()
+
+    //const token = useSelector(selectCurrentToken)
     //console.log(token)
     //console.log(token)
 
@@ -29,30 +34,42 @@ const UserPage = () => {
     })
 
     useEffect(() => {
-        //console.log(token)
-        const start = Date.now()
-        let end
-        setTimeout(() => {
-            end = Date.now()
-        }, 1000)
-        const userId = token ? jwtDecode(token).UserInfo.id : ''
-        // const refreshExpired = window.sessionStorage.getItem('refreshExpired') || ''
-        // if (refreshExpired) {
-        //     setResultMessage((prevState) => {
-        //         return {
-        //             ...prevState,
-        //             message: 'Sesión expirada, por favor vuelve a iniciar sesión.',
-        //             display: 'grid',
-        //         }
-        //     })
-        //     setTimeout(() => {
-        //         navigate('/')
-        //     }, 3000)
-        // } else
-        if (end - start >= 1000 && (!token || userId !== id)) {
-            navigate('/')
+        if (effectRan.current === true || process.env.NODE_ENV !== 'development') {
+            if (status) {
+                if (!logged || (currentUserId && currentUserId !== id)) {
+                    navigate('/')
+                    console.log(logged)
+                    console.log(status)
+                } else {
+                    console.log(status)
+                }
+            }
         }
-    }, [token, id, navigate])
+        //console.log(token)
+        // const start = Date.now()
+        // let end
+        // setTimeout(() => {
+        //     end = Date.now()
+        // }, 1000)
+        // const userId = token ? jwtDecode(token).UserInfo.id : ''
+        // // const refreshExpired = window.sessionStorage.getItem('refreshExpired') || ''
+        // // if (refreshExpired) {
+        // //     setResultMessage((prevState) => {
+        // //         return {
+        // //             ...prevState,
+        // //             message: 'Sesión expirada, por favor vuelve a iniciar sesión.',
+        // //             display: 'grid',
+        // //         }
+        // //     })
+        // //     setTimeout(() => {
+        // //         navigate('/')
+        // //     }, 3000)
+        // // } else
+        // if (end - start >= 1000 && (!token || userId !== id)) {
+        //     navigate('/')
+        // }
+        return () => effectRan.current = true
+    }, [status, currentUserId, id, logged, navigate])
 
     const [sendLogout] = useSendLogoutMutation()
 
@@ -81,9 +98,10 @@ const UserPage = () => {
     //console.log(user)
 
     const [currentUser, setCurrentUser] = useState({
-        username: token ? jwtDecode(token).UserInfo.username : '',
-        roles: token ? jwtDecode(token).UserInfo.roles : [],
-        userId: token ? jwtDecode(token).UserInfo.id : '',
+        username: currentUsername || '',
+        //roles: token ? jwtDecode(token).UserInfo.roles : [],
+        status : status || '',
+        userId: currentUserId || '',
         password: '',
         confirmPassword: '',
         email: '',
@@ -95,7 +113,8 @@ const UserPage = () => {
         if (isSuccess) setCurrentUser(() => {
             return {
                 username: user.username,
-                roles: user.roles,
+                //roles: user.roles,
+                status : status,
                 userId: user.userId,
                 password: '',
                 confirmPassword: '',
@@ -104,7 +123,7 @@ const UserPage = () => {
                 aboutme: user.aboutme
             }
         })
-    }, [isSuccess, user])
+    }, [isSuccess, user, status])
 
     if (isLoading || isPostLoading) {
         return (
@@ -155,7 +174,7 @@ const UserPage = () => {
                     setWaiting('none')
                     setTimeout(() => {
                         window.localStorage.setItem('persist', false)
-                        window.localStorage.removeItem('logged')
+                        window.sessionStorage.removeItem('logged')
                         //window.localStorage.removeItem('token')
                         setResultMessage((prevState) => {
                             return {
@@ -177,14 +196,14 @@ const UserPage = () => {
                         setEditOptionsAnimation('edit-form-in 0.2s linear 1')
                     }}>Editar información de la cuenta</button>
                     <button id="user-public-profile" onClick={() => navigate(`/profile/${id}`)}>Ver perfil público</button>
-                    {currentUser?.roles.includes('Editor') && <button id="user-add-post" onClick={() => navigate('/post/new')}>Agregar nueva publicación</button>}
+                    {(currentUser.status === 'Editor' || currentUser.status === 'Admin') && <button id="user-add-post" onClick={() => navigate('/post/new')}>Agregar nueva publicación</button>}
                 </div>
 
-                {currentUser?.roles.includes('Editor') && userPostsElement}
+                {(currentUser.status === 'Editor' || currentUser.status === 'Admin') && userPostsElement}
 
-                {/* {currentUser?.roles.includes('Admin') && <h3>Ver todas las publicaciones</h3>} */}
+                {/* {currentUser.status === 'Admin' && <h3>Ver todas las publicaciones</h3>} */}
 
-                {currentUser?.roles.includes('Admin') && <h3 onClick={() => navigate('/feedback')}>Ver comentarios de los usuarios</h3>}
+                {currentUser.status === 'Admin' && <h3 onClick={() => navigate('/feedback')}>Ver comentarios de los usuarios</h3>}
 
                 <div style={{
                     display: waiting,

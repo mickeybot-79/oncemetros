@@ -4,10 +4,11 @@ import { useNavigate, useBeforeUnload, useParams } from "react-router-dom"
 import Quill from "quill"
 import Editor from "./EditorTest"
 import baseUrl from "../../baseurl"
-import { jwtDecode } from "jwt-decode"
+//import { jwtDecode } from "jwt-decode"
 import LoadingIcon from "../../components/LoadingIcon"
-import { useSelector } from "react-redux"
-import { selectCurrentToken } from "../auth/authSlice"
+// import { useSelector } from "react-redux"
+// import { selectCurrentToken } from "../auth/authSlice"
+import useAuth from "../auth/useAuth"
 
 const EditPost = () => {
 
@@ -40,37 +41,55 @@ const EditPost = () => {
 
     if (isSuccess) currentPost = posts?.entities[id]
 
+    const effectRan = useRef(false)
+
+    const logged = window.sessionStorage.getItem('logged')
+
+    const {currentUserId, currentUsername, status} = useAuth()
+
     //const token = window.localStorage.getItem('token')
-    const token = useSelector(selectCurrentToken)
-    const userId = token ? jwtDecode(token).UserInfo.id : ''
+    // const token = useSelector(selectCurrentToken)
+    // const userId = token ? jwtDecode(token).UserInfo.id : ''
 
     useEffect(() => {
-        const start = Date.now()
-        let end
-        setTimeout(() => {
-            end = Date.now()
-        }, 1000)
-        const userRoles = token ? jwtDecode(token).UserInfo.roles : []
-        // const refreshExpired = window.sessionStorage.getItem('refreshExpired') || ''
-        // if (refreshExpired) {
-        //     setResultMessage((prevState) => {
-        //         return {
-        //             ...prevState,
-        //             message: 'Sesión expirada, por favor vuelve a iniciar sesión.',
-        //             display: 'grid',
-        //         }
-        //     })
-        //     setTimeout(() => {
-        //         navigate('/')
-        //     }, 3000)
-        // } else 
-        //if (end - start >= 1000 && (!token || !userRoles.includes('Editor') || currentPost?.authorId !== userId)) {
-        if (!token || !userRoles.includes('Editor') || currentPost?.authorId !== userId) {
-            navigate('/')
+        if (effectRan.current === true || process.env.NODE_ENV !== 'development') {
+            if (status) {
+                if (!logged || (currentUserId && currentUserId !== id)) {
+                    //navigate('/')
+                    console.log(logged)
+                    console.log(status)
+                } else {
+                    console.log(status)
+                }
+            }
         }
-    }, [currentPost, userId, token, navigate])
+        // const start = Date.now()
+        // let end
+        // setTimeout(() => {
+        //     end = Date.now()
+        // }, 1000)
+        // const userRoles = token ? jwtDecode(token).UserInfo.roles : []
+        // // const refreshExpired = window.sessionStorage.getItem('refreshExpired') || ''
+        // // if (refreshExpired) {
+        // //     setResultMessage((prevState) => {
+        // //         return {
+        // //             ...prevState,
+        // //             message: 'Sesión expirada, por favor vuelve a iniciar sesión.',
+        // //             display: 'grid',
+        // //         }
+        // //     })
+        // //     setTimeout(() => {
+        // //         navigate('/')
+        // //     }, 3000)
+        // // } else 
+        // //if (end - start >= 1000 && (!token || !userRoles.includes('Editor') || currentPost?.authorId !== userId)) {
+        // if (!token || !userRoles.includes('Editor') || currentPost?.authorId !== userId) {
+        //     navigate('/')
+        // }
+        return () => effectRan.current = true
+    }, [status, currentUserId, id, logged, navigate])
 
-    const username = token ? jwtDecode(token).UserInfo.username : ''
+    //const username = token ? jwtDecode(token).UserInfo.username : ''
 
     const {
         data: tags,
@@ -365,8 +384,8 @@ const EditPost = () => {
                     ...postData,
                     postId: id,
                     content: postContent,
-                    authorId: userId,
-                    authorName: username,
+                    authorId: currentUserId,
+                    authorName: currentUsername,
                     thumbnail: imageMethod.selectedOption === 'upload' ? postData.thumbnail : imageMethod.selectedValue
                 })
                 console.log(result)
@@ -452,7 +471,7 @@ const EditPost = () => {
             }
         })
         setTimeout(() => {
-            navigate(`/user/${userId}`)
+            navigate(`/user/${currentUserId}`)
         }, 2000)
     }
 
@@ -567,7 +586,7 @@ const EditPost = () => {
 
         return (
             <div id="new-post-container">
-                <a href={`${baseUrl.frontend}/user/${userId}`} id="new-post-back"><div>➜</div> Atrás</a>
+                <a href={`${baseUrl.frontend}/user/${currentUserId}`} id="new-post-back"><div>➜</div> Atrás</a>
                 <h1 id="new-post-h1">Editar Publicación</h1>
                 <form id="new-post-form">
                     <label htmlFor="new-post-title" className="new-post-label">Título:</label>
@@ -764,7 +783,7 @@ const EditPost = () => {
                     </div>
                 </form>
                 <div id="new-post-buttons">
-                    <a href={`${baseUrl.frontend}/user/${userId}`} id="new-post-cancel">Cancelar</a>
+                    <a href={`${baseUrl.frontend}/user/${currentUserId}`} id="new-post-cancel">Cancelar</a>
                     <button id="new-post-submit" onClick={handleSubmit}>Guardar</button>
                     <button id="new-post-delete" onClick={() => setDeleteDisplay('grid')}>Eliminar</button>
                 </div>

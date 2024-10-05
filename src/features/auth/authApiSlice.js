@@ -19,24 +19,6 @@ export const authApiSlice = apiSlice.injectEndpoints({
                 }
             }
         }),
-        tempLogin: builder.mutation({
-            query: ({userID}) => ({
-                url: '/temp',
-                method: 'POST',
-                body: {
-                    userID: userID
-                }
-            }),
-            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-                try {
-                    const { data } = await queryFulfilled
-                    const { accessToken } = data
-                    dispatch(setCredentials({ accessToken }))
-                } catch (err) {
-                    console.log(err)
-                }
-            }
-        }),
         createAccount: builder.mutation({
             query: credentials => ({
                 url: '/auth/register',
@@ -174,7 +156,6 @@ export const authApiSlice = apiSlice.injectEndpoints({
 
 export const {
     useLoginMutation,
-    useTempLoginMutation,
     useCreateAccountMutation,
     useSendLogoutMutation,
     useRefreshMutation,

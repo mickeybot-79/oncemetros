@@ -4,9 +4,10 @@ import { useNavigate, useBeforeUnload } from "react-router-dom"
 import Quill from "quill"
 import Editor from "./EditorTest"
 import baseUrl from "../../baseurl"
-import { jwtDecode } from "jwt-decode"
-import { useSelector } from "react-redux"
-import { selectCurrentToken } from "../auth/authSlice"
+// import { jwtDecode } from "jwt-decode"
+// import { useSelector } from "react-redux"
+// import { selectCurrentToken } from "../auth/authSlice"
+import useAuth from "../auth/useAuth"
 
 const NewPost = () => {
 
@@ -20,36 +21,59 @@ const NewPost = () => {
         animation: 'new-post-result 0.2s linear 1'
     })
 
+    const effectRan = useRef(false)
+
+    const logged = window.sessionStorage.getItem('logged')
+
+    const {currentUserId, currentUsername, status} = useAuth()
+
     //const token = window.localStorage.getItem('token')
-    const token = useSelector(selectCurrentToken)
-    const userId = token ? jwtDecode(token).UserInfo.id : ''
+    //const token = useSelector(selectCurrentToken)
 
     useEffect(() => {
-        const start = Date.now()
-        let end
-        setTimeout(() => {
-            end = Date.now()
-        }, 1000)
-        const userRoles = token ? jwtDecode(token).UserInfo.roles : []
-        // const refreshExpired = window.sessionStorage.getItem('refreshExpired') || ''
-        // if (refreshExpired) {
-        //     setResultMessage((prevState) => {
-        //         return {
-        //             ...prevState,
-        //             message: 'Sesión expirada, por favor vuelve a iniciar sesión.',
-        //             display: 'grid',
-        //         }
-        //     })
-        //     setTimeout(() => {
-        //         navigate('/')
-        //     }, 3000)
-        // } else 
-        if (end - start >= 1000 && (!token || !userRoles.includes('Editor'))) {
-            navigate('/')
+        if (effectRan.current === true || process.env.NODE_ENV !== 'development') {
+            if (!logged || (status && status === 'User')) {
+                navigate('/')
+                console.log(logged)
+                console.log(status)
+            }
+            // const start = Date.now()
+            // let end
+            // const userRoles = token ? jwtDecode(token).UserInfo.roles : []
+            // setTimeout(() => {
+            //     end = Date.now()
+            //     if (end - start >= 2000 && (!token || !userRoles.includes('Editor'))) {
+            //     //if (!token || !userRoles.includes('Editor')) {
+            //         //navigate('/')
+            //         console.log(end - start)
+            //         console.log(token)
+            //         console.log(userRoles)
+            //     } else {
+            //         console.log(end)
+            //         console.log(token)
+            //         console.log(userRoles)
+            //     }
+            // }, 1000)
+            // const refreshExpired = window.sessionStorage.getItem('refreshExpired') || ''
+            // if (refreshExpired) {
+            //     setResultMessage((prevState) => {
+            //         return {
+            //             ...prevState,
+            //             message: 'Sesión expirada, por favor vuelve a iniciar sesión.',
+            //             display: 'grid',
+            //         }
+            //     })
+            //     setTimeout(() => {
+            //         navigate('/')
+            //     }, 3000)
+            // } else
         }
-    }, [token, navigate])
+        return () => effectRan.current = true
+        //eslint-disable-next-line
+    }, [])
 
-    const username = token ? jwtDecode(token).UserInfo.username : ''
+    // const userId = token ? jwtDecode(token).UserInfo.id : ''
+    // const username = token ? jwtDecode(token).UserInfo.username : ''
 
     const {
         data: tags,
@@ -232,7 +256,7 @@ const NewPost = () => {
     //Set all Tags effect
     useEffect(() => {
         if (isTagsSuccess) {
-            console.log(tags)
+            //console.log(tags)
             setTagOptions(() => {
                 const tagElements = [...tags[0].allTags].sort().map(tag => {
                     return (
@@ -345,8 +369,8 @@ const NewPost = () => {
                 const result = await createPost({
                     ...postData,
                     content: postContent,
-                    authorId: userId,
-                    authorName: username,
+                    authorId: currentUserId,
+                    authorName: currentUsername,
                     thumbnail: imageMethod.selectedOption === 'upload' ? postData.thumbnail : imageMethod.selectedValue
                 })
                 console.log(result)
@@ -529,7 +553,7 @@ const NewPost = () => {
 
     return (
         <div id="new-post-container">
-            <a href={`${baseUrl.frontend}/user/${userId}`} id="new-post-back"><div>➜</div> Atrás</a>
+            <a href={`${baseUrl.frontend}/user/${currentUserId}`} id="new-post-back"><div>➜</div> Atrás</a>
             <h1 id="new-post-h1">Nueva Publicación</h1>
             <form id="new-post-form">
                 <label htmlFor="new-post-title" className="new-post-label">Título:</label>
@@ -723,7 +747,7 @@ const NewPost = () => {
                 </div>
             </form>
             <div id="new-post-buttons">
-                <a href={`${baseUrl.frontend}/user/${userId}`} id="new-post-cancel">Cancelar</a>
+                <a href={`${baseUrl.frontend}/user/${currentUserId}`} id="new-post-cancel">Cancelar</a>
                 <button id="new-post-submit" onClick={handleSubmit}>Publicar</button>
             </div>
             <div id="post-result-container" style={{display: resultMessage.display}}>
