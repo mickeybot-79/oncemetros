@@ -84,7 +84,7 @@ const ContactUs = () => {
     return (
         <div id="feedback-container">
             <a href={`${baseUrl.frontend}`} id="new-post-back"><div>➜</div> Volver</a>
-            <h3 id="feedback-title">Envíanos tus comentarios</h3>
+            <h3 id="feedback-title">{selectedFeedback === 'feedback' ? 'Envíanos tus comentarios' : 'Reportar un problema'}</h3>
             <form id="feedback-form">
                 <div id="feedback-select-container">
                     <p id="feedback-select-prompt">Tipo de comentario:</p>

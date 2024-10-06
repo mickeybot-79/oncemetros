@@ -20,7 +20,7 @@ const useAuth = () => {
         if (roles.includes('Editor')) status = "Editor"
         if (roles.includes('Admin')) status = "Admin"
 
-        return { currentUserId, currentUsername, status }
+        //return { currentUserId, currentUsername, status }
     }
 
     return { currentUserId, currentUsername, status }
