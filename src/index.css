@@ -259,7 +259,8 @@ code {
 #search-login-container {
   display: grid;
   justify-items: center;
-  padding: 0px 50px 0px 0px;
+  /* padding: 0px 0px 0px 0px; */
+  margin-right: 40px;
   margin-bottom: -20px;
 }
 
@@ -341,6 +342,7 @@ ul {
   border: 1.5px solid rgba(0, 0, 0, 0.575);
   border-radius: 5px;
   z-index: 2;
+  overflow: hidden;
 }
 
 #futbol-nacional-options,
@@ -2993,7 +2995,11 @@ svg {
   #stories-scroll-right {
     max-width: 100px;
   }
-  
+
+  #explore-authors-container,
+  #explore-tags-container {
+    padding-left: 0px;
+  }
 }
 
 @media screen and (min-width: 400px) {

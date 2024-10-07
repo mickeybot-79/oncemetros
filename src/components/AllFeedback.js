@@ -1,26 +1,40 @@
-import { jwtDecode } from "jwt-decode"
-import { useEffect } from "react"
+// import { jwtDecode } from "jwt-decode"
+import { useEffect, useRef } from "react"
 import { useNavigate } from "react-router-dom"
 import { useGetFeedbackQuery } from "./pageApiSlice"
 import LoadingIcon from "./LoadingIcon"
 import baseUrl from "../baseurl"
-import { useSelector } from "react-redux"
-import { selectCurrentToken } from "../features/auth/authSlice"
+// import { useSelector } from "react-redux"
+// import { selectCurrentToken } from "../features/auth/authSlice"
+import useAuth from "../features/auth/useAuth"
 
 const AllFeedback = () => {
 
     const navigate = useNavigate()
 
     //const token = window.localStorage.getItem('token')
-    const token = useSelector(selectCurrentToken)
+    //const token = useSelector(selectCurrentToken)
+
+    const effectRan = useRef(false)
+
+    const logged = window.sessionStorage.getItem('logged')
+
+    const {currentUserId, status} = useAuth()
 
     useEffect(() => {
-        const isAdmin = token ? jwtDecode(token).UserInfo.roles.includes('Admin') : false
-        if (!isAdmin) navigate('/')
-        //eslint-disable-next-line
-    }, [])
-
-    const userId = token ? jwtDecode(token).UserInfo.id : ''
+        if (effectRan.current === true || process.env.NODE_ENV !== 'development') {
+            if (status) {
+                if (!logged || (status !== 'Admin')) {
+                    navigate('/')
+                    // console.log(logged)
+                    // console.log(status)
+                } else {
+                    // console.log(status)
+                }
+            }
+        }
+        return () => effectRan.current = true
+    }, [status, currentUserId, logged, navigate])
 
     const {
         data: feedback,
@@ -76,7 +90,7 @@ const AllFeedback = () => {
     
         return (
             <div id="feedback-page-container">
-                <a href={`${baseUrl.frontend}/user/${userId}`} id="new-post-back"><div>➜</div> Volver</a>
+                <a href={`${baseUrl.frontend}/user/${currentUserId}`} id="new-post-back"><div>➜</div> Volver</a>
                 <h3 id="feedback-page-title">Comentarios enviados por los usuarios</h3>
                 <div id="feedback-elements-container">
                     {feedbackElements}

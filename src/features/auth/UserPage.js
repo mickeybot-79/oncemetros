@@ -38,36 +38,13 @@ const UserPage = () => {
             if (status) {
                 if (!logged || (currentUserId && currentUserId !== id)) {
                     navigate('/')
-                    console.log(logged)
-                    console.log(status)
+                    // console.log(logged)
+                    // console.log(status)
                 } else {
-                    console.log(status)
+                    // console.log(status)
                 }
             }
         }
-        //console.log(token)
-        // const start = Date.now()
-        // let end
-        // setTimeout(() => {
-        //     end = Date.now()
-        // }, 1000)
-        // const userId = token ? jwtDecode(token).UserInfo.id : ''
-        // // const refreshExpired = window.sessionStorage.getItem('refreshExpired') || ''
-        // // if (refreshExpired) {
-        // //     setResultMessage((prevState) => {
-        // //         return {
-        // //             ...prevState,
-        // //             message: 'Sesión expirada, por favor vuelve a iniciar sesión.',
-        // //             display: 'grid',
-        // //         }
-        // //     })
-        // //     setTimeout(() => {
-        // //         navigate('/')
-        // //     }, 3000)
-        // // } else
-        // if (end - start >= 1000 && (!token || userId !== id)) {
-        //     navigate('/')
-        // }
         return () => effectRan.current = true
     }, [status, currentUserId, id, logged, navigate])
 
