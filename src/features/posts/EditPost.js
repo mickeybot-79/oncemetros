@@ -4,11 +4,9 @@ import { useNavigate, useBeforeUnload, useParams } from "react-router-dom"
 import Quill from "quill"
 import Editor from "./EditorTest"
 import baseUrl from "../../baseurl"
-//import { jwtDecode } from "jwt-decode"
 import LoadingIcon from "../../components/LoadingIcon"
-// import { useSelector } from "react-redux"
-// import { selectCurrentToken } from "../auth/authSlice"
 import useAuth from "../auth/useAuth"
+import ResultMessage from "../../components/ResultMessage"
 
 const EditPost = () => {
 
@@ -47,10 +45,6 @@ const EditPost = () => {
 
     const {currentUserId, currentUsername, status} = useAuth()
 
-    //const token = window.localStorage.getItem('token')
-    // const token = useSelector(selectCurrentToken)
-    // const userId = token ? jwtDecode(token).UserInfo.id : ''
-
     useEffect(() => {
         if (effectRan.current === true || process.env.NODE_ENV !== 'development') {
             if (status) {
@@ -63,33 +57,8 @@ const EditPost = () => {
                 }
             }
         }
-        // const start = Date.now()
-        // let end
-        // setTimeout(() => {
-        //     end = Date.now()
-        // }, 1000)
-        // const userRoles = token ? jwtDecode(token).UserInfo.roles : []
-        // // const refreshExpired = window.sessionStorage.getItem('refreshExpired') || ''
-        // // if (refreshExpired) {
-        // //     setResultMessage((prevState) => {
-        // //         return {
-        // //             ...prevState,
-        // //             message: 'Sesión expirada, por favor vuelve a iniciar sesión.',
-        // //             display: 'grid',
-        // //         }
-        // //     })
-        // //     setTimeout(() => {
-        // //         navigate('/')
-        // //     }, 3000)
-        // // } else 
-        // //if (end - start >= 1000 && (!token || !userRoles.includes('Editor') || currentPost?.authorId !== userId)) {
-        // if (!token || !userRoles.includes('Editor') || currentPost?.authorId !== userId) {
-        //     navigate('/')
-        // }
         return () => effectRan.current = true
     }, [status, currentUserId, id, logged, navigate])
-
-    //const username = token ? jwtDecode(token).UserInfo.username : ''
 
     const {
         data: tags,
@@ -787,21 +756,7 @@ const EditPost = () => {
                     <button id="new-post-submit" onClick={handleSubmit}>Guardar</button>
                     <button id="new-post-delete" onClick={() => setDeleteDisplay('grid')}>Eliminar</button>
                 </div>
-                <div id="post-result-container" style={{ display: resultMessage.display }}>
-                    <div className="result-container" style={{ animation: resultMessage.animation }}>
-                        <img src={resultMessage.image} alt="" id="post-result-image" />
-                        <p id="post-result-message">{resultMessage.message}</p>
-                        <button className="result-confirm" style={{ display: resultMessage.confirmButton }} onClick={() => {
-                            setResultMessage((prevState) => {
-                                return {
-                                    ...prevState,
-                                    display: 'none',
-                                    confirmButton: 'none'
-                                }
-                            })
-                        }}>Aceptar</button>
-                    </div>
-                </div>
+                <ResultMessage resultMessage={resultMessage} handleSetResultMessage={(result) => setResultMessage(result)}/>
                 <div style={{
                     display: waiting,
                     position: 'fixed',

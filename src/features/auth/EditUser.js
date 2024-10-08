@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { useDeleteUserMutation, useUpdateUserDataMutation } from "./authApiSlice"
 import { useNavigate } from "react-router-dom"
+import ResultMessage from "../../components/ResultMessage"
 
 const EditUser = ({ user, displayEditOptions, handleUpdateUserData, handleCloseEdit, editOptionsAnimation, handleEditOptionsAnimation }) => {
 
@@ -12,7 +13,7 @@ const EditUser = ({ user, displayEditOptions, handleUpdateUserData, handleCloseE
 
     const [userData, setUserData] = useState({
         username: user.username,
-        roles: user.roles,
+        status: user.status,
         userId: user.userId,
         password: '',
         confirmPassword: '',
@@ -186,8 +187,8 @@ const EditUser = ({ user, displayEditOptions, handleUpdateUserData, handleCloseE
                         setSelectedOption('')
                         setUserData({
                             username: user.username,
-                            roles: user.roles,
-                            userId: window.sessionStorage.getItem('userId') || '',
+                            status: user.status,
+                            userId: user.userId,
                             password: '',
                             confirmPassword: '',
                             email: '',
@@ -231,8 +232,8 @@ const EditUser = ({ user, displayEditOptions, handleUpdateUserData, handleCloseE
                             setSelectedOption('')
                             setUserData({
                                 username: user.username,
-                                roles: user.roles,
-                                userId: window.sessionStorage.getItem('userId') || '',
+                                status: user.status,
+                                userId: user.userId,
                                 password: '',
                                 confirmPassword: '',
                                 email: '',
@@ -279,8 +280,8 @@ const EditUser = ({ user, displayEditOptions, handleUpdateUserData, handleCloseE
                         setSelectedOption('')
                         setUserData({
                             username: user.username,
-                            roles: user.roles,
-                            userId: window.sessionStorage.getItem('userId') || '',
+                            status: user.status,
+                            userId: user.userId,
                             password: '',
                             confirmPassword: '',
                             email: '',
@@ -323,8 +324,8 @@ const EditUser = ({ user, displayEditOptions, handleUpdateUserData, handleCloseE
                             setSelectedOption('')
                             setUserData({
                                 username: user.username,
-                                roles: user.roles,
-                                userId: window.sessionStorage.getItem('userId') || '',
+                                status: user.status,
+                                userId: user.userId,
                                 password: '',
                                 confirmPassword: '',
                                 email: '',
@@ -381,8 +382,8 @@ const EditUser = ({ user, displayEditOptions, handleUpdateUserData, handleCloseE
                         setSelectedOption('')
                         setUserData({
                             username: user.username,
-                            roles: user.roles,
-                            userId: window.sessionStorage.getItem('userId') || '',
+                            status: user.status,
+                            userId: user.userId,
                             password: '',
                             confirmPassword: '',
                             email: '',
@@ -425,8 +426,8 @@ const EditUser = ({ user, displayEditOptions, handleUpdateUserData, handleCloseE
                             setSelectedOption('')
                             setUserData({
                                 username: user.username,
-                                roles: user.roles,
-                                userId: window.sessionStorage.getItem('userId') || '',
+                                status: user.status,
+                                userId: user.userId,
                                 password: '',
                                 confirmPassword: '',
                                 email: '',
@@ -482,7 +483,7 @@ const EditUser = ({ user, displayEditOptions, handleUpdateUserData, handleCloseE
                         setSelectedOption('')
                         setUserData({
                             username: user.username,
-                            roles: user.roles,
+                            status: user.status,
                             userId: user.userId || '',
                             password: '',
                             confirmPassword: '',
@@ -638,21 +639,7 @@ const EditUser = ({ user, displayEditOptions, handleUpdateUserData, handleCloseE
                     </div>
                 </div>
             </div>
-            <div id="post-result-container" style={{display: resultMessage.display}}>
-                <div className="result-container" style={{animation: resultMessage.animation}}>
-                    <img src={resultMessage.image} alt="" id="post-result-image"/>
-                    <p id="post-result-message">{resultMessage.message}</p>
-                    <button className="result-confirm" style={{display: resultMessage.confirmButton}} onClick={() => {
-                        setResultMessage((prevState) => {
-                            return {
-                                ...prevState,
-                                display: 'none',
-                                confirmButton: 'none'
-                            }
-                        })
-                    }}>Aceptar</button>
-                </div>
-            </div>
+            <ResultMessage resultMessage={resultMessage} handleSetResultMessage={(result) => setResultMessage(result)}/>
             <div style={{
                 display: waiting,
                 position: 'fixed',

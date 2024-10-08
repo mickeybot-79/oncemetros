@@ -4,11 +4,9 @@ import LoadingIcon from "../../components/LoadingIcon"
 import { useGetPostsQuery } from "../posts/postsApiSlice"
 import { useEffect, useRef, useState } from "react"
 import EditUser from "./EditUser"
-// import { jwtDecode } from "jwt-decode"
-// import { useSelector } from "react-redux"
-// import { selectCurrentToken } from "./authSlice"
 import baseUrl from "../../baseurl"
 import useAuth from "./useAuth"
+import ResultMessage from "../../components/ResultMessage"
 
 const UserPage = () => {
 
@@ -22,14 +20,13 @@ const UserPage = () => {
 
     const {currentUserId, currentUsername, status} = useAuth()
 
-    //const token = useSelector(selectCurrentToken)
-    //console.log(token)
-    //console.log(token)
+    console.log(status)
 
     const [resultMessage, setResultMessage] = useState({
         message: 'Sesión cerrada',
         image: '../../Images/success.gif',
         display: 'none',
+        confirmButton: 'none',
         animation: 'new-post-result 0.2s linear 1'
     })
 
@@ -38,10 +35,7 @@ const UserPage = () => {
             if (status) {
                 if (!logged || (currentUserId && currentUserId !== id)) {
                     navigate('/')
-                    // console.log(logged)
-                    // console.log(status)
                 } else {
-                    // console.log(status)
                 }
             }
         }
@@ -72,11 +66,8 @@ const UserPage = () => {
         refetchOnMountOrArgChange: true
     })
 
-    //console.log(user)
-
     const [currentUser, setCurrentUser] = useState({
         username: currentUsername || '',
-        //roles: token ? jwtDecode(token).UserInfo.roles : [],
         status : status || '',
         userId: currentUserId || '',
         password: '',
@@ -90,8 +81,7 @@ const UserPage = () => {
         if (isSuccess) setCurrentUser(() => {
             return {
                 username: user.username,
-                //roles: user.roles,
-                status : status,
+                status: status,
                 userId: user.userId,
                 password: '',
                 confirmPassword: '',
@@ -100,7 +90,8 @@ const UserPage = () => {
                 aboutme: user.aboutme
             }
         })
-    }, [isSuccess, user, status])
+        //eslint-disable-next-line
+    }, [isSuccess, status])
 
     if (isLoading || isPostLoading) {
         return (
@@ -109,6 +100,8 @@ const UserPage = () => {
     }
 
     if (isSuccess && isPostSuccess) {
+
+        console.log(currentUser.status)
 
         const allUserPosts = [...posts?.ids].filter(post => posts?.entities[post].authorId === id).sort((a, b) => posts?.entities[b].date - posts?.entities[a].date)
 
@@ -152,11 +145,11 @@ const UserPage = () => {
                     setTimeout(() => {
                         window.localStorage.setItem('persist', false)
                         window.sessionStorage.removeItem('logged')
-                        //window.localStorage.removeItem('token')
                         setResultMessage((prevState) => {
                             return {
                                 ...prevState,
-                                display: 'none'
+                                display: 'none',
+                                confirmButton: 'none'
                             }
                         })
                         navigate('/')
@@ -194,13 +187,8 @@ const UserPage = () => {
                 }}>
                     <div className="loader"></div>
                 </div>
-
-                <div id="post-result-container" style={{ display: resultMessage.display }}>
-                    <div className="result-container" style={{ animation: resultMessage.animation }}>
-                        <img src={resultMessage.image} alt="" id="post-result-image" />
-                        <p id="post-result-message">{resultMessage.message}</p>
-                    </div>
-                </div>
+                
+                <ResultMessage resultMessage={resultMessage} handleSetResultMessage={(result) => setResultMessage(result)}/>
 
                 <EditUser
                     user={currentUser}

@@ -4,6 +4,7 @@ import { useBeforeUnload } from "react-router-dom"
 import { useCreateAccountMutation } from "./authApiSlice"
 import { jwtDecode } from "jwt-decode"
 import baseUrl from "../../baseurl"
+import ResultMessage from "../../components/ResultMessage"
 
 const NewUser = () => {
 
@@ -356,21 +357,7 @@ const NewUser = () => {
                         }} id="new-user-submit">Crear Usuario</button>
                     </div>
                 </form>
-                <div id="user-result-container" style={{ display: resultMessage.display }}>
-                    <div className="result-container" style={{ animation: resultMessage.animation }}>
-                        <img src={resultMessage.image} alt="" id="user-result-image" />
-                        <p id="user-result-message">{resultMessage.message}</p>
-                        <button className="result-confirm" style={{ display: resultMessage.confirmButton }} onClick={() => {
-                            setResultMessage((prevState) => {
-                                return {
-                                    ...prevState,
-                                    display: 'none',
-                                    confirmButton: 'none'
-                                }
-                            })
-                        }}>Aceptar</button>
-                    </div>
-                </div>
+                <ResultMessage resultMessage={resultMessage} handleSetResultMessage={(result) => setResultMessage(result)}/>
                 <div style={{
                     display: waiting,
                     position: 'fixed',

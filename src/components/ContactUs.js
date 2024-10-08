@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { useSendFeedbackMutation } from "./pageApiSlice"
 import { jwtDecode } from "jwt-decode"
 import baseUrl from "../baseurl"
+import ResultMessage from "./ResultMessage"
 
 const ContactUs = () => {
 
@@ -126,21 +127,7 @@ const ContactUs = () => {
                     }}>Enviar</button>
                 </div>
             </form>
-            <div id="post-result-container" style={{display: resultMessage.display}}>
-                <div className="result-container" style={{animation: resultMessage.animation}}>
-                    <img src={resultMessage.image} alt="" id="post-result-image"/>
-                    <p id="post-result-message">{resultMessage.message}</p>
-                    <button className="result-confirm" style={{display: resultMessage.confirmButton}} onClick={() => {
-                        setResultMessage((prevState) => {
-                            return {
-                                ...prevState,
-                                display: 'none',
-                                confirmButton: 'none'
-                            }
-                        })
-                    }}>Aceptar</button>
-                </div>
-            </div>
+            <ResultMessage resultMessage={resultMessage} handleSetResultMessage={(result) => setResultMessage(result)}/>
             <div style={{
                 display: waiting,
                 position: 'fixed',

@@ -4,10 +4,8 @@ import { useNavigate, useBeforeUnload } from "react-router-dom"
 import Quill from "quill"
 import Editor from "./EditorTest"
 import baseUrl from "../../baseurl"
-// import { jwtDecode } from "jwt-decode"
-// import { useSelector } from "react-redux"
-// import { selectCurrentToken } from "../auth/authSlice"
 import useAuth from "../auth/useAuth"
+import ResultMessage from "../../components/ResultMessage"
 
 const NewPost = () => {
 
@@ -27,9 +25,6 @@ const NewPost = () => {
 
     const {currentUserId, currentUsername, status} = useAuth()
 
-    //const token = window.localStorage.getItem('token')
-    //const token = useSelector(selectCurrentToken)
-
     useEffect(() => {
         if (effectRan.current === true || process.env.NODE_ENV !== 'development') {
             if (!logged || (status && status === 'User')) {
@@ -37,43 +32,10 @@ const NewPost = () => {
                 console.log(logged)
                 console.log(status)
             }
-            // const start = Date.now()
-            // let end
-            // const userRoles = token ? jwtDecode(token).UserInfo.roles : []
-            // setTimeout(() => {
-            //     end = Date.now()
-            //     if (end - start >= 2000 && (!token || !userRoles.includes('Editor'))) {
-            //     //if (!token || !userRoles.includes('Editor')) {
-            //         //navigate('/')
-            //         console.log(end - start)
-            //         console.log(token)
-            //         console.log(userRoles)
-            //     } else {
-            //         console.log(end)
-            //         console.log(token)
-            //         console.log(userRoles)
-            //     }
-            // }, 1000)
-            // const refreshExpired = window.sessionStorage.getItem('refreshExpired') || ''
-            // if (refreshExpired) {
-            //     setResultMessage((prevState) => {
-            //         return {
-            //             ...prevState,
-            //             message: 'Sesión expirada, por favor vuelve a iniciar sesión.',
-            //             display: 'grid',
-            //         }
-            //     })
-            //     setTimeout(() => {
-            //         navigate('/')
-            //     }, 3000)
-            // } else
         }
         return () => effectRan.current = true
         //eslint-disable-next-line
     }, [])
-
-    // const userId = token ? jwtDecode(token).UserInfo.id : ''
-    // const username = token ? jwtDecode(token).UserInfo.username : ''
 
     const {
         data: tags,
@@ -750,21 +712,7 @@ const NewPost = () => {
                 <a href={`${baseUrl.frontend}/user/${currentUserId}`} id="new-post-cancel">Cancelar</a>
                 <button id="new-post-submit" onClick={handleSubmit}>Publicar</button>
             </div>
-            <div id="post-result-container" style={{display: resultMessage.display}}>
-                <div className="result-container" style={{animation: resultMessage.animation}}>
-                    <img src={resultMessage.image} alt="" id="post-result-image"/>
-                    <p id="post-result-message">{resultMessage.message}</p>
-                    <button className="result-confirm" style={{display: resultMessage.confirmButton}} onClick={() => {
-                        setResultMessage((prevState) => {
-                            return {
-                                ...prevState,
-                                display: 'none',
-                                confirmButton: 'none'
-                            }
-                        })
-                    }}>Aceptar</button>
-                </div>
-            </div>
+            <ResultMessage resultMessage={resultMessage} handleSetResultMessage={(result) => setResultMessage(result)}/>
             <div style={{
                 display: waiting,
                 position: 'fixed',

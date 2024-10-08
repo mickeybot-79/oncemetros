@@ -9,18 +9,13 @@ const useAuth = () => {
     let currentUsername
 
     if (token) {
-        //console.log(token)
         const decoded = jwtDecode(token)
         const { id, username, roles } = decoded.UserInfo
-        //console.log(roles)
-
         currentUsername = username
         currentUserId = id
         status = "User"
         if (roles.includes('Editor')) status = "Editor"
         if (roles.includes('Admin')) status = "Admin"
-
-        //return { currentUserId, currentUsername, status }
     }
 
     return { currentUserId, currentUsername, status }

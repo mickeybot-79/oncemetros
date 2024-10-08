@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import { useUpdateUserPasswordMutation, useVerifyResetTokenMutation } from "./authApiSlice"
 import { jwtDecode } from "jwt-decode"
 import LoadingIcon from "../../components/LoadingIcon"
+import ResultMessage from "../../components/ResultMessage"
 
 const PasswordReset = () => {
 
@@ -169,21 +170,7 @@ const PasswordReset = () => {
                     }}>
                         <div className="loader"></div>
                     </div>
-                    <div id="post-result-container" style={{ display: resultMessage.display }}>
-                        <div className="result-container" style={{ animation: resultMessage.animation }}>
-                            <img src={resultMessage.image} alt="" id="post-result-image" />
-                            <p id="post-result-message">{resultMessage.message}</p>
-                            <button className="result-confirm" style={{ display: resultMessage.confirmButton }} onClick={() => {
-                                setResultMessage((prevState) => {
-                                    return {
-                                        ...prevState,
-                                        display: 'none',
-                                        confirmButton: 'none'
-                                    }
-                                })
-                            }}>Aceptar</button>
-                        </div>
-                    </div>
+                    <ResultMessage resultMessage={resultMessage} handleSetResultMessage={(result) => setResultMessage(result)}/>
                 </div>
             </div>
         )
