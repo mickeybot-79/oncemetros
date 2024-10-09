@@ -5,6 +5,8 @@ import {
   createRoutesFromElements,
   RouterProvider
 } from 'react-router-dom'
+import { useAddPageViewMutation } from './components/pageApiSlice'
+import { useEffect } from 'react'
 import Layout from './components/Layout'
 import MainPage from './components/MainPage'
 import Login from './features/auth/Login'
@@ -51,6 +53,21 @@ const router = createBrowserRouter(
 
 function App() {
   document.title = 'Los 11 Metros'
+
+  const [addPageView] = useAddPageViewMutation()
+
+  useEffect(() => {
+      const viewAdded = window.localStorage.getItem('viewAdded')
+      if (!viewAdded) {
+          const sendView = async () => {
+              const result = await addPageView()
+              console.log(result)
+              window.localStorage.setItem('viewAdded', 'y')
+          }
+          sendView()
+      }
+      //eslint-disable-next-line
+  }, [])
 
   return (
     <RouterProvider router={router} />

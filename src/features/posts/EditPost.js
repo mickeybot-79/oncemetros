@@ -47,18 +47,12 @@ const EditPost = () => {
 
     useEffect(() => {
         if (effectRan.current === true || process.env.NODE_ENV !== 'development') {
-            if (status) {
-                if (!logged || (currentUserId && currentUserId !== id)) {
-                    //navigate('/')
-                    console.log(logged)
-                    console.log(status)
-                } else {
-                    console.log(status)
-                }
+            if (!logged || (currentUserId && currentPost?.authorId && currentUserId !== currentPost?.authorId)) {
+                navigate('/')
             }
         }
         return () => effectRan.current = true
-    }, [status, currentUserId, id, logged, navigate])
+    }, [status, currentUserId, currentPost, logged, navigate])
 
     const {
         data: tags,
@@ -80,14 +74,22 @@ const EditPost = () => {
     const [tagOptions, setTagOptions] = useState([])
 
     const [postData, setPostData] = useState({
-        title: isSuccess ? currentPost.title : '',
-        heading: isSuccess ? currentPost.heading : '',
-        content: isSuccess ? currentPost.content : '',
-        thumbnail: isSuccess ? currentPost.image : '../../Images/placeholder.png',
-        imgDesc: isSuccess ? currentPost.imgDesc : '',
-        imgCred: isSuccess ? currentPost.imgCred : '',
-        tags: isSuccess ? currentPost.tags : [],
-        insPost: isSuccess ? currentPost.insPost : ''
+        // title: isSuccess ? currentPost.title : '',
+        // heading: isSuccess ? currentPost.heading : '',
+        // content: isSuccess ? currentPost.content : '',
+        // thumbnail: isSuccess ? currentPost.image : '../../Images/placeholder.png',
+        // imgDesc: isSuccess ? currentPost.imgDesc : '',
+        // imgCred: isSuccess ? currentPost.imgCred : '',
+        // tags: isSuccess ? currentPost.tags : [],
+        // insPost: isSuccess ? currentPost.insPost : ''
+        title: currentPost?.title,
+        heading: currentPost?.heading,
+        content: currentPost?.content,
+        thumbnail: currentPost?.image,
+        imgDesc: currentPost?.imgDesc,
+        imgCred: currentPost?.imgCred,
+        tags: currentPost?.tags,
+        insPost: currentPost?.insPost
     })
 
     const [imageWidth, setImageWidth] = useState('')
@@ -235,7 +237,7 @@ const EditPost = () => {
             } else if (imageMethod.selectedOption === 'link' && imageMethod.selectedValue !== '') {
                 const imageElement = document.getElementById('image-from-link')
                 setTimeout(() => {
-                    setImageWidth(imageElement.width.toString())
+                    setImageWidth(imageElement?.width.toString())
                 }, 100)
             }
         }, 10)
@@ -266,7 +268,7 @@ const EditPost = () => {
         if (isSuccess) {
             let allParagraphElements
             if (writingStyle === 'type') {
-                if (postData.content.substring(0, 2) === '<p') {
+                if (postData?.content && postData?.content.substring(0, 2) === '<p') {
                     const editorElement = document.getElementsByClassName('ql-editor')[0]
                     // const contentElement = document.getElementById('post-content')
                     // allParagraphElements = postData.content
@@ -276,20 +278,22 @@ const EditPost = () => {
                     setTimeout(() => {
                         const contentElement = document.getElementById('new-post-content')
                         const allKeys = []
-                        allParagraphElements = postData.content.split('\n').map(paragraph => {
-                            let currentKey
-                            for (let i = 0; i < postData.content.split('\n').length; i++) {
-                                if (postData.content.split('\n')[i] === '') {
-                                    currentKey = allKeys.length + 1
-                                } else {
-                                    allKeys.push(paragraph)
-                                    currentKey = allKeys.length - 1
+                        if (postData?.content) {
+                            allParagraphElements = postData?.content.split('\n').map(paragraph => {
+                                let currentKey
+                                for (let i = 0; i < postData.content.split('\n').length; i++) {
+                                    if (postData.content.split('\n')[i] === '') {
+                                        currentKey = allKeys.length + 1
+                                    } else {
+                                        allKeys.push(paragraph)
+                                        currentKey = allKeys.length - 1
+                                    }
                                 }
-                            }
-                            return (
-                                <p key={currentKey}>{paragraph}</p>
-                            )
-                        })
+                                return (
+                                    <p key={currentKey}>{paragraph}</p>
+                                )
+                            })   
+                        }
                         contentElement.innerHTML = allParagraphElements  
                     })
                 }
@@ -526,32 +530,38 @@ const EditPost = () => {
         </div >
     )
 
-    const selectedTagsElements = postData.tags.map(tag => {
-
-        const listener = () => {
-            setPostData((prevState) => {
-                const updatedTags = [...prevState.tags]
-                const tagIndex = updatedTags.indexOf(tag)
-                updatedTags.splice(tagIndex, 1)
-                return {
-                    ...prevState,
-                    tags: updatedTags
-                }
-            })
-        }
-
-        return (
-            <div key={tag} className="tag-element">{tag} <span onClick={listener}>x</span></div>
-        )
-    })
-
-    if (isPostLoading) {
+    if (isPostLoading || !currentPost?.id) {
         return (
             <LoadingIcon />
         )
     }
 
-    if (isSuccess) {
+    if (isSuccess && currentPost?.id) {
+
+        console.log(currentPost)
+
+        let selectedTagsElements
+
+        if (postData?.tags) {
+            selectedTagsElements = postData?.tags.map(tag => {
+
+                const listener = () => {
+                    setPostData((prevState) => {
+                        const updatedTags = [...prevState.tags]
+                        const tagIndex = updatedTags.indexOf(tag)
+                        updatedTags.splice(tagIndex, 1)
+                        return {
+                            ...prevState,
+                            tags: updatedTags
+                        }
+                    })
+                }
+        
+                return (
+                    <div key={tag} className="tag-element">{tag} <span onClick={listener}>x</span></div>
+                )
+            })
+        }
 
         return (
             <div id="new-post-container">
@@ -748,7 +758,7 @@ const EditPost = () => {
                         }}>✓</button>
                     </div>
                     <div id="tag-elements-container">
-                        {postData.tags.length === 0 ? (<span style={{ opacity: '0.5', fontSize: '20px' }}>Las etiquetas se mostrarán aquí</span>) : selectedTagsElements}
+                        {postData?.tags?.length === 0 ? (<span style={{ opacity: '0.5', fontSize: '20px' }}>Las etiquetas se mostrarán aquí</span>) : selectedTagsElements}
                     </div>
                 </form>
                 <div id="new-post-buttons">

@@ -1,19 +1,13 @@
-// import { jwtDecode } from "jwt-decode"
 import { useEffect, useRef } from "react"
 import { useNavigate } from "react-router-dom"
 import { useGetFeedbackQuery } from "./pageApiSlice"
 import LoadingIcon from "./LoadingIcon"
 import baseUrl from "../baseurl"
-// import { useSelector } from "react-redux"
-// import { selectCurrentToken } from "../features/auth/authSlice"
 import useAuth from "../features/auth/useAuth"
 
 const AllFeedback = () => {
 
     const navigate = useNavigate()
-
-    //const token = window.localStorage.getItem('token')
-    //const token = useSelector(selectCurrentToken)
 
     const effectRan = useRef(false)
 
@@ -23,14 +17,8 @@ const AllFeedback = () => {
 
     useEffect(() => {
         if (effectRan.current === true || process.env.NODE_ENV !== 'development') {
-            if (status) {
-                if (!logged || (status !== 'Admin')) {
-                    navigate('/')
-                    // console.log(logged)
-                    // console.log(status)
-                } else {
-                    // console.log(status)
-                }
+            if (!logged || (status && status !== 'Admin')) {
+                navigate('/')
             }
         }
         return () => effectRan.current = true
@@ -44,8 +32,6 @@ const AllFeedback = () => {
         pollingInterval: 600000,
         refetchOnMountOrArgChange: true
     })
-
-    //console.log(feedback)
 
     if (isLoading) {
         return (

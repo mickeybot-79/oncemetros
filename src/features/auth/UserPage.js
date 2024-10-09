@@ -20,7 +20,7 @@ const UserPage = () => {
 
     const {currentUserId, currentUsername, status} = useAuth()
 
-    console.log(status)
+    //console.log(status)
 
     const [resultMessage, setResultMessage] = useState({
         message: 'Sesión cerrada',
@@ -32,11 +32,8 @@ const UserPage = () => {
 
     useEffect(() => {
         if (effectRan.current === true || process.env.NODE_ENV !== 'development') {
-            if (status) {
-                if (!logged || (currentUserId && currentUserId !== id)) {
-                    navigate('/')
-                } else {
-                }
+            if (!logged || (currentUserId && currentUserId !== id)) {
+                navigate('/')
             }
         }
         return () => effectRan.current = true
@@ -101,7 +98,7 @@ const UserPage = () => {
 
     if (isSuccess && isPostSuccess) {
 
-        console.log(currentUser.status)
+        //console.log(currentUser.status)
 
         const allUserPosts = [...posts?.ids].filter(post => posts?.entities[post].authorId === id).sort((a, b) => posts?.entities[b].date - posts?.entities[a].date)
 

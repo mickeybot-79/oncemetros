@@ -3,15 +3,15 @@ import Post from "./Post"
 import { useGetPostsQuery } from "./postsApiSlice"
 import Comments from "./Comments"
 import PageHeader from "../../components/PageHeader"
-import { useEffect, useRef } from "react"
-import { useShareTestMutation } from "./postsApiSlice"
+import { useEffect, /*useRef*/ } from "react"
+// import { useShareTestMutation } from "./postsApiSlice"
 import LoadingIcon from "../../components/LoadingIcon"
 import { useGetUserDataQuery } from "../auth/authApiSlice"
-import { jwtDecode } from "jwt-decode"
+import useAuth from "../auth/useAuth"
 
 const PostPage = () => {
 
-    const effectRan = useRef()
+    // const effectRan = useRef()
 
     const { id } = useParams()
 
@@ -30,14 +30,13 @@ const PostPage = () => {
         refetchOnMountOrArgChange: true
     })
 
-    const token = window.localStorage.getItem('token')
-    const userId = token ? jwtDecode(token).UserInfo.id : 'noUser'
+    const {currentUserId} = useAuth()
 
     const {
         data: user,
         isSuccess: isUserSuccess,
         isLoading: isUserLoading
-    } = useGetUserDataQuery(userId, {
+    } = useGetUserDataQuery(currentUserId || 'noUser', {
         refetchOnMountOrArgChange: true
     })
 
@@ -79,7 +78,7 @@ const PostPage = () => {
                 <PageHeader />
                 <div id="post-page-container">
                     <Post post={currentPost} />
-                    <Comments post={currentPost} user={user || ''}/>
+                    <Comments post={currentPost} user={user}/>
                 </div>
             </>
         )

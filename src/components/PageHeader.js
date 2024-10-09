@@ -12,7 +12,6 @@ const PageHeader = ({ handleDisplayingLogin }) => {
 
     const navigate = useNavigate()
 
-    //const token = window.localStorage.getItem('token') || ''
     const token = useSelector(selectCurrentToken)
     const userId = token ? jwtDecode(token).UserInfo.id : ''
 

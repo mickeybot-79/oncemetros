@@ -168,11 +168,13 @@ const Comments = ({ post, user }) => {
         )
     }
 
+    console.log(user)
+
     return (
         <div id="comments-container" ref={allCommentsRef}>
             <div id="new-comment-container">
                 <div id="new-comment-img-text">
-                    <img src={user.image || "../../Images/favicon.png"} alt="logo" id="new-comment-icon" />
+                    <img src={user?.image || "../../Images/favicon.png"} alt="logo" id="new-comment-icon" />
                     <textarea
                         placeholder="Nuevo comentario..."
                         id="new-comment-content"
