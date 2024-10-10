@@ -10,8 +10,6 @@ const PersistLogin = () => {
     const persist = JSON.parse(localStorage.getItem("persist")) || false
     const token = useSelector(selectCurrentToken)
     const logged = window.sessionStorage.getItem('logged')
-    //const session = window.sessionStorage.getItem('session')
-    //const isTemp = window.localStorage.getItem('isTemp')
     const effectRan = useRef(false)
 
     const [trueSuccess, setTrueSuccess] = useState(false)
@@ -31,10 +29,9 @@ const PersistLogin = () => {
                 try {
                     const result = await refresh()
                     if (result?.error?.originalStatus === 403 || result?.error?.originalStatus === 401) {
-                        //if (!isTemp) window.localStorage.setItem('isTemp', 'y')
-                        window.localStorage.removeItem('logged')
+                        window.sessionStorage.removeItem('logged')
                     } else {
-                        window.localStorage.setItem('logged', 'y')
+                        window.sessionStorage.setItem('logged', 'y')
                     }
                 }
                 catch (err) {
@@ -42,19 +39,11 @@ const PersistLogin = () => {
                 }
             }
 
-            //if (persist || (isTemp === 'n' && session)) {
             if (persist || logged) {
                 setTimeout(() => {
                     verifyRefreshToken()
                 }, 100)
             }
-            // else if (!isTemp) {
-            //     window.localStorage.setItem('isTemp', 'y')
-            // }
-            // if (!logged || logged === 'n') {
-            //     window.localStorage.removeItem('token')
-            // }
-            //if (!session) window.sessionStorage.setItem('session', 'actv')
             setTrueSuccess(true)
         }   
 

@@ -3002,9 +3002,89 @@ svg {
   }
 }
 
-@media screen and (min-width: 400px) {
+@media screen and (max-width: 500px) {
   /*Header*/
+  #header-logo {
+    position: absolute;
+    width: 480px;
+    top: 12px;
+    height: auto;
+  }
+
+  #options-image-container {
+    display: flex;
+    align-items: baseline;
+    margin-top: 100px;
+  }
+
+  #search-login-container {
+    display: flex;
+  }
+
+  #instagram-icon,
+  #login-option,
+  #search-option {
+    width: 50px;
+    height: 50px;
+    z-index: 1;
+  }
+
+  #instagram-icon {
+    margin-top: -100px;
+    width: 60px;
+    height: 60px;
+  }
+
+  .menu-item {
+    max-width: 55px;
+    padding-left: 5px;
+  }
 
   /*Main Page*/
+  #main-stories {
+    max-width: 400px;
+    margin-left: 30px;
+  }
+
+  #main-stories-container {
+    max-width: 400px;
+  }
+
+  #stories-scroll-container {
+    max-width: 400px;
+  }
+
+  #stories-scroll-left,
+  #stories-scroll-right {
+    position: absolute;
+    width: 50px;
+  }
+
+  #stories-scroll-left {
+    left: 0;
+    z-index: 1;
+  }
+
+  #stories-scroll-right {
+    right: 0;
+    z-index: 1;
+  }
+
+  #stories-scroll-left p,
+  #stories-scroll-right p {
+    font-size: 75px;
+    margin-top: 100px;
+    color: white;
+  }
+
+  #popular-stories-title {
+    font-size: 40px;
+    text-wrap: wrap;
+  }
+
+  .popular-story-container,
+  .popular-story-container-odd {
+    width: 300px;
+  }
 
 }

@@ -278,11 +278,11 @@ const MainPage = () => {
             <div id="main-page-container" style={{overflow: 'hidden'}}>
                 <main style={{ display: presentationDisplay === 'none' ? 'grid' : 'none' }}>
                     <section id="main-stories">
-                        <div id="main-background-container">
-                            {/* <div id="main-stories-background-image-container">
+                        {/* <div id="main-background-container">
+                            <div id="main-stories-background-image-container">
                                 <img src="../Images/background.jpg" alt="background" id="main-stories-background" />
-                            </div> */}
-                        </div>
+                            </div>
+                        </div> */}
                         <div id="stories-scroll-left" onClick={handleScrollLeft} style={{ animation: mainStoriesContainerAnimation }}><p>{'<'}</p></div>
                         <div id="main-stories-container" style={{ animation: mainStoriesContainerAnimation }}>
                             <div id="stories-scroll-container" style={{ animation: mainStoriesContainerAnimation }}>
