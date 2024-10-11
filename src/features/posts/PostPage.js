@@ -77,7 +77,7 @@ const PostPage = () => {
             <>
                 <PageHeader />
                 <div id="post-page-container">
-                    <Post post={currentPost} />
+                    <Post post={currentPost} userId={currentUserId}/>
                     <Comments post={currentPost} user={user}/>
                 </div>
             </>

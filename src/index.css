@@ -3035,10 +3035,18 @@ svg {
     height: 60px;
   }
 
-  .menu-item {
-    max-width: 55px;
-    padding-left: 5px;
-  }
+    .menu-item {
+      max-width: 55px;
+      padding-left: 5px;
+    }
+  
+    #futbol-nacional-options,
+    #futbot-internacional-options,
+    #competiciones-europeas-options,
+    #competiciones-internacionales-options,
+    #historia-de-los-mundiales-options {
+      width: 140px;
+    }
 
   /*Main Page*/
   #main-stories {
@@ -3087,4 +3095,20 @@ svg {
     width: 300px;
   }
 
+  .popular-story-thumbnail {
+    width: 250px;
+    height: auto;
+  }
+
+  .popular-story-title {
+    font-size: 20px;
+  }
+
+  .popular-story-heading {
+    font-size: 18px;
+  }
+
+  #explore-title {
+    font-size: 40px;
+  }
 }
