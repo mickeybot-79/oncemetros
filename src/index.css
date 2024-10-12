@@ -671,7 +671,6 @@ ul {
   display: flex;
   place-content: center;
   gap: 100px;
-  padding: 0px 0px 50px 0px;
   margin-bottom: -200px;
   padding-bottom: 400px;
   /* background-image: url("../src/Images/background3.jpg");
@@ -3085,9 +3084,25 @@ svg {
     color: white;
   }
 
+  .down-prompt-container {
+    width: 75px;
+    height: 75px;
+  }
+
+  #popular-stories {
+    width: 400px;
+    display: grid;
+    place-self: center;
+  }
+
   #popular-stories-title {
     font-size: 40px;
     text-wrap: wrap;
+  }
+
+  #popular-stories-container {
+    width: 400px;
+    padding-left: 0px;  
   }
 
   .popular-story-container,
@@ -3108,7 +3123,34 @@ svg {
     font-size: 18px;
   }
 
+  #explore {
+    display: grid;
+    width: 400px;
+    margin-top: 0px;
+    justify-items: center;
+    place-items: center;
+    margin-bottom: 200px;
+    padding-bottom: 0px;
+    place-self: center;
+  }
+
   #explore-title {
     font-size: 40px;
+    position: relative;
+    margin-bottom: 0px;
   }
+
+  #explore-authors-container {
+    margin-left: 0px;
+  }
+
+  #explore-authors-container,
+  #explore-tags-container {
+    width: 100%;
+    overflow: hidden;
+    margin-top: 0px;
+  }
+
+
+
 }
