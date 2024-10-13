@@ -131,7 +131,7 @@ const MainPage = () => {
                     return (
                         <div key={story} className="main-story" style={{transform: mainStoriesAnimaton.transform, transition: mainStoriesAnimaton.transition}} onClick={() => navigate(`/post/${story}`)}>
                             <img src={posts?.entities[story].thumbnail} alt="main-story" className="story-thumbnail" />
-                            <div id="title-heading-container">
+                            <div className="title-heading-container">
                                 <h4 className="story-title">{titleEnd}</h4>
                                 <p className="story-heading">{headingEnd}</p>
                             </div>
@@ -180,15 +180,17 @@ const MainPage = () => {
                                 <h4 className="popular-story-title">{titleEnd}</h4>
                                 <p className="popular-story-heading">{headingEnd}</p>
                             </div>
-                            <hr style={{
-                                width: '100%',
-                                height: '1px',
-                                borderWidth: '0',
-                                color: 'gray',
-                                backgroundColor: 'black',
-                                marginTop: '0px',
-                                marginBottom: '0px'
-                            }} />
+                            <hr
+                                // className="separator"
+                                style={{
+                                    width: '100%',
+                                    height: '1px',
+                                    borderWidth: '0',
+                                    color: 'gray',
+                                    backgroundColor: 'black',
+                                    marginTop: '0px',
+                                    marginBottom: '0px'
+                                }} />
                         </div>
                     )
                 })
@@ -335,13 +337,11 @@ const MainPage = () => {
                             </ul>
                         </div>
                         <div
-                            className="down-prompt-container"
+                            //className="down-prompt-container"
+                            id="up-prompt"
                             style={{ 
                                 opacity: downPromptDisplay.opacity, 
-                                animation: downPromptDisplay.animation, 
-                                marginBottom: '0px',
-                                marginTop: '800px',
-                                position: 'absolute'
+                                animation: downPromptDisplay.animation
                             }}
                             onClick={() => {
                                 window.scrollTo({ top: 0, behavior: 'smooth' })
