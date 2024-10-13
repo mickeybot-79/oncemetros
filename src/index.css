@@ -481,7 +481,7 @@ ul {
   object-position: top;
 }
 
-#title-heading-container {
+.title-heading-container {
   height: 200px;
   display: grid;
 }
@@ -3223,15 +3223,7 @@ svg {
 
   #developer-info {
     width: 200px;
-
-    margin-bottom: 170px;
     margin-left: -100px;
-    padding: 10px;
-    padding-bottom: 0px;
-    gap: 10px;
-    place-content: center;
-    justify-items: center;
-    border: 1px solid rgba(0, 0, 0, 0.692);
   }
 
   .developer-option {
