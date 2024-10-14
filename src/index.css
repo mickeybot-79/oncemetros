@@ -547,6 +547,10 @@ ul {
   color: rgb(29, 28, 28);
 }
 
+#up-prompt {
+  position: absolute;
+}
+
 .down-prompt-container:hover,
 #up-prompt:hover  {
   background-color: rgba(238, 231, 231, 0.589);
@@ -3056,20 +3060,27 @@ svg {
     }
 
   /*Main Page*/
+  #main-page-container {
+    width: 100vw;
+  }
+
   #main-stories {
-    max-width: 400px;
+    max-width: 80vw;
     margin-left: 30px;
   }
 
   #main-stories-container {
-    max-width: 400px;
     height: 500px;
     margin-top: -50px;
+    margin-left: 20px;
+    overflow: hidden;
   }
 
   #stories-scroll-container {
     margin-top: 20px;
     height: 500px;
+    gap: 50px;
+    overflow: hidden;
   }
 
   .main-story {
@@ -3078,6 +3089,7 @@ svg {
 
   .story-thumbnail {
     height: 200px;
+    width: 250px;
   }
 
   .title-heading-container {
@@ -3085,7 +3097,7 @@ svg {
   }
 
   .story-title {
-    font-size: 20px;
+    font-size: 19px;
     height: 50px;
   }
 
@@ -3130,24 +3142,32 @@ svg {
   }
 
   #popular-stories {
-    width: 350px;
+    width: 100vw;
     display: grid;
+    place-content: center;
+    place-self: start;
   }
 
   #popular-stories-title {
     font-size: 35px;
-    text-wrap: wrap;
+    text-wrap: nowrap;
+    width: fit-content;
+    place-self: center;
   }
 
   #popular-stories-container {
-    width: 100%;
-    padding-left: 0px;
+    width: 100vw;
+    padding: 0px;
+    place-self: center;
+    margin: 0;
   }
 
   .popular-story-container,
   .popular-story-container-odd {
-    width: 400px;
-    padding: 30px 0px;
+    width: 300px;
+    padding: 30px 10px;
+    place-self: center;
+    margin: 0;
   }
 
   .popular-story-thumbnail {
@@ -3208,6 +3228,7 @@ svg {
     height: 75px;
     margin-top: 0px;
     margin-bottom: -100px;
+    position: relative;
   }
 
   #page-footer {
