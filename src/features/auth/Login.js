@@ -141,7 +141,7 @@ const Login = ({ handleDisplayLogin, loginAnimation, handleDisplayingLogin }) =>
                     e.preventDefault()
                     setPassResetDisplay('grid')
                 }}>¿Olvidaste tu contraseña?</button>
-                <div>
+                <div id="remember-login-container">
                     <label htmlFor="remember-login" className="login-label">Recordar usuario</label>
                     <input
                         type="radio"
@@ -157,17 +157,17 @@ const Login = ({ handleDisplayLogin, loginAnimation, handleDisplayingLogin }) =>
                 </div>
                 <button id="new-user-button" onClick={(e) => e.preventDefault()}>¿Eres nuevo? <span onClick={() => navigate('/users/new')}>Regístrate</span></button>
                 <div id="login-options-container">
-                    <button 
-                    id="login-cancel" 
-                    onClick={(e) => {
-                        e.preventDefault()
-                        if (currentLocation.pathname === '/') handleDisplayingLogin()
-                        handleDisplayLogin()
-                    }}>Cancelar</button>
-                    <button 
-                    id="login-submit" 
-                    disabled={loginData.username !== '' && loginData.password !== '' ? false : true}
-                    onClick={(e) => handleSubmit(e)}>Enviar</button>
+                    <button
+                        id="login-cancel"
+                        onClick={(e) => {
+                            e.preventDefault()
+                            if (currentLocation.pathname === '/') handleDisplayingLogin()
+                            handleDisplayLogin()
+                        }}>Cancelar</button>
+                    <button
+                        id="login-submit"
+                        disabled={loginData.username !== '' && loginData.password !== '' ? false : true}
+                        onClick={(e) => handleSubmit(e)}>Enviar</button>
                 </div>
             </form>
             <div style={{

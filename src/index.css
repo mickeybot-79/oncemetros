@@ -779,15 +779,14 @@ ul {
 #login-form {
   display: grid;
   place-content: center;
-  /* background-color: rgb(87, 192, 169); */
   background-color: rgb(112, 201, 182);
   padding: 0px 50px 50px 50px;
   gap: 20px;
   border-radius: 20px;
-  box-shadow: 20px 20px 20px rgba(255, 255, 255, 0.15), 
-  20px -20px 20px rgba(255, 255, 255, 0.15), 
-  -20px -20px 20px rgba(255, 255, 255, 0.15), 
-  -20px 20px 20px rgba(255, 255, 255, 0.15);
+  box-shadow: 20px 20px 20px rgba(255, 255, 255, 0.15),
+    20px -20px 20px rgba(255, 255, 255, 0.15),
+    -20px -20px 20px rgba(255, 255, 255, 0.15),
+    -20px 20px 20px rgba(255, 255, 255, 0.15);
 }
 
 .login-label {
@@ -3200,6 +3199,7 @@ svg {
     font-size: 40px;
     position: relative;
     margin-bottom: 0px;
+    margin-top: 50px;
   }
 
   #explore-authors-container {
@@ -3249,5 +3249,90 @@ svg {
 
   .developer-option {
     font-size: 15px;
+  }
+
+  /*Login Page*/
+  #login-title {
+    text-wrap: nowrap;
+  }
+
+  #login-form {
+    width: 80%;
+    overflow: hidden;
+    padding: 20px;
+    place-self: center;
+    place-content: center;
+  }
+
+  .login-label {
+    width: 80%;
+    place-self: center;
+    font-size: 22px;
+  }
+
+  .login-input {
+    width: 80%;
+    place-self: center;
+    font-size: 18px;
+  }
+
+  #password-reset-option {
+    margin-left: 30px;
+  }
+
+  #remember-login-container {
+    margin-left: 30px;
+  }
+
+  #new-user-button {
+    width: 100%;
+    display: flex;
+    font-size: 16px;
+    align-items: center;
+  }
+
+  #new-user-button span {
+    margin-left: 10px;
+  }
+
+  #login-cancel, 
+  #login-submit {
+    width: 110px;
+    font-size: 20px;
+  }
+
+  #password-reset,
+  #password-reset-email {
+    width: 100%;
+    overflow: hidden;
+    padding: 10px;
+    place-self: center;
+  }
+
+  #password-reset-prompt,
+  #password-email-prompt {
+    font-size: 18px;
+    width: fit-content;
+  }
+
+  #password-reset-input,
+  #password-email-input {
+    width: 90%;
+  }
+
+  #password-reset-options,
+  #password-email-options {
+    margin-left: 10px;
+    width: fit-content;
+  }
+
+  #password-reset-cancel, 
+  #password-reset-submit,
+  #password-email-cancel,
+  #password-email-submit {
+    width: fit-content;
+    max-width: 180px;
+    padding: 10px;
+    font-size: 16px;
   }
 }
