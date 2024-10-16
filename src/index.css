@@ -3335,4 +3335,72 @@ svg {
     padding: 10px;
     font-size: 16px;
   }
+
+  /*Post Page*/
+  #post-container {
+    width: 80%;
+    padding: 0px 20px;
+    overflow: hidden;
+    place-self: center;
+  }
+
+  #post-title {
+    font-size: 22px;
+  }
+
+  #post-thumbnail {
+    width: 90%;
+  }
+
+  #post-heading {
+    font-size: 18px;
+  }
+
+  #post-content {
+    font-size: 16px;
+  }
+
+  #comments-container {
+    width: 80%;
+    padding: 0px 20px;
+    overflow: hidden;
+  }
+
+  #new-comment-container {
+    width: 80%;
+    place-content: center;
+  }
+
+  #new-comment-img-text {
+    width: 80%;
+    margin-left: 80px;
+  }
+
+  #new-comment-icon {
+    width: 50px;
+  }
+
+  #new-comment-content {
+    width: 250px;
+    height: 100px;
+    margin-left: 20px;
+  }
+
+  #new-comment-buttons {
+    width: 50%;
+  }
+
+  #new-comment-cancel,
+  #new-comment-submit {
+    width: 100px;
+    font-size: 18px;
+  }
+
+  .comment-container {
+    width: 100%;
+  }
+
+  .comment-content-image {
+    width: 80%;
+  }
 }

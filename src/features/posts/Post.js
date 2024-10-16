@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom"
 import { WhatsappShareButton } from "react-share"
 import baseUrl from "../../baseurl"
 import { useAddViewMutation } from "./postsApiSlice"
-// import { jwtDecode } from "jwt-decode"
 
 const Post = ({ post, userId }) => {
 
@@ -16,9 +15,6 @@ const Post = ({ post, userId }) => {
     const [headingContentElement, setHeadingContentElement] = useState([])
 
     const [addView] = useAddViewMutation()
-
-    // const token = window.localStorage.getItem('token') || ''
-    // const userId = token ? jwtDecode(token).UserInfo.id : ''
 
     useEffect(() => {
         if (effectRan.current === true || process.env.NODE_ENV !== 'development') {
@@ -93,8 +89,6 @@ const Post = ({ post, userId }) => {
     const imageDescElement = (
         <div style={{ display: 'flex' }}>
             <p id="post-imgDesc">{(post.imgDesc && post.imgCred) ? `${post.imgDesc} | ${post.imgCred}` : (post.imgDesc || post.imgCred)}</p>
-            {/* <p style={{ marginLeft: '5px', marginRight: '5px' }}>|</p>
-            <p id="post-imgCred">{post.imgCred}</p> */}
         </div>
     )
 
