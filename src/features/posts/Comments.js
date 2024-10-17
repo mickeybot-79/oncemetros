@@ -38,7 +38,6 @@ const Comments = ({ post, user }) => {
             image: user.image,
             content: newComment
         })
-        //console.log(result)
         if (result?.data?.searchField) {
             setNewComment('')
             setAllComments([...result.data.comments])
@@ -47,7 +46,6 @@ const Comments = ({ post, user }) => {
     }
 
     const handleStartReply = (e, comm, usr) => {
-        //console.log(usr)
         setReplying(() => {
             return {
                 commnt: comm,
@@ -140,7 +138,7 @@ const Comments = ({ post, user }) => {
                                 <div className="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
                             </div>
                         </div>
-                        <div style={{ placeSelf: 'end', display: 'flex', gap: '20px', padding: '10px' }}>
+                        <div className="reply-options">
                             <button className="reply-cancel" onClick={() => {
                                 setNewReply('')
                                 setReplying({
@@ -151,8 +149,8 @@ const Comments = ({ post, user }) => {
                             <button className="reply-submit" onClick={() => handlePostReply(comment.searchField)}>Publicar</button>
                         </div>
                     </div>
-                    {comment.replies.length > 0 && <div>
-                        <p style={{marginLeft: '180px'}}>Respuestas: ({comment.replies.length})</p>
+                    {comment.replies.length > 0 && <div className="comment-replies-container">
+                        <p classname="comment-replies-amount">Respuestas: ({comment.replies.length})</p>
                         {commentReplies}
                     </div>}
                     <hr style={{ width: '100%', height: '1px', borderWidth: '0', color: 'gray', backgroundColor: 'black', marginTop: '50px', marginBottom: '50px' }} />
@@ -192,7 +190,7 @@ const Comments = ({ post, user }) => {
                     <button id="new-comment-submit" disabled={newComment.length > 0 ? false: true} onClick={handleSubmit}>Publicar</button>
                 </div>
             </div>
-            <h3 style={{marginLeft: '40px'}}>Comentarios: ({allComments.length})</h3>
+            <h3 id="comment-amount">Comentarios: ({allComments.length})</h3>
             <div id="all-comments">
                 {commentsElements}
             </div>

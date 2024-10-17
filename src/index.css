@@ -1674,6 +1674,10 @@ svg {
   background-color: rgba(94, 196, 94, 0.795);
 }
 
+#comment-amount {
+  margin-left: 40px;
+}
+
 #comment-loader-container {
   position: absolute;
   width: 500px;
@@ -1779,6 +1783,13 @@ svg {
   border-radius: 2px;
 }
 
+.reply-options {
+  place-self: end;
+  display: flex;
+  gap: 20px;
+  padding: 10px;
+}
+
 .reply-cancel, 
 .reply-submit {
   width: 100px;
@@ -1798,6 +1809,10 @@ svg {
 
 .reply-submit:hover {
   background-color: rgb(135, 207, 135);
+}
+
+.comment-replies-amount {
+  margin-left: 180px;
 }
 
 .comment-reply-container {
@@ -3373,7 +3388,7 @@ svg {
 
   #new-comment-img-text {
     width: 80%;
-    margin-left: 80px;
+    margin-left: 50px;
   }
 
   #new-comment-icon {
@@ -3388,6 +3403,7 @@ svg {
 
   #new-comment-buttons {
     width: 50%;
+    margin-bottom: 120px;
   }
 
   #new-comment-cancel,
@@ -3396,11 +3412,55 @@ svg {
     font-size: 18px;
   }
 
+  #comment-amount {
+    position: absolute;
+    margin-left: 20px;
+    margin-top: 250px;
+  }
+
   .comment-container {
-    width: 100%;
+    width: 95%;
+    padding: 10px 0px 0px 15px;
   }
 
   .comment-content-image {
     width: 80%;
+  }
+
+  .reply-container {
+    width: 100%;
+    height: fit-content;
+    padding: 0;
+    overflow: hidden;
+    margin-left: 20px;
+  }
+
+  .reply-content {
+    width: 100%;
+  }
+
+  .reply-options {
+    margin-left: 0px;
+  }
+
+  .comment-replies-container {
+    width: 100%;
+    padding: 0;
+    overflow: hidden;
+    padding-left: 40px;
+  }
+
+  .comment-replies-amount {
+    margin-left: 0px;
+  }
+
+  .comment-reply-container {
+    width: 80%;
+    margin-left: 0px;
+    padding-bottom: 20px;
+  }
+
+  .comment-reply-date {
+    font-size: 14px;
   }
 }
