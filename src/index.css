@@ -3463,4 +3463,32 @@ svg {
   .comment-reply-date {
     font-size: 14px;
   }
+
+  /*All Tags Page*/
+    #all-tags-container {
+      width: 100%;
+      padding: 0px;
+      overflow: hidden;
+      background: linear-gradient(90deg,
+          rgba(128, 128, 128, 0.01),
+          rgb(112, 163, 148, 0.836),
+          rgb(112, 163, 148, 0.836),
+          rgb(112, 163, 148, 0.836),
+          rgb(112, 163, 148, 0.836),
+          rgb(112, 163, 148, 0.836),
+          rgba(128, 128, 128, 0.01));
+    }
+
+  #tags-page-header {
+    font-size: 30px;
+    text-wrap: nowrap;
+    text-align: center;
+    margin-left: 10px;
+  }
+
+  .tag-label {
+    font-size: 22px;
+    margin-left: 30px;
+  }
+
 }
