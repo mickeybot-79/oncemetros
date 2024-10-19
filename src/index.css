@@ -3028,10 +3028,18 @@ svg {
 }
 
 @media screen and (max-width: 500px) {
+
   /*Header*/
+  #header-container {
+    width: 100%;
+    margin-right: 0px;
+    padding-right: 0px;
+    overflow: hidden;
+  }
+
   #header-logo {
     position: absolute;
-    width: 480px;
+    width: 130%;
     top: 12px;
     height: auto;
   }
@@ -3040,6 +3048,7 @@ svg {
     display: flex;
     align-items: baseline;
     margin-top: 100px;
+    width: 100%;
   }
 
   #search-login-container {
@@ -3060,22 +3069,34 @@ svg {
     height: 60px;
   }
 
-    .menu-item {
-      max-width: 55px;
-      padding-left: 5px;
-    }
-  
-    #futbol-nacional-options,
-    #futbot-internacional-options,
-    #competiciones-europeas-options,
-    #competiciones-internacionales-options,
-    #historia-de-los-mundiales-options {
-      width: 140px;
-    }
+  #main-menu-options {
+    width: 100%;
+    margin-right: 0px;
+    padding-right: 0px;
+  }
+
+  .menu-item {
+    width: 12%;
+    max-width: 55px;
+    padding-left: 5px;
+  }
+
+  #futbol-nacional-options,
+  #futbot-internacional-options,
+  #competiciones-europeas-options,
+  #competiciones-internacionales-options,
+  #historia-de-los-mundiales-options {
+    width: 140px;
+  }
 
   /*Main Page*/
+  #logo-presentation {
+    scale: 0.4;
+  }
+
   #main-page-container {
-    width: 100vw;
+    width: 100%;
+    overflow: hidden;
   }
 
   #main-stories {
@@ -3236,6 +3257,7 @@ svg {
   .authors-list-item,
   .tags-list-item {
     font-size: 25px;
+    max-width: 80%;
   }
 
   #up-prompt {
@@ -3248,7 +3270,8 @@ svg {
 
   #page-footer {
     justify-content: start;
-    gap: 5px;
+    gap: 0px;
+    width: 100%;
   }
 
   #page-views,
@@ -3419,12 +3442,23 @@ svg {
   }
 
   .comment-container {
-    width: 95%;
+    width: 80%;
     padding: 10px 0px 0px 15px;
+    overflow: hidden;
+  }
+
+  .comment-content {
+    font-size: 18px;
+    margin-left: -20px;
+  }
+
+  .comment-date {
+    font-size: 14px;
   }
 
   .comment-content-image {
-    width: 80%;
+    width: 50%;
+    margin-left: 15%;
   }
 
   .reply-container {
@@ -3444,19 +3478,22 @@ svg {
   }
 
   .comment-replies-container {
-    width: 100%;
+    width: 80%;
     padding: 0;
     overflow: hidden;
     padding-left: 40px;
+    margin-top: 50px;
   }
 
   .comment-replies-amount {
-    margin-left: 0px;
+    position: absolute;
+    margin-left: 10%;
+    margin-top: -40px;
   }
 
   .comment-reply-container {
     width: 80%;
-    margin-left: 0px;
+    margin-left: 10%;
     padding-bottom: 20px;
   }
 

@@ -150,7 +150,7 @@ const Comments = ({ post, user }) => {
                         </div>
                     </div>
                     {comment.replies.length > 0 && <div className="comment-replies-container">
-                        <p classname="comment-replies-amount">Respuestas: ({comment.replies.length})</p>
+                        <p className="comment-replies-amount">Respuestas: ({comment.replies.length})</p>
                         {commentReplies}
                     </div>}
                     <hr style={{ width: '100%', height: '1px', borderWidth: '0', color: 'gray', backgroundColor: 'black', marginTop: '50px', marginBottom: '50px' }} />
