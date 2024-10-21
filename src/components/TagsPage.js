@@ -59,7 +59,7 @@ const TagsPage = () => {
             <>
                 <PageHeader />
                 <div id="tag-posts-container">
-                    <h2>Publicaciones sobre <span>"{tag}"</span>:</h2>
+                    <h2 id="tags-page-title">Publicaciones sobre <span>"{tag}"</span>:</h2>
                     {allPostElements}
                 </div>
             </>

@@ -59,7 +59,7 @@ const UserPosts = () => {
             <>
                 <PageHeader />
                 <div id="posts-user-container">
-                    <h2>Publicaciones de <span>{user}</span>:</h2>
+                    <h2 id="user-posts-title">Publicaciones de <span>{user}</span>:</h2>
                     {userPostElements}
                 </div>
             </>
