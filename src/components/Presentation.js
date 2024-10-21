@@ -25,7 +25,7 @@ const Presentation = ({ presentationDisplay, isSuccess }) => {
 
     return (
         <section id="presentation-content" style={{ height: presentationHeight, animation: hidePresentation, display: presentationDisplay }}>
-            <img src="../Images/logo 3.jpg" alt="logo" id="logo-presentation" style={{ animation: logoPresentation }} />
+            <img src="../Images/logo 3.jpg" alt="logo" id="logo-presentation" style={{animation: logoPresentation}} />
         </section>
     )
 }
