@@ -19,7 +19,7 @@ const ProfilePage = () => {
         if (tokenTest) console.log(tokenTest)
         if (token) console.log(token)
         console.log('ok')
-    //eslint-disable-next-line
+        //eslint-disable-next-line
     }, [token, tokenTest])
 
     const { id } = useParams()
@@ -61,9 +61,9 @@ const ProfilePage = () => {
             <>
                 <PageHeader />
                 <div id="user-profile-container">
-                    <div style={{marginLeft: '-150px', display: 'grid'}}>
+                    <div id="profile-container">
                         <img src={user.image} alt="user-image" id="user-profile-image" />
-                        <div style={{display: 'flex'}}>
+                        <div id="username-membersince-container">
                             <p id="user-profile-username">{user.username}</p>
                             <p id="user-profile-membersince">Miembro desde {convertedDate}</p>
                         </div>
