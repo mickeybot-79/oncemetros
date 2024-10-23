@@ -1,15 +1,18 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useSendFeedbackMutation } from "./pageApiSlice"
-import { jwtDecode } from "jwt-decode"
+// import { jwtDecode } from "jwt-decode"
 import baseUrl from "../baseurl"
 import ResultMessage from "./ResultMessage"
+import useAuth from "../features/auth/useAuth"
 
 const ContactUs = () => {
 
     const navigate = useNavigate()
 
-    const token = window.localStorage.getItem('token')
+    //const token = window.localStorage.getItem('token')
+
+    const {currentUserId, currentUsername} = useAuth()
 
     const selectedFeedback = window.sessionStorage.getItem('feedback')
 
@@ -47,8 +50,8 @@ const ContactUs = () => {
         const canSave = [feedbackData.type !== '', feedbackData.content !== ''].every(Boolean) && !isLoading
         if (canSave) {
             const result = await sendFeedback({
-                userId: token ? jwtDecode(token).UserInfo.id : 'noUser',
-                username: token ? jwtDecode(token).UserInfo.username : '',
+                userId: currentUserId || 'noUser',
+                username: currentUsername || '',
                 type: feedbackData.type,
                 content: feedbackData.content
             })
