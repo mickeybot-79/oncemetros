@@ -1814,6 +1814,7 @@ svg {
 
 .comment-replies-amount {
   margin-left: 180px;
+  cursor: pointer;
 }
 
 .comment-reply-container {
@@ -3124,13 +3125,13 @@ svg {
 
   .main-story {
     height: 300px;
-    margin-left: 55px;
-    margin-right: -55px;
+    margin-left: 70px;
+    margin-right: -40px;
   }
 
   .story-thumbnail {
     height: 200px;
-    width: 250px;
+    width: 220px;
   }
 
   .title-heading-container {
@@ -3138,7 +3139,7 @@ svg {
   }
 
   .story-title {
-    font-size: 19px;
+    font-size: 18px;
     height: 50px;
   }
 
@@ -3436,6 +3437,8 @@ svg {
   #new-comment-buttons {
     width: 50%;
     margin-bottom: 120px;
+    margin-left: 120px;
+    place-self: start;
   }
 
   #new-comment-cancel,
@@ -3501,8 +3504,8 @@ svg {
   }
 
   .comment-reply-container {
-    width: 80%;
-    margin-left: 10%;
+    width: 80vw;
+    margin-left: -10%;
     padding-bottom: 20px;
   }
 

@@ -22,6 +22,8 @@ const Comments = ({ post, user }) => {
 
     const [displayReplyLoader, setDisplayReplyLoader] = useState('none')
 
+    const [displayReplies, setDisplayReplies] = useState('')
+
     const [addComment] = useAddCommentMutation()
 
     const [addReply] = useAddReplyMutation()
@@ -150,8 +152,10 @@ const Comments = ({ post, user }) => {
                         </div>
                     </div>
                     {comment.replies.length > 0 && <div className="comment-replies-container">
-                        <p className="comment-replies-amount">Respuestas: ({comment.replies.length})</p>
-                        {commentReplies}
+                        <p className="comment-replies-amount" onClick={() => setDisplayReplies(prev => {
+                            return prev === comment.searchField ? '' : comment.searchField
+                        })}>Respuestas: ({comment.replies.length})</p>
+                        {displayReplies === comment.searchField && commentReplies}
                     </div>}
                     <hr style={{ width: '100%', height: '1px', borderWidth: '0', color: 'gray', backgroundColor: 'black', marginTop: '50px', marginBottom: '50px' }} />
                 </div>
