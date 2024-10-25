@@ -22,7 +22,7 @@ const Comments = ({ post, user }) => {
 
     const [displayReplyLoader, setDisplayReplyLoader] = useState('none')
 
-    const [displayReplies, setDisplayReplies] = useState('')
+    const [displayReplies, setDisplayReplies] = useState([])
 
     const [addComment] = useAddCommentMutation()
 
@@ -153,9 +153,16 @@ const Comments = ({ post, user }) => {
                     </div>
                     {comment.replies.length > 0 && <div className="comment-replies-container">
                         <p className="comment-replies-amount" onClick={() => setDisplayReplies(prev => {
-                            return prev === comment.searchField ? '' : comment.searchField
+                            const newState = [...prev]
+                            if (!newState.includes(comment.searchField)) {
+                                newState.push(comment.searchField)
+                            } else {
+                                const itemIndex = newState.indexOf(comment.searchField)
+                                newState.splice(itemIndex, 1)
+                            }
+                            return newState
                         })}>Respuestas: ({comment.replies.length})</p>
-                        {displayReplies === comment.searchField && commentReplies}
+                        {displayReplies.includes(comment.searchField) && commentReplies}
                     </div>}
                     <hr style={{ width: '100%', height: '1px', borderWidth: '0', color: 'gray', backgroundColor: 'black', marginTop: '50px', marginBottom: '50px' }} />
                 </div>
