@@ -3738,6 +3738,27 @@ svg {
     width: 100px;
   }
 
+  /*Result Message*/
+  .result-container {
+    width: 80vw;
+    height: 30vh;
+    overflow: hidden;
+    padding: 0;
+  }
+
+  #post-result-image {
+    width: 80px;
+    height: 80px;
+  }
+
+  #post-result-message {
+    font-size: 22px;
+  }
+
+  .result-confirm{
+    padding-top: 5px;
+  }
+
   /*New User Page*/
   #new-user-page-container {
     width: 100%;
@@ -3827,17 +3848,105 @@ svg {
   #user-page-image {
     width: 100px;
     height: 100px;
-    margin-top: -30px;
+    margin-top: -10px;
+    margin-bottom: -20px;
   }
 
   #user-page-username {
     font-size: 28px;
-    margin-top: 20px;
+    margin-top: 40px;
     margin-left: -20px;
+    margin-bottom: -20px;
   }
 
   #user-page-options {
     display: grid;
+  }
+
+  #user-page-logout {
+    margin-top: 120px;
+    margin-bottom: -140px;
+    margin-left: 45vw;
+  }
+  
+  .user-page-post{
+    display: grid;
+    gap: 0;
+  }
+
+  .user-page-edit {
+    margin-left: 65vw;
+    font-size: 25px;
+  }
+
+  /*New Post Page*/
+  #new-post-form {
+    width: 80vw;
+    overflow: hidden;
+    padding: 20px;
+  }
+
+  #new-post-h1 {
+    font-size: 35px;
+    margin-top: 110px;
+  }
+
+  .new-post-label {
+    font-size: 25px;
+  }
+
+  #new-post-heading,
+  #image-link-input,
+  #tag-elements-container,
+  .ql-editor,
+  .new-post-input {
+    width: 75vw;
+  }
+
+  #writing-select {
+    margin-left: -490px;
+    margin-top: -8px;
+    width: 70px;
+  }
+
+  #tags-select {
+    margin-left: -10px;
+    width: 80px;
+  }
+
+  #image-method-select {
+    margin-left: -460px;
+    margin-top: 22px;
+    width: 180px;
+  }
+
+  #image-from-link {
+    max-width: 80vw; 
+  }
+
+  #add-tag-button {
+    font-size: 12px;
+    margin-left: -10px;
+    width: 80px;
+  }
+
+  #new-post-buttons {
+    width: 100%;
+    overflow: hidden;
+    padding: 0;
+    place-content: center;
+    gap: 0px;
+  }
+
+  #new-post-cancel {
+    width: 80px;
+    font-size: 15px;
+  }
+
+  #new-post-submit {
+    font-size: 1px;
+    width: 50px;
+    max-width: 50px;
   }
 
 }

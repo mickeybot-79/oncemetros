@@ -29,8 +29,6 @@ const NewPost = () => {
         if (effectRan.current === true || process.env.NODE_ENV !== 'development') {
             if (!logged || (status && status === 'User')) {
                 navigate('/')
-                //console.log(logged)
-                //console.log(status)
             }
         }
         return () => effectRan.current = true
