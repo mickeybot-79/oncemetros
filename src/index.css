@@ -1034,6 +1034,11 @@ ul {
   font-size: 30px;
 }
 
+#new-post-tags-container {
+  display: flex;
+  gap: 20px;
+}
+
 .new-post-input {
   width: 100%;
   max-width: 100%;
@@ -3883,7 +3888,7 @@ svg {
   #new-post-form {
     width: 80vw;
     overflow: hidden;
-    padding: 20px;
+    padding: 20px 20px 20px 30px;
   }
 
   #new-post-h1 {
@@ -3903,20 +3908,25 @@ svg {
     width: 75vw;
   }
 
+  #main-content-label {
+    margin-bottom: 50px;
+  }
+
   #writing-select {
-    margin-left: -490px;
-    margin-top: -8px;
-    width: 70px;
+    margin-left: -710px;
+    margin-top: 35px;
+    width: 140px;
   }
 
   #tags-select {
     margin-left: -10px;
-    width: 80px;
+    width: 150px;
+    margin-left: 0;
   }
 
   #image-method-select {
     margin-left: -460px;
-    margin-top: 22px;
+    margin-top: 72px;
     width: 180px;
   }
 
@@ -3925,9 +3935,14 @@ svg {
   }
 
   #add-tag-button {
-    font-size: 12px;
+    font-size: 16px;
     margin-left: -10px;
-    width: 80px;
+    width: 150px;
+    margin-left: 0px;
+  }
+
+  #new-tag-input {
+    margin-bottom: 5px;
   }
 
   #new-post-buttons {
@@ -3935,18 +3950,24 @@ svg {
     overflow: hidden;
     padding: 0;
     place-content: center;
-    gap: 0px;
+    gap: 20px;
+  }
+
+  #new-post-buttons button {
+    font-size: 25px;
+    width: 150px;
   }
 
   #new-post-cancel {
-    width: 80px;
-    font-size: 15px;
+    width: 150px;
+    font-size: 25px;
+    height: 50px;
+    padding-top: 18px;
   }
 
-  #new-post-submit {
-    font-size: 1px;
-    width: 50px;
-    max-width: 50px;
+  #new-post-tags-container {
+    display: grid;
+    gap: 0;
   }
 
 }

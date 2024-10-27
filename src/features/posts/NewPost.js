@@ -534,7 +534,7 @@ const NewPost = () => {
                     value={postData.heading}
                     onChange={handleChange}
                 ></textarea>
-                <label className="new-post-label" ref={topRef}>Contenido principal:</label>
+                <label className="new-post-label" ref={topRef} id="main-content-label">Contenido principal:</label>
                 <select id="writing-select" defaultValue="type" onChange={(e) => setWritingStyle(e.target.value)}>
                     <option value="type">Edición libre</option>
                     <option value="html-input">HTML</option>
@@ -635,7 +635,7 @@ const NewPost = () => {
                     value={postData.insPost}
                     onChange={handleChange}
                 />
-                <div style={{ display: 'flex', gap: '20px' }}>
+                <div id="new-post-tags-container">
                     <label htmlFor="new-post-tags" className="new-post-label">Etiquetas:</label>
                     <select id="tags-select" defaultValue="" onChange={(e) => {
                         setPostData((prevState) => {
