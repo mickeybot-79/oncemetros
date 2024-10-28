@@ -1075,6 +1075,13 @@ ul {
   margin-left: 20px;
 }
 
+#new-post-content-prompt {
+  position: absolute;
+  top: 560px;
+  font-size: 20px;
+  opacity: 0.5;
+}
+
 #new-post-content {
   width: 100%;
   max-width: 100%;
@@ -3746,7 +3753,7 @@ svg {
   /*Result Message*/
   .result-container {
     width: 80vw;
-    height: 30vh;
+    height: 300px;
     overflow: hidden;
     padding: 0;
   }
@@ -3930,8 +3937,9 @@ svg {
     width: 180px;
   }
 
-  #image-from-link {
-    max-width: 80vw; 
+  #image-from-link,
+  #hidden-image {
+    max-width: 80vw;
   }
 
   #add-tag-button {
@@ -3970,4 +3978,16 @@ svg {
     gap: 0;
   }
 
+  #new-post-image {
+    width: 250px;
+  }
+
+  #new-post-content-prompt {
+    top: 640px;
+  }
+
+  #uploaded-image,
+  #image-delete-prompt {
+    max-width: 280px;
+  }
 }

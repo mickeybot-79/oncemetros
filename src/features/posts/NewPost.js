@@ -452,6 +452,7 @@ const NewPost = () => {
                 }}
             />}
             <div
+                id="image-delete-prompt"
                 style={{
                     display: (imageMethod.selectedOption === 'upload' && postData.thumbnail !== '../../Images/placeholder.png') || (imageMethod.selectedOption === 'link' && imageMethod.selectedValue !== '') ? 'grid' : 'none',
                     width: `${imageWidth}px`,
@@ -539,7 +540,7 @@ const NewPost = () => {
                     <option value="type">Edición libre</option>
                     <option value="html-input">HTML</option>
                 </select>
-                <p style={{position: 'absolute', left: `${editorLeft}px`, top: '560px', fontSize: '20px', opacity: '0.5', display: editorPromptDisplay}}>Escribe el contenido aquí</p>
+                <p id="new-post-content-prompt" style={{left: `${editorLeft}px`, display: editorPromptDisplay}}>Escribe el contenido aquí</p>
                 {writingStyle === 'type' && <Editor
                     defaultValue={new Delta()}
                     ref={quillRef}
