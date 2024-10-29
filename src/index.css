@@ -3925,6 +3925,12 @@ svg {
     width: 140px;
   }
 
+  #edit-writing-select {
+    margin-top: -50px;
+    margin-left: 0px;
+    width: 140px;
+  }
+
   #tags-select {
     margin-left: -10px;
     width: 150px;
@@ -3940,6 +3946,10 @@ svg {
   #image-from-link,
   #hidden-image {
     max-width: 80vw;
+  }
+
+  #edit-image-method-select {
+    width: 140px;
   }
 
   #add-tag-button {

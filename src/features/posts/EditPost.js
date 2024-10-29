@@ -486,7 +486,7 @@ const EditPost = () => {
                     width: 'auto',
                     height: '300px',
                     opacity: imageMethod.selectedValue === '' ? '0.8' : '1',
-                    justifySelf: 'center'
+                    justifySelf: 'start'
                 }}
             />}
             <div
@@ -498,7 +498,7 @@ const EditPost = () => {
                     position: 'absolute',
                     textAlign: 'right',
                     fontSize: '25px',
-                    justifySelf: 'center',
+                    justifySelf: 'start',
                     alignSelf: 'end'
                 }}>
                 <p
@@ -586,13 +586,11 @@ const EditPost = () => {
                         value={postData.heading}
                         onChange={handleChange}
                     ></textarea>
-                    <div>
-                        <label className="new-post-label" ref={topRef}>Contenido principal:</label>
-                        <select id="edit-writing-select" defaultValue="type" onChange={(e) => setWritingStyle(e.target.value)}>
-                            <option value="type">Edición libre</option>
-                            <option value="html-input">HTML</option>
-                        </select>
-                    </div>
+                    <label className="new-post-label" ref={topRef} id="main-content-label">Contenido principal:</label>
+                    <select id="edit-writing-select" defaultValue="type" onChange={(e) => setWritingStyle(e.target.value)}>
+                        <option value="type">Edición libre</option>
+                        <option value="html-input">HTML</option>
+                    </select>
                     {writingStyle === 'type' && <Editor
                         defaultValue={new Delta()}
                         ref={quillRef}
@@ -690,7 +688,7 @@ const EditPost = () => {
                         value={postData.insPost}
                         onChange={handleChange}
                     />
-                    <div style={{ display: 'flex', gap: '20px' }}>
+                    <div id="new-post-tags-container">
                         <label htmlFor="new-post-tags" className="new-post-label">Etiquetas:</label>
                         <select id="tags-select" defaultValue="" onChange={(e) => {
                             setPostData((prevState) => {
