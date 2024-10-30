@@ -4000,4 +4000,20 @@ svg {
   #image-delete-prompt {
     max-width: 280px;
   }
+
+  /*Edit User Page*/
+  #edit-options-container {
+    width: 70vw;
+    overflow: hidden;
+  }
+
+  .edit-account-option {
+    font-size: 25px;
+  }
+
+  #close-edit-button {
+    width: 120px;
+    font-size: 22px;
+    line-height: 160%;
+  }
 }
