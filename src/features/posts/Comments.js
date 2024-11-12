@@ -54,7 +54,7 @@ const Comments = ({ post, user }) => {
                 user: usr
             }
         })
-        if (e.target.parentNode.className === "comment-options-container") {
+        if (e.target.parentNode.className === "comment-options-container" || "lower-res-content") {
             newCommentRef.current = e.target.parentNode
             setTimeout(() => {
                 window.scrollTo({ top: newCommentRef.current.offsetTop, behavior: 'smooth' })
@@ -103,11 +103,19 @@ const Comments = ({ post, user }) => {
 
                 return (
                     <div className="comment-reply-container" key={reply.date}>
-                        <div style={{display: 'flex', alignItems: 'center', gap:'20px'}}>
+                        <div className="lower-res-content" style={{display: window.innerWidth > 500 ? 'none' : 'grid', height: 'fit-content', maxWidth: '1000vh'}}>
+                            <div className="lower-res-image-date">
+                                <img src={reply.image || "../../Images/favicon.png"} alt="user-image" className="comment-reply-image" />
+                                <p className="comment-reply-date">{convertedReplyDate}</p>
+                            </div>
+                            <p className="comment-reply-content"><a href='...'>{reply.replyTo}</a>{reply.content}</p>
+                            <button className="comment-reply-option" onClick={(e) => handleStartReply(e, comment.searchField, reply.username)}>Responder</button>
+                        </div>
+                        <div style={{display: window.innerWidth < 500 ? 'none' : 'flex', alignItems: 'center', gap:'20px'}}>
                             <img src={reply.image || "../../Images/favicon.png"} alt="user-image" className="comment-reply-image" />
                             <p className="comment-reply-content"><a href='...'>{reply.replyTo}</a>{reply.content}</p>
                         </div>
-                        <div>
+                        <div style={{display: window.innerWidth < 500 ? 'none' : 'flex'}}>
                             <p className="comment-reply-date">{convertedReplyDate}</p>
                             <button className="comment-reply-option" onClick={(e) => handleStartReply(e, comment.searchField, reply.username)}>Responder</button>
                         </div>
@@ -118,11 +126,19 @@ const Comments = ({ post, user }) => {
             return (
                 <div key={comment.searchField}>
                     <div className="comment-container">
-                        <div className="comment-content-image">
+                        <div className="lower-res-content" style={{display: window.innerWidth > 500 ? 'none' : 'grid'}}>
+                            <div className="lower-res-image-date">
+                                <img src={comment.image || "../../Images/favicon.png"} alt="user-image" className="comment-image" />
+                                <p className="comment-date">{convertedDate}</p>
+                            </div>
+                            <p className="comment-content">{comment.content}</p>
+                            <button className="comment-reply" onClick={(e) => handleStartReply(e, comment.searchField, comment.username)}>Responder</button>
+                        </div>
+                        <div className="comment-content-image" style={{display: window.innerWidth < 500 ? 'none' : 'flex'}}>
                             <img src={comment.image || "../../Images/favicon.png"} alt="user-image" className="comment-image" />
                             <p className="comment-content">{comment.content}</p>
                         </div>
-                        <div className="comment-date-options">
+                        <div className="comment-date-options" style={{display: window.innerWidth < 500 ? 'none' : 'grid'}}>
                             <p className="comment-date">{convertedDate}</p>
                             <div className="comment-options-container">
                                 <button className="comment-reply" onClick={(e) => handleStartReply(e, comment.searchField, comment.username)}>Responder</button>

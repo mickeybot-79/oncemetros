@@ -230,7 +230,7 @@ const MainPage = () => {
                 const transitionValue = count !== 0 ? '1.5s' : '0s'
                 return {
                     transition: transitionValue,
-                    transform: `translateX(-${count * 321}px)`
+                    transform: `translateX(-${window.innerWidth > 500 ? count * 321 : count * 241}px)`
                 }
             })
         }

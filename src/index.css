@@ -1831,7 +1831,7 @@ svg {
 
 .comment-reply-container {
   width: 650px;
-  height: 120px;
+  height: fit-content;
   margin-left: 170px;
   display: flex;
   justify-content: space-between;
@@ -3126,19 +3126,22 @@ svg {
     margin-top: -50px;
     margin-left: 20px;
     overflow: hidden;
+    padding-left: 50px;
   }
 
   #stories-scroll-container {
     margin-top: 20px;
     height: 500px;
-    gap: 50px;
+    /* gap: 50px; */
     overflow: hidden;
+    padding-left: 50px;
   }
 
   .main-story {
     height: 300px;
-    margin-left: 70px;
-    margin-right: -40px;
+    justify-self: center;
+    /* margin-left: 70px;
+    margin-right: -40px; */
   }
 
   .story-thumbnail {
@@ -3465,15 +3468,23 @@ svg {
     margin-top: 250px;
   }
 
+  .lower-res-image-date {
+    width: 60vw;
+    justify-content: space-between;
+    display: flex;
+  }
+
   .comment-container {
     width: 80%;
-    padding: 10px 0px 0px 15px;
+    padding: 10px 0px 0px 10%;
     overflow: hidden;
   }
 
   .comment-content {
     font-size: 18px;
-    margin-left: -20px;
+    margin-left: 20px;
+    margin-top: 0px;
+    max-width: 80vw;
   }
 
   .comment-date {
@@ -3482,7 +3493,12 @@ svg {
 
   .comment-content-image {
     width: 50%;
-    margin-left: 15%;
+    margin-left: 20%;
+  }
+
+  .comment-reply {
+    margin-left: 70%;
+    margin-right: 30%;
   }
 
   .reply-container {
@@ -3505,7 +3521,7 @@ svg {
     width: 80%;
     padding: 0;
     overflow: hidden;
-    padding-left: 40px;
+    padding-left: 100px;
     margin-top: 50px;
   }
 
@@ -3519,6 +3535,7 @@ svg {
     width: 80vw;
     margin-left: -10%;
     padding-bottom: 20px;
+    height: fit-content;
   }
 
   .comment-reply-date {
