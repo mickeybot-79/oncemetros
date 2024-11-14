@@ -248,7 +248,7 @@ const MainPage = () => {
         setMainStoriesAnimation(() => {
             return {
                 transition: '0.5s',
-                transform: `translateX(-${scrollFactor * 321}px)`
+                transform: `translateX(-${window.innerWidth > 500 ? scrollFactor * 321 : scrollFactor * 241}px)`
             }
         })
         setTimeOfLastClick(Date.now())
@@ -261,7 +261,7 @@ const MainPage = () => {
         setMainStoriesAnimation(() => {
             return {
                 transition: '0.5s',
-                transform: `translateX(-${scrollFactor * 321}px)`
+                transform: `translateX(-${window.innerWidth > 500 ? scrollFactor * 321 : scrollFactor * 241}px)`
             }
         })
         setTimeOfLastClick(Date.now())
