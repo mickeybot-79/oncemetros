@@ -3470,7 +3470,8 @@ svg {
 
   .lower-res-image-date {
     width: 60vw;
-    justify-content: space-between;
+    max-width: 300px;
+    gap: 10px;
     display: flex;
   }
 
@@ -3489,6 +3490,8 @@ svg {
 
   .comment-date {
     font-size: 14px;
+    max-width: 150px;
+    text-wrap: wrap;
   }
 
   .comment-content-image {
@@ -3497,7 +3500,7 @@ svg {
   }
 
   .comment-reply {
-    margin-left: 70%;
+    margin-left: 40%;
     margin-right: 30%;
   }
 
@@ -3532,14 +3535,37 @@ svg {
   }
 
   .comment-reply-container {
-    width: 80vw;
-    margin-left: -10%;
+    width: 50vw;
+    margin-left: -20%;
     padding-bottom: 20px;
     height: fit-content;
   }
 
   .comment-reply-date {
     font-size: 14px;
+  }
+
+  #comment-loader-container {
+    width: 220px;
+    margin-left: 80px;
+    padding-left: 0px;
+    height: 60px;
+  }
+
+  #comment-loader {
+    margin-left: -50px;
+  }
+
+  #reply-loader-container {
+    width: 250px;
+    margin-left: 50px;
+    margin-top: 0px;
+    padding-left: 0px;
+    height: 60px;
+  }
+
+  #reply-loader {
+    margin-left: -40px;
   }
 
   /*All Tags Page*/

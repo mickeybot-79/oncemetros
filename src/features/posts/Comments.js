@@ -86,6 +86,11 @@ const Comments = ({ post, user }) => {
             setReplying('')
             setAllComments([...result.data.comments])
             setDisplayReplyLoader('none')
+            setDisplayReplies(prev => {
+                const newState = [...prev]
+                newState.push(comment)
+                return newState
+            })
         }
     }
 
